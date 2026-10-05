@@ -177,13 +177,14 @@ const GEO = [
  ['STATE', /\b(by |per |each |every |at |in )?(state|states|negeri|negeri-negeri|state-level|state level)\b/],
  ['NATIONAL', /\b(national|nasional|nationwide|malaysia|seluruh negara|keseluruhan)\b/]];
 const FREQ = [
+ ['HOURLY', /\b(hourly|setiap jam|per jam|every hour)\b/],
  ['DAILY', /\b(daily|harian|every day|setiap hari|day by day)\b/],
  ['WEEKLY', /\b(weekly|mingguan)\b/],
  ['MONTHLY', /\b(monthly|bulanan|each month|setiap bulan|month by month)\b/],
  ['QUARTERLY', /\b(quarterly|suku tahun|suku tahunan|quarter|qtr)\b/],
  ['YEARLY', /\b(yearly|annual|annually|tahunan|per year|each year)\b/]];
-const FREQ_RANK = {REALTIME:.5, DAILY:1, WEEKLY:2, MONTHLY:3, QUARTERLY:4, YEARLY:5, ANNUAL:5};
-const G = (label, triggers, expand, proxy, gap) => ({label, triggers, expand: expand.split(' '), proxy, gap});
+const FREQ_RANK = {REALTIME:.5, HOURLY:.75, DAILY:1, WEEKLY:2, MONTHLY:3, QUARTERLY:4, YEARLY:5, ANNUAL:5};
+const G = (label, triggers, expand, proxy, gap, note) => ({label, triggers, expand: expand.split(' '), proxy, gap, note});
 const GLOSSARY = [
  G('cost of living',['cost of living','living cost','kos sara hidup','kos hidup','harga barang naik','barang mahal','expensive','mahal','affordability'],'cpi inflation consumer price index expenditure'),
  G('inflation',['inflation','inflasi','cpi','consumer price','indeks harga pengguna'],'cpi inflation consumer price index'),
@@ -205,7 +206,7 @@ const GLOSSARY = [
  G('health',['health','kesihatan','healthcare','penjagaan kesihatan'],'healthcare health'),
  G('blood donation',['blood','darah','derma darah','blood donation','donor darah'],'blood donations'),
  G('donation',['donor','donors','donation','donations','penderma','derma'],'donation donations pledges'),
- G('property prices (not in catalogue)',['house price','house prices','property price','property prices','harga rumah','harga hartanah','hartanah','property','real estate','housing price','housing prices'],'property',false,'No dataset in this catalogue snapshot tracks property prices.'),
+ G('property prices (2022 snapshot only)',['house price','house prices','property price','property prices','harga rumah','harga hartanah','hartanah','property','real estate','housing price','housing prices'],'property napic transaction rental',true,undefined,'Only a 2022 snapshot is indexed: NAPIC annual property market report tables, kept as an archive copy by an individual. No current official series is in this catalogue, so check napic.jpph.gov.my.'),
  G('organ donation',['organ','organ pledge','ikrar organ','penderma organ'],'organ donation pledges'),
  G('COVID-19',['covid','covid-19','korona','coronavirus','vaksin','vaccine','vaccination','vaksinasi covid'],'covid vaccine vaccination'),
  G('internet access',['internet','broadband','online','talian','capaian internet','wifi'],'internet access household icths'),
@@ -256,6 +257,8 @@ const GLOSSARY = [
  G('bus and train timetables',['timetable','timetables','jadual','jadual bas','jadual keretapi','bus route','bus routes','laluan bas','gtfs','bus stop','perhentian bas','live bus','bas langsung','where is my bus','arrival time'],'gtfs timetable routes stops schedules live realtime'),
  G('official reports',['report','reports','laporan','publication','publications','penerbitan','pdf','excel file','technical notes','nota teknikal','methodology','metodologi','yearbook','buku tahunan','bulletin','buletin'],'publication report release technical notes methodology bulletin yearbook'),
  G('elections',['election','elections','pilihan raya','pru','prn','pru15','ge15','undi','voter','voters','pengundi','turnout','calon','candidate','candidates','keputusan pilihan raya','election results','who won','menang','seat','kerusi'],'election ballots statistics candidate party seat voter results delimitation'),
+ G('palm oil prices',['cpo','crude palm oil','harga sawit','harga minyak sawit','palm oil price','harga cpo'],'cpo crude palm oil price mpob'),
+ G('listed companies',['pn17','gn3','bursa','listed company','listed companies','syarikat tersenarai','distressed company','stock exchange','saham'],'pn17 gn3 bursa listed companies'),
  G('classification codes',['classification','klasifikasi','lookup','code list','dictionary','msic','sitc','bec','mcoicop'],'lookup classification msic sitc bec mcoicop')
 ];
 const KIND_LABEL = {dataset:'Dataset', publication:'Report series', dashboard:'Dashboard', live_api:'Live feed'};
@@ -303,7 +306,7 @@ function parseQuery(q){
     const re = new RegExp('(?<![a-z0-9])'+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?![a-z0-9])');
     if (re.test(s)){
       let cc = c.concepts.find(x=>x.entry===e);
-      if(!cc){ cc={entry:e,label:e.label,proxy:!!e.proxy,gap:e.gap,terms:{}}; c.concepts.push(cc); }
+      if(!cc){ cc={entry:e,label:e.label,proxy:!!e.proxy,gap:e.gap,note:e.note,terms:{}}; c.concepts.push(cc); }
       for (const w of tokNoStop(t)) cc.terms[w]=1;
       for (const x of e.expand) cc.terms[stem(x)] = Math.max(cc.terms[stem(x)]||0,.7);
       s = s.replace(re,' ');
@@ -368,7 +371,7 @@ function search(idx, q, opts){
     if (!known) level='none';
     if (c.proxy && level==='strong') level='partial';
     if (c.gap) level='none';
-    return {label:c.label,level,proxy:c.proxy,gap:c.gap,kind:c.kind};
+    return {label:c.label,level,proxy:c.proxy,gap:c.gap,note:c.note,kind:c.kind};
   });
   const val = {strong:1,partial:.35,none:0};
   const dims=[];
@@ -409,7 +412,7 @@ const CAT = JSON.parse(document.getElementById('cat').textContent);
 const IDX = buildIndex(CAT);
 const $ = s => document.querySelector(s);
 const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const FREQ_LABEL = {REALTIME:'live',DAILY:'daily',WEEKLY:'weekly',MONTHLY:'monthly',QUARTERLY:'quarterly',YEARLY:'yearly',ANNUAL:'yearly',INFREQUENT:'irregular','ONE-OFF':'one-off'};
+const FREQ_LABEL = {REALTIME:'live',HOURLY:'hourly',DAILY:'daily',WEEKLY:'weekly',MONTHLY:'monthly',QUARTERLY:'quarterly',YEARLY:'yearly',ANNUAL:'yearly',INFREQUENT:'irregular','ONE-OFF':'one-off'};
 const GEO_LABEL = {NATIONAL:'national',STATE:'state',DISTRICT:'district',PARLIMEN:'parliament seat',DUN:'state assembly seat'};
 const EXAMPLES = ['Is the cost of living getting worse?','kadar kemiskinan mengikut negeri','youth unemployment since 2016','how many people take the train','harga minyak petrol','hospital beds in each state','road accidents by state'];
 const GOLDEN = [
@@ -459,7 +462,13 @@ const GOLDEN = [
 ["voter turnout by seat",['electiondata:headline-stats-federal','electiondata:headline-stats']],
 ["is rent getting more expensive?",['cpi_headline_inflation','cpi_headline','cpi_state']],
 ["road accidents by state",[]],
-["house prices",[]]
+["house prices",['sharecode:napic_sale_2022']],
+["harga hartanah",['sharecode:napic_sale_2022','sharecode:napic_rent_2022']],
+["hourly air pollutant index by station",['sharecode:apims_hourly']],
+["electricity generation by fuel type",['sharecode:gso_generation']],
+["sabah job vacancies",['sharecode:sabah_jobs']],
+["crude palm oil price",['sharecode:mpob_cpo_daily']],
+["PN17 companies on Bursa",['sharecode:bursa_pn17_gn3']]
 ];
 const state = {lang:'en', q:'', kind:'all', ignore:new Set(), sel:[], res:null, open:new Set()};
 const NOW = new Date();
@@ -537,7 +546,7 @@ function renderInterpretation(){
 function renderAnswer(){
   const R=state.res, a=R.answer;
   const verdict = a>=80?'Official data can answer most of this.':a>=45?'Partly answerable. Check the gaps below.':'Official data in this catalogue cannot answer this directly.';
-  const notes = R.concepts.filter(c=>c.proxy||c.gap).map(c=> c.gap? '<li><b>'+esc(c.label)+'.</b> '+esc(c.gap)+'</li>' : '<li><b>'+esc(c.label)+'.</b> No direct series. The closest official measure is shown, and it is a proxy.</li>').join('');
+  const notes = R.concepts.filter(c=>c.proxy||c.gap).map(c=> c.gap? '<li><b>'+esc(c.label)+'.</b> '+esc(c.gap)+'</li>' : '<li><b>'+esc(c.label)+'.</b> '+(c.note?esc(c.note):'No direct series. The closest official measure is shown, and it is a proxy.')+'</li>').join('');
   const rows = R.concepts.concat(R.dims.map(x=>({...x,kind:'dim'}))).map(c=>'<li class="lv-'+c.level+'"><i class="dot d-'+c.level+'" aria-hidden="true"></i><span>'+esc(c.label)+'</span><small>'+LV[c.level][1]+'</small></li>').join('');
   $('#answer').innerHTML = '<h2 class="sh">Can official data answer this?</h2>'+
    '<div class="gauge" role="img" aria-label="Answerability '+a+' percent"><div class="gtrack"><i style="width:'+Math.max(3,a)+'%"></i></div><div class="gnum">'+a+'<span>%</span></div></div>'+

@@ -15,7 +15,9 @@ from datetime import date, datetime
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEAD = (404, 410)
 PORTAL_NAME = {'datagovmy': 'data.gov.my', 'opendosm': 'OpenDOSM', 'kkmnow': 'KKMNOW', 'databnm': 'data.bnm.gov.my',
-               'bnmapi': 'BNM Open API', 'mohgithub': 'MOH on GitHub', 'electiondata': 'ElectionData.MY'}
+               'bnmapi': 'BNM Open API', 'mohgithub': 'MOH on GitHub', 'electiondata': 'ElectionData.MY',
+               'sharecode': 'GitHub archive', 'doeapims': 'DOE APIMS', 'gso': 'GSO', 'sabahjobs': 'Sabah job portal',
+               'napic': 'NAPIC', 'mpob': 'MPOB', 'bursa': 'Bursa Malaysia'}
 TYPE_LABEL = {'csv': 'CSV', 'parquet': 'Parquet', 'api': 'API', 'pdf': 'PDF', 'excel': 'Excel'}
 GEO_RANK = ['DISTRICT', 'DUN', 'PARLIMEN', 'STATE', 'NATIONAL']
 
