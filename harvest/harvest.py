@@ -61,6 +61,12 @@ def day(s):
     return str(s)[:10]
 
 
+def year(v):
+    """Catalogue years arrive as int, '2010' or junk; return an int or None."""
+    m = re.match(r'^\s*(\d{4})', str(v)) if v is not None else None
+    return int(m.group(1)) if m else None
+
+
 def md_links(text):
     return [{'label': m.group(1), 'url': m.group(2)} for m in re.finditer(r'\[([^\]]+)\]\((https?://[^)\s]+)\)', text or '')]
 
@@ -156,7 +162,7 @@ def build_datasets(meta, ag):
             'access': access, 'pages': pages, 'licence': CATALOGUE_LICENCE,
             'frequency': j['frequency'], 'geography': geo, 'geography_inferred': inferred,
             'demography': j.get('demography') or [],
-            'coverage': {'begin': j.get('dataset_begin'), 'end': j.get('dataset_end')},
+            'coverage': {'begin': year(j.get('dataset_begin')), 'end': year(j.get('dataset_end'))},
             'data_as_of': day(j.get('data_as_of')), 'last_updated': day(j.get('last_updated')),
             'next_update': nxt,
             'columns': cols, 'join_keys': keys,
@@ -215,7 +221,8 @@ def build_publications(meta, ag):
             'category': {'en': latest['en']['publication_type_title'], 'ms': ms['publication_type_title'], 'sub': 'DOSM publication'},
             'portals': ['opendosm'], 'agencies': agencies, 'tier': tier, 'tier_basis': basis,
             'access': res,
-            'pages': [{'portal': 'opendosm', 'url': 'https://open.dosm.gov.my/publications/' + latest['publication']}],
+            # newest editions first; a series stays reachable if the newest page is missing
+            'pages': [{'portal': 'opendosm', 'url': 'https://open.dosm.gov.my/publications/' + r['publication']} for r in rels[:3]],
             'licence': None,
             'frequency': (latest.get('frequency') or 'UNKNOWN').replace('_', '-'), 'geography': geo,
             'geography_inferred': [], 'demography': sorted({d for r in rels for d in r.get('demography', [])}),

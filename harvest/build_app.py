@@ -77,12 +77,13 @@ def build(reg):
             continue
         dead = {c['url'] for c in v.get('checks', []) if c['status'] in DEAD}
         lk = []
-        for p in r['pages']:
-            if p['url'] in dead:
-                continue
+        pages = [p for p in r['pages'] if p['url'] not in dead]
+        if r['kind'] == 'publication':
+            pages = pages[:1]  # newest edition whose page still resolves
+        for p in pages:
             label = 'API documentation' if r['kind'] == 'live_api' else 'Open on %s' % PORTAL_NAME.get(p['portal'], p['portal'])
             lk.append([label if r['kind'] != 'publication' else 'Open latest edition on OpenDOSM', p['url']])
-        files = [a for a in r['access'] if a['url'] not in dead]
+        files = [a for a in r['access'] if a['url'] not in dead and 'YYYY' not in a['url']]
         if r['kind'] == 'dataset':
             lk += [[TYPE_LABEL[a['type']], a['url']] for a in files]
         elif r['kind'] == 'live_api':

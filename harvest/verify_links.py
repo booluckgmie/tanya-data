@@ -50,7 +50,7 @@ def targets(rec):
         acc = [a for a in acc if a['type'] == 'csv'][:1]
     elif rec['kind'] == 'dashboard':
         acc = acc[:1]
-    t += [('file', a['url']) for a in acc]
+    t += [('file', a['url']) for a in acc if 'YYYY' not in a['url']]  # templated partition URLs cannot be checked
     return t
 
 
@@ -83,7 +83,7 @@ def main():
         pages = [c for c in checks if c['role'] == 'page']
         files = [c for c in checks if c['role'] == 'file']
         page_ok = any(200 <= c['status'] < 400 for c in pages)
-        page_gone = bool(pages) and all(c['status'] in (404, 410) for c in pages)
+        page_gone = bool(pages) and all(c['status'] in (404, 410) for c in pages)  # any live page keeps the record
         file_gone = [c for c in files if c['status'] in (404, 410)]
         if page_gone:
             state = 'page_missing'
