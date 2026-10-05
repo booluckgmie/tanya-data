@@ -1,0 +1,12 @@
+{
+  "version": "0.1-provisional",
+  "note": "Provisional reliability tiers proposed by the platform builder. Replace with an agreed definition (for example one adopted from DOSM or an employer) before publishing. A dataset takes the weakest tier among its listed source agencies.",
+  "tiers": {
+    "1": "Official statistics: produced by the national statistics office or the central bank under a published methodology.",
+    "2": "Official administrative: produced by a ministry or government agency from its own operations.",
+    "3": "Published on an official portal, but the originator is a company or international body, or the agency is not recognised. Needs review."
+  },
+  "agency_tier": { "dosm": 1, "bnm": 1 },
+  "default_tier": 2,
+  "tier3_non_government": ["unhcr", "paynet", "mynic", "tnb", "sesb", "swk-energy", "ktmb", "prasarana"]
+}

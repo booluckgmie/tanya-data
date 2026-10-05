@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tanya Data: ask in your own words, find the official dataset</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EAF0EC; --card:#FAFCFB; --ink:#13262D; --muted:#50646B; --line:#C4D1CC; --bar:#1F6F6B; --accent:#E0A100;
+  --gap:#A8201A; --ok:#176560; --part:#8A5F00; --grid:rgba(19,38,45,.06); --win:rgba(224,161,0,.28); --winline:#B98300;
+  --display:'Bricolage Grotesque','Segoe UI',Helvetica,Arial,sans-serif; --body:'Public Sans','Segoe UI',Helvetica,Arial,sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0D191E; --card:#14252B; --ink:#E5EEEA; --muted:#98ADB1; --line:#294048; --bar:#4DB2AA; --accent:#F2B825;
+  --gap:#FF8D84; --ok:#6CD1C8; --part:#EDB44C; --grid:rgba(229,238,234,.05); --win:rgba(242,184,37,.25); --winline:#F2B825;}}
+:root[data-theme="dark"]{
+  --paper:#0D191E; --card:#14252B; --ink:#E5EEEA; --muted:#98ADB1; --line:#294048; --bar:#4DB2AA; --accent:#F2B825;
+  --gap:#FF8D84; --ok:#6CD1C8; --part:#EDB44C; --grid:rgba(229,238,234,.05); --win:rgba(242,184,37,.25); --winline:#F2B825;}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.55 var(--body);-webkit-text-size-adjust:100%}
+a{color:inherit;text-decoration-thickness:1px;text-underline-offset:3px}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 0}
+.brand{font:800 22px/1 var(--display);letter-spacing:-.01em}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--card)}
+.seg button{border:0;background:none;padding:6px 14px;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.hero{padding:36px 0 28px;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px;border-bottom:1px solid var(--line)}
+h1{font:800 clamp(34px,6.4vw,68px)/1.02 var(--display);letter-spacing:-.025em;margin:0 0 14px;max-width:16ch;text-wrap:balance}
+.lede{font-size:18px;color:var(--muted);max-width:56ch;margin:0 0 26px}
+#f{display:flex;gap:10px;max-width:820px;flex-wrap:wrap}
+#q{flex:1 1 360px;min-width:0;font:500 clamp(18px,2.6vw,24px)/1.2 var(--display);padding:16px 18px;border:2px solid var(--ink);border-radius:10px;background:var(--card);color:var(--ink)}
+#q::placeholder{color:var(--muted);font-weight:500}
+.go{padding:0 26px;min-height:56px;border:2px solid var(--ink);background:var(--ink);color:var(--paper);border-radius:10px;font:700 17px var(--display)}
+.go:hover{background:var(--accent);border-color:var(--accent);color:#13262D}
+#ex{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;max-width:900px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:baseline;gap:7px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 13px;font-size:14.5px;line-height:1.3}
+.chip small{color:var(--muted);font-size:12.5px}
+.chip b{font-size:13px}
+.ex{cursor:pointer}.ex:hover{border-color:var(--ink)}
+.con{cursor:pointer;border-style:dashed;border-color:var(--ink)}
+.dot{display:inline-block;width:11px;height:11px;border-radius:50%;border:2px solid currentColor;align-self:center;flex:none}.d-strong{background:currentColor}.d-partial{background:linear-gradient(90deg,currentColor 50%,transparent 50%)}
+.lv-strong .dot{color:var(--ok)}.lv-partial .dot{color:var(--part)}.lv-none .dot{color:var(--gap)}
+.stat{margin:18px 0 0;color:var(--muted);font-size:14px}
+.kinds{margin-top:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+.kinds .seg button{font-size:13.5px;padding:5px 12px}
+.tier{font-weight:600;color:var(--ink);cursor:help}
+.tier i{font-style:normal;display:inline-block;min-width:1.6em;text-align:center;border:1.5px solid currentColor;border-radius:4px;margin-right:6px;font-size:12px;line-height:1.5}
+.t1{color:var(--ok)}.t2{color:var(--ink)}.t3{color:var(--part)}
+.kindtag{font-weight:600;color:var(--ink)}
+.files{margin:0 0 8px;padding-left:18px;font-size:14px}.files li{margin:2px 0}
+main{padding:28px 0 150px;display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:28px;align-items:start}
+.sh{font:700 18px/1.2 var(--display);margin:0 0 12px}
+#interp{grid-column:1/-1;margin-bottom:-4px}
+aside{position:sticky;top:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+.gauge{display:flex;align-items:center;gap:14px}
+.gtrack{flex:1;height:12px;border-radius:6px;background:var(--line);overflow:hidden}
+.gtrack i{display:block;height:100%;background:var(--bar);border-radius:6px}
+.gnum{font:800 40px/1 var(--display)}.gnum span{font-size:18px;margin-left:2px}
+.verdict{font:600 17px/1.35 var(--display);margin:12px 0}
+.rows,.notes{list-style:none;margin:0 0 12px;padding:0}
+.rows li{display:grid;grid-template-columns:18px 1fr;align-items:center;column-gap:6px;padding:7px 0;border-top:1px solid var(--line);font-size:15px}
+.rows li small{grid-column:2;color:var(--muted);font-size:13px}
+.notes li{font-size:14px;padding:8px 10px;border-left:3px solid var(--accent);background:var(--win);margin-bottom:8px;border-radius:0 6px 6px 0}
+.dim{color:var(--muted);font-size:13.5px;margin:10px 0 0}
+#count{font:700 20px var(--display);margin:0 0 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin-bottom:16px}
+.card.faint{opacity:.72}
+.card-head{display:flex;justify-content:space-between;gap:16px}
+.card h3{font:700 21px/1.2 var(--display);margin:0;letter-spacing:-.01em}
+.alt{margin:3px 0 0;color:var(--muted);font-size:14.5px}
+.fitnum{display:flex;flex-direction:column;align-items:center;min-width:58px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;height:fit-content}
+.fitnum .n{font:800 24px/1 var(--display)}.fitnum .l{font-size:12px;color:var(--muted)}
+.why{margin:12px 0 8px;font-size:15.5px}
+.tags{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0 0 6px;color:var(--muted);font-size:13.5px}
+.tags span+span{padding-left:14px;border-left:1px solid var(--line)}
+.strip{display:block;width:100%;height:auto;margin:6px 0 4px}
+.strip .track{stroke:var(--line);stroke-width:2}.strip .tick{stroke:var(--line);stroke-width:1.5}
+.strip .yr{fill:var(--muted);font:11px var(--body)}
+.strip .bar{fill:var(--bar)}.strip .arrow{fill:var(--paper)}
+.strip .win{fill:var(--win);stroke:var(--winline);stroke-width:1.5;stroke-dasharray:4 3}
+.meters{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:10px 18px;margin:10px 0 12px}
+.mk{font:600 13.5px var(--body)}
+.mb{height:6px;background:var(--line);border-radius:3px;margin:4px 0}.mb i{display:block;height:100%;background:var(--bar);border-radius:3px}
+.mt{font-size:12.5px;color:var(--muted);line-height:1.3}
+details{border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font-weight:600;font-size:14.5px}
+.det h4{font:700 14px var(--display);margin:14px 0 4px}.det p{margin:0 0 6px;font-size:14.5px;max-width:75ch}
+.det table{border-collapse:collapse;width:100%;font-size:13.5px}
+.det th,.det td{text-align:left;vertical-align:top;padding:5px 8px 5px 0;border-top:1px solid var(--line)}
+.det th{font-weight:600;white-space:nowrap;padding-right:14px}
+.card-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.links{display:flex;gap:14px;flex-wrap:wrap;font-size:14.5px;font-weight:600}
+.cmp{display:inline-flex;align-items:center;gap:8px;font-size:14.5px;cursor:pointer;padding:6px 4px}
+.cmp input{width:20px;height:20px;accent-color:var(--bar)}
+.empty{padding:28px;border:1px dashed var(--ink);border-radius:12px}
+#bundle{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:2px solid var(--ink);padding:14px 20px calc(14px + env(safe-area-inset-bottom,0px));max-height:46vh;overflow:auto;z-index:5}
+#bundle[hidden]{display:none}
+.bhead{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:8px}.bhead .sh{margin:0}.bchips{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.ghost{border:1px solid var(--line);background:none;border-radius:8px;padding:5px 12px}
+.bverdict{margin:4px 0 8px;font-size:16px}
+.scroll{overflow-x:auto;max-width:100%}
+.pairs{border-collapse:collapse;font-size:13.5px;min-width:620px;width:100%}
+.pairs th,.pairs td{text-align:left;vertical-align:top;padding:7px 10px 7px 0;border-top:1px solid var(--line)}
+.bad{color:var(--gap)}.good{color:var(--ok)}
+.bench{border-top:1px solid var(--line);padding:34px 0 60px}
+.bench p{max-width:64ch}
+.scores{display:flex;gap:28px;flex-wrap:wrap;margin:16px 0}.scores div{display:flex;flex-direction:column}
+.big{font:800 36px/1 var(--display)}.scores span:last-child{font-size:13.5px;color:var(--muted);max-width:22ch}
+.runb{margin-top:6px;padding:11px 20px;border:2px solid var(--ink);background:none;border-radius:10px;font-weight:600}
+.runb:hover{background:var(--ink);color:var(--paper)}
+.about{border-top:1px solid var(--line);padding:30px 0 70px;color:var(--muted);font-size:14.5px}
+.about p{max-width:78ch}
+@media (max-width:900px){
+  main{grid-template-columns:1fr}
+  aside{position:static;order:-1}
+  #bundle{max-height:60vh}
+}
+@media (prefers-reduced-motion:no-preference){
+  .go,.chip{transition:background .15s,border-color .15s}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div class="brand">Tanya Data</div>
+    <div class="seg" role="group" aria-label="Language of dataset titles and descriptions"><button data-lang="en" aria-pressed="true">English</button><button data-lang="ms" aria-pressed="false">Bahasa Malaysia</button></div></div>
+</div>
+<header class="hero"><div class="wrap">
+  <h1>Ask a question. Get the official dataset.</h1>
+  <p class="lede">Write it the way you would say it, in English, Bahasa Malaysia or both. Tanya Data points you to the right official dataset and tells you honestly when none exists. Every figure stays at its source.</p>
+  <form id="f" role="search"><label class="sr" for="q">Your question</label><input id="q" type="search" autocomplete="off" placeholder="e.g. Is rent getting more expensive?"><button class="go" type="submit">Find data</button></form>
+  <div id="ex" aria-label="Example questions"></div>
+  <div class="kinds"><span id="kl">Show</span><div class="seg" id="kindseg" role="group" aria-labelledby="kl"></div></div>
+  <p class="stat" id="stat"></p>
+</div></header>
+<div class="wrap" id="out" hidden>
+  <main>
+    <section id="interp" aria-live="polite"></section>
+    <section><h2 id="count"></h2><div id="results"></div></section>
+    <aside id="answer" aria-live="polite"></aside>
+  </main>
+  <section class="bench" aria-labelledby="bt">
+    <h2 class="sh" id="bt">Does it find the right dataset?</h2>
+    <p>Run __NBENCH__ test questions in English and Bahasa Malaysia, plus __NGAP__ about data that does not exist. This is how every change to the search should be checked.</p>
+    <button class="runb" id="bench">Run the test questions</button>
+    <div id="benchout"></div>
+  </section>
+  <section class="about">
+    <h2 class="sh">About this prototype</h2>
+    <p id="aboutsrc"></p>
+    <p><b>Reliability tiers.</b> Tier 1 is official statistics from the national statistics office or the central bank. Tier 2 is official administrative data from a ministry or agency. Tier 3 is published on an official portal, but the originator is a company or international body, so it needs review. A record takes the weakest tier among its listed source agencies. These tiers are a provisional definition by the prototype builder, not an official rating.</p>
+    <p>The index holds metadata only. It does not copy or read the values inside any dataset, and it cannot show live numbers. Fitness scores and answerability are estimates made by this tool from that metadata.</p>
+    <p>Some datasets list no geography even though their columns show a state or district breakdown. Those are marked inferred. Download and portal links follow each portal's catalogue address pattern. Always confirm on the official page before you cite a dataset. This is an independent prototype, not an official service of any agency.</p>
+  </section>
+</div>
+<div id="bundle" hidden></div>
+<script type="application/json" id="cat">__CATALOGUE_JSON__</script>
+<script type="application/json" id="meta">__META_JSON__</script>
+<script>
+/* Official-data discovery engine: bilingual glossary + weighted lexical match + fit scoring. Pure functions. */
+const NOW_YEAR = 2026;
+const STOP = new Set(`the a an of in on for to by is are was were be been how many much what which who where when why do does did i me my we our you your and or with from at as it its this that these those there data dataset datasets show find need want get give about any all per each every getting more less than last since until over between number numbers please can could would should tell list year years yang dan di ke dari untuk mengikut bagi dengan adalah ini itu apa berapa bagaimana saya kami set pada atau dalam oleh ada boleh semua setiap tahun mahu nak cari tunjuk senarai kat sejak hingga lepas take kadar jumlah bilangan people worse better usage use used rising rise increase increasing increased falling fall going up down high low happening amount total average purata history historical trend trends time latest current recent now today newest arriving arrive come coming against like affect affecting compare compared tell show`.split(/\s+/));
+const GEO = [
+ ['DISTRICT', /\b(by |per |each |every |at |in )?(district|districts|daerah|pbt)\b/],
+ ['PARLIMEN', /\b(parliament|parliamentary|parlimen)\b/],
+ ['DUN', /\b(dun|state assembly|state legislative)\b/],
+ ['STATE', /\b(by |per |each |every |at |in )?(state|states|negeri|negeri-negeri|state-level|state level)\b/],
+ ['NATIONAL', /\b(national|nasional|nationwide|malaysia|seluruh negara|keseluruhan)\b/]];
+const FREQ = [
+ ['DAILY', /\b(daily|harian|every day|setiap hari|day by day)\b/],
+ ['WEEKLY', /\b(weekly|mingguan)\b/],
+ ['MONTHLY', /\b(monthly|bulanan|each month|setiap bulan|month by month)\b/],
+ ['QUARTERLY', /\b(quarterly|suku tahun|suku tahunan|quarter|qtr)\b/],
+ ['YEARLY', /\b(yearly|annual|annually|tahunan|per year|each year)\b/]];
+const FREQ_RANK = {REALTIME:.5, DAILY:1, WEEKLY:2, MONTHLY:3, QUARTERLY:4, YEARLY:5, ANNUAL:5};
+const G = (label, triggers, expand, proxy, gap) => ({label, triggers, expand: expand.split(' '), proxy, gap});
+const GLOSSARY = [
+ G('cost of living',['cost of living','living cost','kos sara hidup','kos hidup','harga barang naik','barang mahal','expensive','mahal','affordability'],'cpi inflation consumer price index expenditure'),
+ G('inflation',['inflation','inflasi','cpi','consumer price','indeks harga pengguna'],'cpi inflation consumer price index'),
+ G('rent (proxy via CPI housing)',['rent','sewa','rental','rumah sewa'],'cpi housing consumer price index',true),
+ G('fuel price',['petrol','minyak','diesel','fuel','ron95','ron97','bahan api','minyak petrol'],'fuelprice petroleum diesel price'),
+ G('poverty',['poverty','kemiskinan','miskin','poor','b40','hardcore poor'],'poverty income household percentile'),
+ G('household income',['income','gaji','pendapatan','salary','wages','upah','earnings','m40','t20','pendapatan isi rumah'],'household income hies percentile'),
+ G('inequality',['inequality','ketaksamaan','gini','income gap','jurang pendapatan'],'inequality gini income'),
+ G('unemployment',['unemployment','unemployed','pengangguran','jobless','menganggur'],'unemployment labour force'),
+ G('youth',['youth','belia','anak muda','graduate','graduan'],'youth'),
+ G('employment',['employment','jobs','job','pekerjaan','kerja','guna tenaga','workers','pekerja','labour','tenaga kerja','buruh'],'employment labour force'),
+ G('GDP / economic growth',['gdp','ekonomi','economy','economic growth','pertumbuhan ekonomi','keluaran dalam negeri kasar','kdnk','growth'],'gdp real nominal gross domestic product'),
+ G('population',['population','penduduk','populasi','demographics','demografi'],'population'),
+ G('births',['birth','births','kelahiran','lahir','newborn','bayi baru lahir'],'births fertility'),
+ G('deaths',['death','deaths','kematian','mati','mortality','mortaliti'],'deaths mortality'),
+ G('fertility',['fertility','kesuburan','tfr','birth rate','kadar kelahiran'],'fertility tfr asfr births'),
+ G('hospital capacity',['hospital','hospitals','katil','beds','bed','hospital beds','icu'],'hospital beds healthcare'),
+ G('health workforce',['doctor','doctors','doktor','nurse','nurses','jururawat','healthcare staff','pakar'],'healthcare staff'),
+ G('health',['health','kesihatan','healthcare','penjagaan kesihatan'],'healthcare health'),
+ G('blood donation',['blood','darah','derma darah','blood donation','donor darah'],'blood donations'),
+ G('donation',['donor','donors','donation','donations','penderma','derma'],'donation donations pledges'),
+ G('property prices (not in catalogue)',['house price','house prices','property price','property prices','harga rumah','harga hartanah','hartanah','property','real estate','housing price','housing prices'],'property',false,'No dataset in this catalogue snapshot tracks property prices.'),
+ G('organ donation',['organ','organ pledge','ikrar organ','penderma organ'],'organ donation pledges'),
+ G('COVID-19',['covid','covid-19','korona','coronavirus','vaksin','vaccine','vaccination','vaksinasi covid'],'covid vaccine vaccination'),
+ G('internet access',['internet','broadband','online','talian','capaian internet','wifi'],'internet access household icths'),
+ G('mobile phones',['phone','telefon','mobile','handphone','smartphone','cellular'],'mobile cellular phone'),
+ G('public transport',['train','keretapi','lrt','mrt','ktm','bus','bas','public transport','pengangkutan awam','commute','commuters','penumpang','ridership','passengers','komuter'],'ridership public transport'),
+ G('vehicles',['car','cars','kereta','motorcycle','motosikal','vehicle','vehicles','kenderaan','ev','electric vehicle','kenderaan elektrik'],'vehicle registration car motorcycle'),
+ G('crime',['crime','jenayah','rompakan','robbery','theft','curi','murder','bunuh'],'crime'),
+ G('drugs',['drug','drugs','dadah','penagih','addict','addicts','narcotics'],'drug addicts arrests'),
+ G('schools',['school','schools','sekolah','students','student','pelajar','murid','education','pendidikan'],'school education enrolment'),
+ G('teachers',['teacher','teachers','guru'],'teachers schools'),
+ G('universities',['university','universiti','lecturer','pensyarah','kolej'],'lecturers university'),
+ G('electricity',['electricity','elektrik','power','tenaga elektrik','bil elektrik','tnb'],'electricity consumption supply'),
+ G('water',['water','air paip','bekalan air','sungai','river','tap water'],'water access consumption production'),
+ G('air quality',['pollution','jerebu','haze','air quality','kualiti udara','pencemaran','api'],'air pollution'),
+ G('exchange rate',['exchange rate','kadar pertukaran','ringgit','usd','dollar','forex','matawang','currency','mata wang','myr'],'exchange rates currency'),
+ G('interest rate',['interest','kadar faedah','opr','bunga','faedah','overnight policy rate','loan rate'],'interest rates'),
+ G('trade',['trade','perdagangan','eksport','import','export','imports','exports','dagangan'],'trade imports exports'),
+ G('tourism',['tourist','tourists','pelancong','pelancongan','tourism','visitor','visitors','pengunjung','arrivals'],'arrivals nationality'),
+ G('EPF / retirement',['epf','kwsp','pencen','retirement','persaraan','pension','dividend','dividen'],'epf dividend'),
+ G('government budget',['budget','belanjawan','government spending','perbelanjaan kerajaan','expenditure','federal finance','kewangan persekutuan','kerajaan'],'federal budget expenditure finance government'),
+ G('tax and revenue',['tax','cukai','revenue','hasil','collection'],'revenue federal finance'),
+ G('agriculture',['crop','crops','tanaman','pertanian','agriculture','padi','rice','sawit','palm oil','farm','ladang'],'crops production area'),
+ G('fisheries',['fish','ikan','perikanan','fisheries','nelayan'],'fish landings marine'),
+ G('forests',['forest','hutan','balak','timber','deforestation','hutan simpan'],'forest reserve timber'),
+ G('emissions',['emission','emissions','karbon','carbon','pelepasan','climate','iklim','greenhouse'],'greenhouse gas emissions ghg'),
+ G('marriage',['marriage','marriages','perkahwinan','kahwin','nikah','wedding'],'marriages'),
+ G('payments',['payment','payments','bayaran','e-wallet','ewallet','fpx','jompay','duitnow','cashless','atm'],'payment transactions fpx jompay atm'),
+ G('productivity',['productivity','produktiviti'],'productivity'),
+ G('manufacturing',['manufacturing','pembuatan','industry','perindustrian','kilang','factory','industrial'],'industrial production index ipi'),
+ G('retail',['retail','runcit','peruncitan','wholesale','borong','shop','kedai'],'wholesale retail trade'),
+ G('money supply',['money supply','bekalan wang','m1','m2','m3','liquidity'],'monetary aggregates'),
+ G('foreign investment',['fdi','foreign investment','pelaburan asing','pelaburan','investment'],'foreign direct investment flows'),
+ G('passports',['passport','pasport'],'passport issuances'),
+ G('prisoners',['prisoner','prisoners','penjara','banduan','jail','prison'],'prisoners prison'),
+ G('immunisation',['immunisation','imunisasi','vaccination coverage','vaksinasi kanak-kanak'],'infant immunisation'),
+ G('child nutrition',['nutrition','pemakanan','stunting','obesity','obesiti','malnutrition','kurang zat'],'nutritional status children'),
+ G('sanitation',['sanitation','tandas','latrine','sewerage'],'sanitation access latrines'),
+ G('basic amenities',['amenities','kemudahan asas','utilities'],'access basic amenities'),
+ G('literacy',['literacy','literasi','numeracy','kebolehan membaca'],'functional literacy numeracy'),
+ G('household expenditure',['household spending','household expenditure','perbelanjaan isi rumah','belanja isi rumah','spending'],'household expenditure hies'),
+ G('ethnicity',['ethnic','ethnicity','kaum','etnik','bumiputera','race'],'ethnicity'),
+ G('government apps',['mygov','government app','aplikasi kerajaan','mysejahtera','mobile app'],'government mobile applications'),
+ G('women',['women','wanita','female','perempuan','gender','jantina'],'female sex representation'),
+ G('minerals',['mineral','minerals','mining','perlombongan','tin','bijih'],'mineral extraction'),
+ G('postcodes',['postcode','poskod','zip','zip code'],'postcode'),
+ G('weather',['weather','cuaca','forecast','ramalan','ramalan cuaca','rain','hujan','rainfall','storm','ribut','angin kencang','strong wind','temperature','suhu','monsoon','monsun'],'weather forecast warning rainfall climate'),
+ G('floods',['flood','floods','banjir','water level','paras air','river level','tahap air sungai'],'flood warning water level rainfall impact floods'),
+ G('bus and train timetables',['timetable','timetables','jadual','jadual bas','jadual keretapi','bus route','bus routes','laluan bas','gtfs','bus stop','perhentian bas','live bus','bas langsung','where is my bus','arrival time'],'gtfs timetable routes stops schedules live realtime'),
+ G('official reports',['report','reports','laporan','publication','publications','penerbitan','pdf','excel file','technical notes','nota teknikal','methodology','metodologi','yearbook','buku tahunan','bulletin','buletin'],'publication report release technical notes methodology bulletin yearbook'),
+ G('classification codes',['classification','klasifikasi','lookup','code list','dictionary','msic','sitc','bec','mcoicop'],'lookup classification msic sitc bec mcoicop')
+];
+const KIND_LABEL = {dataset:'Dataset', publication:'Report series', dashboard:'Dashboard', live_api:'Live feed'};
+const KIND_WORDS = {publication:'publication report laporan penerbitan release pdf excel edition', dashboard:'dashboard explorer chart visual papan pemuka', live_api:'live realtime real-time api feed current langsung semasa', dataset:''};
+const TIER_LABEL = {1:'Official statistics', 2:'Official administrative', 3:'Official portal, review pending'};
+const MATCH_META = /lookup|classification|klasifikasi|dictionary|code list|msic|sitc|bec|mcoicop|kamus/;
+const stem = t => (t.length>3 && t.endsWith('s') && !t.endsWith('ss')) ? t.slice(0,-1) : t;
+const tok = s => s.toLowerCase().replace(/[^a-z0-9\u00c0-\u024f]+/g,' ').split(' ').filter(w=>w.length>1).map(stem);
+const tokNoStop = s => s.toLowerCase().replace(/[^a-z0-9]+/g,' ').split(' ').filter(w=>w.length>1 && !STOP.has(w)).map(stem);
+
+function buildIndex(cat){
+  const df = {}; const docs = cat.map(d=>{
+    const w = {};
+    const add = (text, fw) => { for (const t of new Set(tok(text||''))) { if(STOP.has(t)) continue; w[t] = Math.min(4,(w[t]||0)+fw); } };
+    add(d.t,3); add(d.tm,3); add(d.id.replace(/_/g,' '),2); add(d.cat,2); add(d.sub,2);
+    add(d.fields.map(f=>f.t+' '+f.n.replace(/_/g,' ')).join(' '),1.5);
+    add(d.d,1); add(d.dm,.7); add(d.src.join(' '),1); add(d.meth,.4);
+    add(KIND_WORDS[d.kind]||'',1.5); add((d.agn||[]).join(' '),.8);
+    if (d.md && d.md.length) add('technical notes methodology nota teknikal metodologi',1);
+    for (const t in w) df[t]=(df[t]||0)+1;
+    return {d, w};
+  });
+  const N = docs.length, idf = {}; for (const t in df) idf[t] = Math.log(1+N/df[t]);
+  return {docs, idf, df, N};
+}
+
+function parseQuery(q){
+  let s = ' ' + q.toLowerCase().replace(/[’']/g,"'") + ' ';
+  const c = {geo:null, freq:null, years:null, concepts:[], leftover:[]};
+  // years
+  let m = s.match(/(?:last|past|recent)\s+(\d{1,2})\s+years?|(\d{1,2})\s+tahun\s+(?:lepas|kebelakangan|terakhir)/);
+  if (m){ const n=+(m[1]||m[2]); c.years=[NOW_YEAR-n,NOW_YEAR]; s=s.replace(m[0],' '); }
+  else {
+    const ys = [...s.matchAll(/\b(19\d{2}|20\d{2})\b/g)].map(x=>+x[1]);
+    if (ys.length>=2) c.years=[Math.min(...ys),Math.max(...ys)];
+    else if (ys.length===1) c.years = /(since|sejak|from|dari|after|selepas)\s+(the\s+year\s+)?\d{4}/.test(s) ? [ys[0],NOW_YEAR] : [ys[0],ys[0]];
+    s = s.replace(/\b(19\d{2}|20\d{2})\b/g,' ');
+  }
+  for (const [k,re] of GEO){ const g=s.match(re); if(g){ c.geo=c.geo||k; s=s.replace(re,' '); } }
+  for (const [k,re] of FREQ){ const f=s.match(re); if(f){ c.freq=c.freq||k; s=s.replace(re,' '); } }
+  // glossary: longest triggers first
+  const trig=[]; GLOSSARY.forEach(e=>e.triggers.forEach(t=>trig.push([t,e])));
+  trig.sort((a,b)=>b[0].length-a[0].length);
+  for (const [t,e] of trig){
+    const re = new RegExp('(?<![a-z0-9])'+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?![a-z0-9])');
+    if (re.test(s)){
+      let cc = c.concepts.find(x=>x.entry===e);
+      if(!cc){ cc={entry:e,label:e.label,proxy:!!e.proxy,gap:e.gap,terms:{}}; c.concepts.push(cc); }
+      for (const w of tokNoStop(t)) cc.terms[w]=1;
+      for (const x of e.expand) cc.terms[stem(x)] = Math.max(cc.terms[stem(x)]||0,.7);
+      s = s.replace(re,' ');
+    }
+  }
+  c.leftover = tokNoStop(s);
+  return c;
+}
+
+function search(idx, q, opts){
+  const pq = parseQuery(q);
+  if (opts && opts.ignore) opts.ignore.forEach(k=>{ pq[k]=null; });
+  const concepts = pq.concepts.map(x=>({...x, kind:'glossary'}));
+  for (const t of new Set(pq.leftover)) concepts.push({label:t, kind:'word', proxy:false, terms:{[t]:1}});
+  const qw = {}; concepts.forEach(c=>{ for (const t in c.terms) qw[t]=Math.max(qw[t]||0,c.terms[t]); });
+  const metaOK = MATCH_META.test(q.toLowerCase());
+  const scored = [];
+  for (const {d,w} of idx.docs){
+    if (opts && opts.kind && opts.kind!=='all' && d.kind!==opts.kind) continue;
+    let s=0; for (const t in qw){ if(w[t]) s += qw[t]*(idx.idf[t]||1)*w[t]; }
+    if (s<=0) continue;
+    let hit=0; concepts.forEach(c=>{ if (Object.keys(c.terms).some(t=>(w[t]||0)>=1)) hit++; });
+    s *= concepts.length ? (0.45+0.55*hit/concepts.length) : 1;
+    const why=[]; let mult=1;
+    if (pq.geo){
+      const g=d.geo;
+      if (g.includes(pq.geo)){ mult*=1.3; why.push(pq.geo.toLowerCase()+'-level rows available'); }
+      else if (pq.geo==='NATIONAL' && g.length) { mult*=.9; }
+      else if (!g.length) { mult*=.5; }
+      else { mult*=.5; why.push('no '+pq.geo.toLowerCase()+' breakdown (has '+g.join('/').toLowerCase()+')'); }
+    }
+    if (pq.years && !d.b){
+      mult*= d.kind==='live_api'?.4:.75;
+      why.push(d.kind==='live_api'?'live feed, current values only':'coverage years not stated');
+    } else if (pq.years){
+      const [a,b]=pq.years; const e=Math.min(d.e||0,NOW_YEAR), bb=d.b||9999;
+      const ov=Math.max(0,Math.min(b,e)-Math.max(a,bb)+1), want=b-a+1, f=ov/want;
+      mult*= f===0?.25:(.45+.55*f);
+      why.push(f>=.999?'covers your years':f===0?'does not cover your years':'covers '+Math.round(f*100)+'% of your years');
+    }
+    if (pq.freq){
+      const dr=FREQ_RANK[d.freq], qr=FREQ_RANK[pq.freq];
+      if (dr===qr){ mult*=1.2; why.push(d.freq.toLowerCase()+' as asked'); }
+      else if (dr&&dr<qr){ mult*=1.0; why.push(d.freq.toLowerCase()+', can be aggregated to '+pq.freq.toLowerCase()); }
+      else if (dr&&dr>qr){ mult*=.55; why.push('only '+d.freq.toLowerCase()+', coarser than asked'); }
+    }
+    mult *= .88 + .24*d.fit/100;
+    mult *= 1 + .3*Math.max(0,8-tok(d.t).filter(x=>!STOP.has(x)).length)/8;
+    const isMeta = d.cat==='Metadata'||d.cat==='Data Dictionaries'||d.id.startsWith('lookup')||d.id.startsWith('usage_')||d.id.startsWith('metrics_');
+    if (isMeta && !metaOK) mult*=.4;
+    scored.push({d,w,rel:s,score:s*mult,why});
+  }
+  scored.sort((a,b)=>b.score-a.score);
+  const top = scored.slice(0,12), max = top.length?top[0].score:1;
+  top.forEach(r=>r.pct=Math.round(100*r.score/max));
+  // answerability
+  const rows = concepts.map(c=>{
+    let best=0; const pool=top.slice(0,10);
+    pool.forEach(r=>{ for(const t in c.terms){ if(c.terms[t]>=1||c.kind==='glossary'){ best=Math.max(best,r.w[t]||0);} } });
+    const known = Object.keys(c.terms).some(t=>idx.df[t]);
+    let level = best>=3?'strong':best>=1?'partial':'none';
+    if (!known) level='none';
+    if (c.proxy && level==='strong') level='partial';
+    if (c.gap) level='none';
+    return {label:c.label,level,proxy:c.proxy,gap:c.gap,kind:c.kind};
+  });
+  const val = {strong:1,partial:.35,none:0};
+  const dims=[];
+  const lead = top[0];
+  if (pq.geo) dims.push({label:pq.geo.toLowerCase()+' breakdown', level: lead&&lead.d.geo.includes(pq.geo)?'strong':'none'});
+  if (pq.years&&lead){ const [a,b]=pq.years,e=Math.min(lead.d.e||0,NOW_YEAR),f=Math.max(0,Math.min(b,e)-Math.max(a,lead.d.b||9999)+1)/(b-a+1); dims.push({label:pq.years[0]===pq.years[1]?String(pq.years[0]):pq.years[0]+'-'+pq.years[1], level:f>=.999?'strong':f>0?'partial':'none'}); }
+  if (pq.freq&&lead){ const dr=FREQ_RANK[lead.d.freq],qr=FREQ_RANK[pq.freq]; dims.push({label:pq.freq.toLowerCase()+' frequency', level: dr===qr?'strong':(dr&&dr<qr)?'partial':'none'}); }
+  const all = rows.concat(dims);
+  const wt = r=> r.kind==='word'?1.5:1;
+  const avg = all.length? all.reduce((s,r)=>s+wt(r)*val[r.level],0)/all.reduce((s,r)=>s+wt(r),0):0;
+  const mn = all.length? Math.min(...all.map(r=>val[r.level])):0;
+  const answer = Math.round(100*(.5*avg+.5*mn));
+  return {pq, concepts:rows, dims, results:top, answer};
+}
+
+/* join analysis between datasets */
+function pairJoin(a,b){
+  const shared = a.keys.filter(k=>b.keys.includes(k));
+  const lo=Math.max(a.b||0,b.b||0), hi=Math.min(Math.min(a.e||0,NOW_YEAR),Math.min(b.e||0,NOW_YEAR));
+  const overlap = hi>=lo ? [lo,hi] : null;
+  const fa=FREQ_RANK[a.freq], fb=FREQ_RANK[b.freq];
+  let freqNote='same frequency', fpen=0;
+  if (fa&&fb&&fa!==fb){ const fine=fa<fb?a:b, coarse=fa<fb?b:a; freqNote=fine.freq.toLowerCase()+' vs '+coarse.freq.toLowerCase()+': aggregate the '+fine.freq.toLowerCase()+' series up to '+coarse.freq.toLowerCase(); fpen=.15; }
+  const lvl = x=> x.geo.includes('DISTRICT')?3:x.geo.includes('STATE')?2:x.geo.includes('NATIONAL')?1:0;
+  const ga=Math.max(...a.geo.map(g=>({NATIONAL:1,STATE:2,DISTRICT:3}[g]||0)),0), gb=Math.max(...b.geo.map(g=>({NATIONAL:1,STATE:2,DISTRICT:3}[g]||0)),0);
+  let geoNote = (ga&&gb)? (ga===gb?'same finest geography':'finest geography differs: join at the coarser level') : 'geography not comparable';
+  let score = 0;
+  score += shared.length ? Math.min(40, 20+10*shared.length) : 0;
+  if (overlap){ const span=overlap[1]-overlap[0]+1; score += span>=10?30:span>=5?22:span>=2?14:8; }
+  score += ga&&gb ? (ga===gb?20:12) : 4;
+  score += fpen ? 5 : 10;
+  score = Math.max(0,Math.min(100,Math.round(score)));
+  return {shared, overlap, freqNote, geoNote, score};
+}
+
+
+const CAT = JSON.parse(document.getElementById('cat').textContent);
+const IDX = buildIndex(CAT);
+const $ = s => document.querySelector(s);
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const FREQ_LABEL = {REALTIME:'live',DAILY:'daily',WEEKLY:'weekly',MONTHLY:'monthly',QUARTERLY:'quarterly',YEARLY:'yearly',ANNUAL:'yearly',INFREQUENT:'irregular','ONE-OFF':'one-off'};
+const GEO_LABEL = {NATIONAL:'national',STATE:'state',DISTRICT:'district',PARLIMEN:'parliament seat',DUN:'state assembly seat'};
+const EXAMPLES = ['Is the cost of living getting worse?','kadar kemiskinan mengikut negeri','youth unemployment since 2016','how many people take the train','harga minyak petrol','hospital beds in each state','road accidents by state'];
+const GOLDEN = [
+["Is the cost of living getting worse?",['cpi_headline_inflation','cpi_headline','cpi_core_inflation','cpi_lowincome','cpi_state_inflation','cpi_annual_inflation']],
+["kadar kemiskinan mengikut negeri",['hh_poverty_state']],
+["youth unemployment",['lfs_month_youth']],
+["harga minyak petrol",['fuelprice']],
+["how many people take the train",['ridership_headline','ridership_ktmb_daily','ridership_ktmb_monthly','ridership_od_rapidrail_daily','ridership_od_komuter']],
+["blood donations by state",['blood_donations_state']],
+["household income by district",['hh_income_district','hies_district']],
+["population by state since 2010",['population_state']],
+["inflation by state",['cpi_state_inflation','cpi_state']],
+["income inequality gini",['hh_inequality','hh_inequality_state']],
+["internet usage by state",['icths_internet_strata','icths_internet_sex','hh_access_internet']],
+["quarterly GDP growth",['gdp_qtr_real','gdp_qtr_real_sa','gdp_qtr_nominal']],
+["hospital beds in each state",['hospital_beds']],
+["ringgit exchange rate against dollar",['exchangerates','exchangerates_daily_1200','exchangerates_daily_0900','exchangerates_daily_1130','exchangerates_daily_1700']],
+["birth rate by state",['births_annual_state','fertility_state','births_annual_sex_ethnic_state']],
+["monthly unemployment rate",['lfs_month','lfs_month_sa']],
+["crime by district",['crime_district']],
+["electricity usage",['electricity_consumption']],
+["jerebu kualiti udara",['air_pollution']],
+["EPF dividend history",['epf_dividend']],
+["how many cars registered",['registration_transactions_car','registration_transactions_all','registrations_type_fuel']],
+["tourists arriving in Malaysia",['arrivals','arrivals_soe']],
+["organ donors",['organ_pledges','organ_pledges_state','organ_pledge_demog']],
+["gaji purata pekerja",['hh_income','hies_malaysia_percentile']],
+["weather forecast for tomorrow",['api:weather_forecast']],
+["amaran cuaca angin kencang",['api:weather_warning']],
+["banjir paras air sungai",['api:flood_warning']],
+["bus and train timetable data",['api:gtfs_static_prasarana','api:gtfs_static_ktmb','api:gtfs_static_mybas']],
+["live bus positions",['api:gtfs_realtime_prasarana']],
+["monthly consumer price index report pdf",['pub:consumer_price_index']],
+["labour force survey report",['pub:labour_force']],
+["technical notes for the consumer price index",['pub:consumer_price_index']],
+["laporan statistik kelahiran dan kematian",['pub:vital_statistics']],
+["GDP by state report",['pub:gross_domestic_product_by_state']],
+["hospital bed utilisation dashboard",['dash:bed_util']],
+["jobless claims dashboard",['dash:perkeso']],
+["is rent getting more expensive?",['cpi_headline_inflation','cpi_headline','cpi_state']],
+["road accidents by state",[]],
+["house prices",[]]
+];
+const state = {lang:'en', q:'', kind:'all', ignore:new Set(), sel:[], res:null, open:new Set()};
+const NOW = new Date();
+const fmtDate = iso => iso ? new Date(iso+'T00:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}) : 'not stated';
+const daysAgo = iso => iso ? Math.round((NOW - new Date(iso+'T00:00:00Z'))/864e5) : null;
+const LV = {strong:['●','well covered'],partial:['◐','partly covered'],none:['○','no official data found']};
+
+function profile(d){
+  const span = (d.b && d.e) ? d.e-d.b+1 : null;
+  const lag = daysAgo(d.da), over = d.nu ? daysAgo(d.nu) : null;
+  const meters = [];
+  meters.push({k:'History', v: span? Math.min(1,span/25):.1, t: span? span+' year'+(span>1?'s':'')+' ('+d.b+' to '+d.e+')' : 'not stated'});
+  const fr = lag!=null ? (lag<=60?1: lag<=200?.7: lag<=500?.4:.15) : (d.e? (d.e>=2025?.7: d.e>=2023?.4:.15) : .2);
+  meters.push({k:'Freshness', v:fr, t: d.da ? 'data to '+fmtDate(d.da) : (d.e ? 'data to '+d.e+' (exact date not listed)' : 'not stated')});
+  const finest = d.geo.includes('DISTRICT')?'district':d.geo.includes('DUN')?'state assembly seat':d.geo.includes('PARLIMEN')?'parliament seat':d.geo.includes('STATE')?'state':d.geo.includes('NATIONAL')?'national':'none';
+  meters.push({k:'Detail', v:{district:1,'state assembly seat':1,'parliament seat':1,state:.7,national:.35,none:.1}[finest], t:'finest level: '+finest});
+  const doc = (d.meth?.4:0)+(d.hascav?.2:0)+(d.fields.length>=4?.2:.1)+(d.d?.2:0);
+  meters.push({k:'Documentation', v:doc, t:(d.meth?'method described':'no method text')+(d.hascav?', caveats listed':', no caveats listed')});
+  const sch = over==null? .4 : over<=0 ? 1 : over<=60 ? .5 : .15;
+  meters.push({k:'Release schedule', v:sch, t: d.nu ? (over<=0 ? 'next release '+fmtDate(d.nu) : 'was due '+fmtDate(d.nu)) : 'no schedule listed'});
+  return meters;
+}
+function strip(d, win){
+  const Y0=1960, Y1=2027, W=600, L=14, R=586, sx=y=>L+(Math.max(Y0,Math.min(Y1,y))-Y0)/(Y1-Y0)*(R-L);
+  let s = '<svg class="strip" viewBox="0 0 '+W+' 48" role="img" aria-label="Covers '+d.b+' to '+d.e+'">';
+  s += '<line x1="'+L+'" x2="'+R+'" y1="22" y2="22" class="track"/>';
+  [1970,1990,2010].forEach(y=>{ s+='<line x1="'+sx(y)+'" x2="'+sx(y)+'" y1="18" y2="26" class="tick"/><text x="'+sx(y)+'" y="45" class="yr" text-anchor="middle">'+y+'</text>'; });
+  s += '<text x="'+sx(2026)+'" y="45" class="yr" text-anchor="end">2026</text>';
+  if (win){ const x1=sx(win[0]), x2=Math.max(sx(win[1]+1),x1+4); s+='<rect x="'+x1+'" y="8" width="'+(x2-x1)+'" height="28" rx="3" class="win"/>'; }
+  if (d.b && d.e){ const x1=sx(d.b), x2=Math.max(sx(d.e+1),x1+3); s+='<rect x="'+x1+'" y="15" width="'+(x2-x1)+'" height="14" rx="3" class="bar"/>'; if(d.b<Y0) s+='<path d="M'+(L+8)+' 22 l7 -5 v10z" class="arrow"/>'; }
+  return s+'</svg>';
+}
+function card(r, i, strongOnly){
+  const d=r.d, title = state.lang==='ms'?d.tm:d.t, alt = state.lang==='ms'?d.t:d.tm;
+  const desc = state.lang==='ms'?d.dm:d.d;
+  const pq = state.res.pq, win = pq.years;
+  const m = profile(d), overall = Math.round(100*m.reduce((a,x)=>a+x.v,0)/m.length);
+  const sel = state.sel.includes(d.id);
+  const links = d.lk.map(([l,u])=>'<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(l)+'</a>').join('');
+  const dl = '';
+  const geoTxt = d.geo.map(g=>GEO_LABEL[g]+(d.geoinf.includes(g)?' (inferred)':'')).join(', ')||'not stated';
+  const why = r.why.length? r.why.join('; ') : 'matches the words in your question';
+  const isOpen = state.open.has(d.id);
+  return '<article class="card'+(strongOnly?' faint':'')+'" id="c-'+esc(d.id)+'">'+
+   '<div class="card-head"><div><h3>'+esc(title)+'</h3><p class="alt" lang="'+(state.lang==='ms'?'en':'ms')+'">'+esc(alt)+'</p></div>'+
+   '<div class="fitnum" title="Fitness: history, freshness, detail, documentation and release schedule, read from catalogue metadata"><span class="n">'+overall+'</span><span class="l">fitness</span></div></div>'+
+   '<p class="why">'+esc(why.charAt(0).toUpperCase()+why.slice(1))+'.</p>'+
+   '<div class="tags"><span class="kindtag">'+esc(KIND_LABEL[d.kind])+'</span><span class="tier t'+d.tier+'" title="'+esc(d.tw)+'"><i>T'+d.tier+'</i>'+esc(TIER_LABEL[d.tier])+'</span><span>'+esc(d.src.join(', ')||'agency not stated')+'</span><span>'+esc(FREQ_LABEL[d.freq]||d.freq.toLowerCase())+'</span><span>'+esc(geoTxt)+'</span><span>'+esc(d.cat)+'</span></div>'+
+   (d.b&&d.e ? strip(d, win) : '<p class="dim">'+(d.kind==='live_api'?'Live feed: current values only, no history.':'Coverage years not stated in the metadata.')+'</p>')+
+   '<div class="meters">'+m.map(x=>'<div class="meter"><div class="mk">'+x.k+'</div><div class="mb"><i style="width:'+Math.round(x.v*100)+'%"></i></div><div class="mt">'+esc(x.t)+'</div></div>').join('')+'</div>'+
+   '<details'+(isOpen?' open':'')+' data-id="'+esc(d.id)+'"><summary>Details, caveats and columns</summary><div class="det">'+
+     '<p>'+esc(desc)+'</p>'+
+     (d.res&&d.res.length?'<h4>Files in the latest edition</h4><ul class="files">'+d.res.map(r=>'<li><a href="'+esc(r[2])+'" target="_blank" rel="noopener">'+esc(r[1])+'</a> <span class="dim">('+esc(r[0])+')</span></li>').join('')+'</ul>':'')+
+     (d.rn>1?'<p class="dim">'+d.rn+' editions in this series, the earliest covering '+d.b+'.</p>':'')+
+     (d.md&&d.md.length?'<h4>Methodology</h4><ul class="files">'+d.md.map(r=>'<li><a href="'+esc(r[1])+'" target="_blank" rel="noopener">'+esc(r[0])+'</a></li>').join('')+'</ul>':'')+
+     (d.meth?'<h4>How it is produced</h4><p>'+esc(d.meth)+'</p>':'')+
+     (d.cav?'<h4>Read before using</h4><p>'+esc(d.cav)+(d.cav.length>=419?'…':'')+'</p>':'')+
+     (d.fields.length?'<h4>Columns'+(d.keys.length?' (join keys: '+esc(d.keys.join(', '))+')':'')+'</h4>'+
+     '<table><tbody>'+d.fields.map(f=>'<tr><th scope="row">'+esc(f.n)+'</th><td>'+esc(f.d.replace(/^\[[^\]]*\]\s*/,''))+'</td></tr>').join('')+'</tbody></table>':'')+
+     (d.rl&&d.rl.length?'<h4>Often used with</h4><p>'+d.rl.map(esc).join('; ')+'</p>':'')+
+     '<p class="dim">'+(d.lu?'Last updated '+esc(fmtDate(d.lu))+'. ':'')+'Licence: '+esc(d.lic||'not stated in the metadata')+'. Reliability tier '+d.tier+': '+esc(d.tw)+'. Link checked '+esc(d.vc||'not yet')+'. Record id: '+esc(d.id)+'.</p>'+
+   '</div></details>'+
+   '<div class="card-foot"><div class="links">'+links+dl+'</div><label class="cmp"><input type="checkbox" data-sel="'+esc(d.id)+'"'+(sel?' checked':'')+'> Compare</label></div>'+
+  '</article>';
+}
+function renderInterpretation(){
+  const R=state.res, pq=R.pq; const chips=[];
+  R.concepts.forEach(c=>{ chips.push('<span class="chip lv-'+c.level+'"><i class="dot d-'+c.level+'" aria-hidden="true"></i>'+esc(c.label)+'<small>'+LV[c.level][1]+'</small></span>'); });
+  const con=(k,txt)=> txt? '<button class="chip con" data-ign="'+k+'" title="Click to ignore this filter">'+esc(txt)+' <span aria-hidden="true">×</span><span class="sr">remove</span></button>':'';
+  chips.push(con('geo',pq.geo?GEO_LABEL[pq.geo]+' level':''));
+  chips.push(con('freq',pq.freq?FREQ_LABEL[pq.freq]:''));
+  chips.push(con('years',pq.years?(pq.years[0]===pq.years[1]?pq.years[0]:pq.years[0]+' to '+pq.years[1]):''));
+  $('#interp').innerHTML = '<h2 class="sh">How your question was read</h2><div class="chips">'+chips.join('')+'</div>';
+}
+function renderAnswer(){
+  const R=state.res, a=R.answer;
+  const verdict = a>=80?'Official data can answer most of this.':a>=45?'Partly answerable. Check the gaps below.':'Official data in this catalogue cannot answer this directly.';
+  const notes = R.concepts.filter(c=>c.proxy||c.gap).map(c=> c.gap? '<li><b>'+esc(c.label)+'.</b> '+esc(c.gap)+'</li>' : '<li><b>'+esc(c.label)+'.</b> No direct series. The closest official measure is shown, and it is a proxy.</li>').join('');
+  const rows = R.concepts.concat(R.dims.map(x=>({...x,kind:'dim'}))).map(c=>'<li class="lv-'+c.level+'"><i class="dot d-'+c.level+'" aria-hidden="true"></i><span>'+esc(c.label)+'</span><small>'+LV[c.level][1]+'</small></li>').join('');
+  $('#answer').innerHTML = '<h2 class="sh">Can official data answer this?</h2>'+
+   '<div class="gauge" role="img" aria-label="Answerability '+a+' percent"><div class="gtrack"><i style="width:'+Math.max(3,a)+'%"></i></div><div class="gnum">'+a+'<span>%</span></div></div>'+
+   '<p class="verdict">'+verdict+'</p><ul class="rows">'+(rows||'<li><span>Type a question to begin</span></li>')+'</ul>'+(notes?'<ul class="notes">'+notes+'</ul>':'')+
+   '<p class="dim">Estimated from catalogue titles, columns and descriptions only. It does not look at the numbers inside each dataset.</p>';
+}
+function renderResults(){
+  const R=state.res; const weak = R.answer<45;
+  $('#count').textContent = R.results.length ? (weak? 'Closest datasets, weak matches':'Best datasets for your question') : 'No dataset matched';
+  $('#results').innerHTML = R.results.length ? R.results.map((r,i)=>card(r,i,weak)).join('') : '<p class="empty">Nothing in this catalogue matches those words. Try a simpler phrase, or ask in Bahasa Malaysia.</p>';
+}
+function renderBundle(){
+  const el=$('#bundle'); if(!state.sel.length){ el.hidden=true; return; }
+  el.hidden=false;
+  const ds = state.sel.map(id=>CAT.find(x=>x.id===id));
+  let body='';
+  if (ds.length<2) body='<p class="dim">Add one more dataset to check whether they can be joined.</p>';
+  else {
+    let min=100; const rows=[];
+    for(let i=0;i<ds.length;i++) for(let j=i+1;j<ds.length;j++){ const p=pairJoin(ds[i],ds[j]); min=Math.min(min,p.score);
+      rows.push('<tr><th scope="row">'+esc(ds[i].t)+' and '+esc(ds[j].t)+'</th><td>'+(p.shared.length?esc(p.shared.join(', ')):'<b class="bad">none found</b>')+'</td><td>'+(p.overlap?p.overlap[0]+' to '+p.overlap[1]:'<b class="bad">none</b>')+'</td><td>'+esc(p.freqNote)+'. '+esc(p.geoNote)+'.</td><td><b>'+p.score+'</b></td></tr>'); }
+    const all = ds.map(d=>d.keys).reduce((a,b)=>a.filter(k=>b.includes(k)));
+    const v = min>=70?'Ready to merge':min>=45?'Merge with care':'Hard to join';
+    body='<p class="bverdict"><b>'+v+'.</b> Join on: '+(all.length?esc(all.join(' + ')):'no key shared by all datasets')+'.</p><div class="scroll"><table class="pairs"><thead><tr><th>Pair</th><th>Shared keys</th><th>Years in common</th><th>Notes</th><th>Score</th></tr></thead><tbody>'+rows.join('')+'</tbody></table></div><p class="dim">Based on column names, year ranges, frequency and geography listed in the catalogue. Check code lists and definitions before merging.</p>';
+  }
+  el.innerHTML='<div class="bhead"><h2 class="sh">Compare '+ds.length+' dataset'+(ds.length>1?'s':'')+'</h2><div class="bchips">'+ds.map(d=>'<button class="chip con" data-rm="'+esc(d.id)+'">'+esc(d.t)+' <span aria-hidden="true">×</span><span class="sr">remove</span></button>').join('')+'</div><button class="ghost" id="clr">Clear</button></div>'+body;
+}
+function run(q){
+  state.q=q; $('#q').value=q;
+  state.res = search(IDX,q,{ignore:[...state.ignore], kind:state.kind});
+  renderInterpretation(); renderAnswer(); renderResults(); renderBundle();
+  $('#out').hidden=false;
+}
+function runBench(){
+  let hit=0,mrr=0,n=0,gapOK=0,gapN=0; const rows=[];
+  GOLDEN.forEach(([q,exp])=>{ const r=search(IDX,q); const ids=r.results.map(x=>x.d.id);
+    if(!exp.length){ gapN++; const ok=r.answer<45; if(ok)gapOK++; rows.push('<tr><td>'+esc(q)+'</td><td>No official dataset exists</td><td>'+(ok?'<b class="good">Flagged as a gap ('+r.answer+'%)</b>':'<b class="bad">Not flagged ('+r.answer+'%)</b>')+'</td></tr>'); return; }
+    const p=ids.findIndex(i=>exp.includes(i)); n++; if(p>=0&&p<5)hit++; mrr+=p>=0?1/(p+1):0;
+    rows.push('<tr><td>'+esc(q)+'</td><td>'+esc(exp.slice(0,2).join(', '))+(exp.length>2?' and others':'')+'</td><td>'+(p>=0&&p<5?'<b class="good">Found at rank '+(p+1)+'</b>':'<b class="bad">Not in top 5</b>')+'</td></tr>'); });
+  $('#benchout').innerHTML='<div class="scores"><div><span class="big">'+hit+'/'+n+'</span><span>questions with a right dataset in the top 5</span></div><div><span class="big">'+(mrr/n).toFixed(2)+'</span><span>mean reciprocal rank (1.00 is perfect)</span></div><div><span class="big">'+gapOK+'/'+gapN+'</span><span>missing-data questions correctly flagged</span></div></div><div class="scroll"><table class="pairs"><thead><tr><th>Question</th><th>Expected</th><th>Result</th></tr></thead><tbody>'+rows.join('')+'</tbody></table></div><p class="dim">These questions and answers were written by the prototype builder while tuning, so the score is optimistic. Replace them with questions from real users and score again.</p>';
+}
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-ign],[data-rm],[data-ex],#clr,#bench,[data-lang],[data-kind]'); if(!t) return;
+  if(t.dataset.kind){ state.kind=t.dataset.kind; renderKinds(); run(state.q); }
+  else if(t.dataset.ign){ state.ignore.add(t.dataset.ign); run(state.q); }
+  else if(t.dataset.rm){ state.sel=state.sel.filter(x=>x!==t.dataset.rm); run(state.q); }
+  else if(t.dataset.ex){ state.ignore.clear(); run(t.dataset.ex); window.scrollTo({top:$('#out').offsetTop-12,behavior:'smooth'}); }
+  else if(t.id==='clr'){ state.sel=[]; run(state.q); }
+  else if(t.id==='bench'){ runBench(); }
+  else if(t.dataset.lang){ state.lang=t.dataset.lang; document.querySelectorAll('[data-lang]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lang===state.lang)); if(state.res) { renderResults(); } }
+});
+document.addEventListener('change',e=>{
+  const id=e.target.dataset&&e.target.dataset.sel; if(!id) return;
+  if(e.target.checked){ if(state.sel.length>=5){ e.target.checked=false; return; } state.sel.push(id);} else state.sel=state.sel.filter(x=>x!==id);
+  renderBundle();
+});
+document.addEventListener('toggle',e=>{ const id=e.target.dataset&&e.target.dataset.id; if(id){ e.target.open?state.open.add(id):state.open.delete(id);} },true);
+$('#f').addEventListener('submit',e=>{ e.preventDefault(); const q=$('#q').value.trim(); if(!q) return; state.ignore.clear(); run(q); });
+$('#ex').innerHTML = EXAMPLES.map(x=>'<button class="chip ex" data-ex="'+esc(x)+'">'+esc(x)+'</button>').join('');
+const META = JSON.parse(document.getElementById('meta').textContent);
+const KCOUNT = {}; CAT.forEach(d=>KCOUNT[d.kind]=(KCOUNT[d.kind]||0)+1);
+function renderKinds(){
+  $('#kindseg').innerHTML = [['all','All'],['dataset','Datasets'],['publication','Reports'],['dashboard','Dashboards'],['live_api','Live feeds']].map(([k,l])=>
+    '<button data-kind="'+k+'" aria-pressed="'+(state.kind===k)+'">'+l+' <small>'+(k==='all'?CAT.length:(KCOUNT[k]||0))+'</small></button>').join('');
+}
+renderKinds();
+$('#stat').textContent = CAT.length+' official records indexed: '+(KCOUNT.dataset||0)+' datasets, '+(KCOUNT.publication||0)+' report series, '+(KCOUNT.dashboard||0)+' dashboards, '+(KCOUNT.live_api||0)+' live feeds.';
+$('#aboutsrc').textContent = 'The index is built from the public metadata behind data.gov.my, OpenDOSM, KKMNOW and data.bnm.gov.my (the datagovmy-meta repository, commit '+META.commit+', harvested '+META.harvested+') plus the live data.gov.my APIs. Every record\'s portal page and file link was checked on '+META.checked+'. '+META.withheld+' record(s) were withheld because the official page no longer resolves.';
+run(EXAMPLES[0]);
+
+</script>
+</body>
+</html>
