@@ -12,10 +12,10 @@ harvest/verify_links.py  checks every page and file URL    ->  registry/registry
 harvest/build_app.py     registry + app template           ->  dist/index.html
 ```
 
-Python 3 standard library only. Run in this order:
+Python 3 standard library plus `curl` (BNM and ElectionData reject Python's TLS handshake). Run in this order:
 
 ```
-python3 harvest/harvest.py          # clones .cache/datagovmy-meta on first run
+python3 harvest/harvest.py          # clones datagovmy-meta and the MOH repos into .cache/ on first run
 python3 harvest/verify_links.py     # about 1,400 URLs; results cached 12 hours in .cache/
 python3 harvest/build_app.py
 ```
@@ -25,9 +25,14 @@ python3 harvest/build_app.py
 | Kind | Source | Records |
 |---|---|---|
 | Dataset | data.gov.my / OpenDOSM / KKMNOW catalogue (`data-catalogue/`) | 297 |
+| Dataset | Bank Negara Malaysia Open API: one record per statistical table, from BNM's own specification (`harvest/bnm.py`) | 341 |
+| Dataset | Ministry of Health open-data repositories `covid19-public` and `data-darah-public` on GitHub (`harvest/moh.py`) | 36 |
+| Dataset | ElectionData.MY catalogue, an independent project compiling Election Commission results; always Tier 3 (`harvest/electiondata.py`) | 202 |
 | Report series | DOSM publications (`pub-dosm/`), editions grouped into series, with technical notes attached | 94 |
 | Dashboard | portal dashboards and explorers (`dashboards/`, `explorers/`) | 56 |
 | Live feed | data.gov.my live APIs: weather, warnings, flood stations, GTFS static and realtime | 8 |
+
+Of these, 66 are withheld from the page: 6 dashboards whose portal page is gone, and 60 BNM tables that the agency lists but whose endpoint returns no records.
 
 See `registry/SCHEMA.md` for the record format and `registry/tiers.json` for the provisional reliability tiers.
 
@@ -40,6 +45,9 @@ See `registry/SCHEMA.md` for the record format and `registry/tiers.json` for the
 
 ## Known gaps
 
-- Metadata from `datagovmy-meta` only. Agencies that publish elsewhere (BNM's own API, state portals, MOH GitHub) are not yet harvested.
+- Not yet harvested: state portals, and MOH data outside the two GitHub repositories above (other MoH-Malaysia repositories were not checked).
+- BNM tables with only parameterised endpoints (for example `/year/{year}`) cannot be link-checked beyond their portal page.
+- BNM and MOH frequencies are inferred from column names and endpoint paths, and flagged `frequency_inferred`.
+- The MOH repositories are published snapshots; the page shows each file's date span so staleness is visible.
 - No LLM enrichment yet (example questions, synonyms, caveats). Search is lexical plus a hand-built bilingual glossary.
 - The DOSM investor-portal OpenAPI specs in `data-catalogue/openapi/` carry no titles and mostly duplicate catalogue datasets, so they are not indexed.

@@ -23,6 +23,8 @@
 | `related`, `see_also_ids` | graph edges to other records: declared related datasets, and publications or dashboards the dataset page links to |
 | `methodology_docs` | publications only: DOSM technical notes |
 | `releases` | publications only: `[[edition id, release date]]`, newest first |
+| `publisher` | present when the publisher is not the source agency: `{name, official, note}` (for example ElectionData.MY, which compiles Election Commission results) |
+| `frequency_inferred` | `true` when the frequency was inferred from column names or endpoint paths (BNM, MOH) |
 | `verified` | `{checked_at, state, checks[]}` from `verify_links.py`. `state` is `ok`, `page_missing`, `file_missing` or `unreachable` |
 
 Join keys are recognised from column names: `date`, `year`, `state`, `district`, `parliament`, `DUN`, `sex`, `age`, `age group`, `ethnicity`, `urban/rural`, `country`, `sector`, `MCOICOP division`.

@@ -11,6 +11,8 @@ registry/registry.json. Metadata only: no dataset values are copied.
 Standard library only.
 """
 import argparse, glob, json, os, re, subprocess, sys, urllib.request
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import bnm, electiondata, moh
 from collections import defaultdict
 from datetime import datetime, timezone
 
@@ -21,6 +23,9 @@ PORTALS = {
     'opendosm': ('OpenDOSM', 'https://open.dosm.gov.my'),
     'kkmnow': ('KKMNOW', 'https://data.moh.gov.my'),
     'databnm': ('data.bnm.gov.my', 'https://data.bnm.gov.my'),
+    'bnmapi': ('BNM Open API', 'https://apikijangportal.bnm.gov.my'),
+    'mohgithub': ('MOH on GitHub', 'https://github.com/MoH-Malaysia'),
+    'electiondata': ('ElectionData.MY', 'https://electiondata.my'),
 }
 # Portal that owns a dashboard/publication when the metadata names no agency.
 PORTAL_AGENCY = {'opendosm': 'dosm', 'kkmnow': 'moh', 'databnm': 'bnm'}
@@ -41,6 +46,7 @@ KEY_RULES = [
     (r'^age$', 'age'), (r'^age_group$', 'age group'), (r'^ethnic', 'ethnicity'),
     (r'^strata$|^urban', 'urban/rural'), (r'^country$', 'country'), (r'^sector$', 'sector'),
     (r'^division$|^mcoicop', 'MCOICOP division'),
+    (r'^seat$', 'seat'), (r'^year_month$|^month_dt$|^week$', 'date'), (r'^year_dt$', 'year'),
 ]
 GEO_FROM_KEY = {'state': 'STATE', 'district': 'DISTRICT', 'parliament': 'PARLIMEN', 'DUN': 'DUN'}
 
@@ -414,11 +420,19 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--meta', help='path to an existing datagovmy-meta checkout')
     ap.add_argument('--no-probe', action='store_true', help='skip live API probes')
+    ap.add_argument('--moh-dir', default=os.path.join(ROOT, '.cache', 'moh'), help='where the MoH-Malaysia repositories are cloned')
+    ap.add_argument('--skip', nargs='*', default=[], choices=['bnm', 'moh', 'electiondata'], help='leave a source out')
     ap.add_argument('--out', default=os.path.join(ROOT, 'registry', 'registry.json'))
     a = ap.parse_args()
     meta = ensure_meta(a.meta)
     ag = Agencies(meta)
     recs = build_datasets(meta, ag) + build_publications(meta, ag) + build_dashboards(meta, ag) + build_live_apis(ag, not a.no_probe)
+    if 'bnm' not in a.skip:
+        recs += bnm.build_bnm(ag, infer_keys, os.path.join(ROOT, '.cache', 'bnm'), log)
+    if 'electiondata' not in a.skip:
+        recs += electiondata.build_electiondata(ag, infer_keys, os.path.join(ROOT, '.cache', 'electiondata'), log)
+    if 'moh' not in a.skip:
+        recs += moh.build_moh(ag, infer_keys, a.moh_dir, log)
     link_graph(recs)
     try:
         commit = subprocess.run(['git', '-C', meta, 'rev-parse', 'HEAD'], capture_output=True, text=True).stdout.strip()
@@ -430,7 +444,10 @@ def main():
     reg = {
         'schema': '0.1', 'harvested_at': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%MZ'),
         'sources': [{'name': 'datagovmy-meta', 'url': META_REPO.replace('.git', ''), 'commit': commit},
-                    {'name': 'api.data.gov.my live endpoints', 'url': API_DOCS}],
+                    {'name': 'api.data.gov.my live endpoints', 'url': API_DOCS},
+                    {'name': 'BNM Open API specification', 'url': 'https://api.bnm.gov.my/api/specification/categories'},
+                    {'name': 'MoH-Malaysia GitHub repositories', 'url': 'https://github.com/MoH-Malaysia'},
+                    {'name': 'ElectionData.MY data catalogue (independent project)', 'url': 'https://electiondata.my/data-catalogue/'}],
         'counts': dict(counts), 'records': recs,
     }
     os.makedirs(os.path.dirname(a.out), exist_ok=True)

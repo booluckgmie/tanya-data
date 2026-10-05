@@ -11,6 +11,8 @@ must never hide a good dataset because of a flaky connection.
 Standard library only.
 """
 import argparse, json, os, sys, time, urllib.error, urllib.request
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from net import curl
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 
@@ -20,12 +22,24 @@ CACHE = os.path.join(ROOT, '.cache', 'link_cache.json')  # url -> [status, iso t
 UA = {'User-Agent': 'tanya-data-link-check/0.1 (+metadata referral index)'}
 
 
+def extra(url):
+    # BNM's API answers only when it is sent its versioned Accept header.
+    return {'Accept': 'application/vnd.BNM.API.v1+json'} if '//api.bnm.gov.my/' in url else {}
+
+
 def probe(url):
     """-> (status, note). status is an int HTTP code, or 0 when unreachable."""
     last = (0, 'no response')
+    if '//api.bnm.gov.my/' in url:  # urllib cannot complete this host's TLS handshake
+        for attempt in range(3):
+            st, _ = curl(url, extra(url), 25, range0=True)
+            if st in (404, 410) or 200 <= st < 400:
+                return st, ''
+            time.sleep(2 * (attempt + 1))
+        return st, 'curl'
     for attempt in range(3):
         for method in ('HEAD', 'GET'):
-            req = urllib.request.Request(url, method=method, headers=dict(UA, **({'Range': 'bytes=0-0'} if method == 'GET' else {})))
+            req = urllib.request.Request(url, method=method, headers=dict(UA, **extra(url), **({'Range': 'bytes=0-0'} if method == 'GET' else {})))
             try:
                 with urllib.request.urlopen(req, timeout=25) as r:
                     return r.status, ''
@@ -47,10 +61,10 @@ def targets(rec):
     t = [('page', p['url']) for p in rec['pages'] if p['portal'] != 'datagovmy' or rec['kind'] != 'live_api']
     acc = rec['access']
     if rec['kind'] == 'dataset':
-        acc = [a for a in acc if a['type'] == 'csv'][:1]
+        acc = [a for a in acc if a['type'] == 'csv'][:1] or [a for a in acc if a['type'] == 'api' and '{' not in a['url']][:1]
     elif rec['kind'] == 'dashboard':
         acc = acc[:1]
-    t += [('file', a['url']) for a in acc if 'YYYY' not in a['url']]  # templated partition URLs cannot be checked
+    t += [('file', a['url']) for a in acc if 'YYYY' not in a['url'] and '{' not in a['url']]  # templated partition URLs cannot be checked
     return t
 
 

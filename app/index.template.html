@@ -158,7 +158,7 @@ summary{cursor:pointer;font-weight:600;font-size:14.5px}
   <section class="about">
     <h2 class="sh">About this prototype</h2>
     <p id="aboutsrc"></p>
-    <p><b>Reliability tiers.</b> Tier 1 is official statistics from the national statistics office or the central bank. Tier 2 is official administrative data from a ministry or agency. Tier 3 is published on an official portal, but the originator is a company or international body, so it needs review. A record takes the weakest tier among its listed source agencies. These tiers are a provisional definition by the prototype builder, not an official rating.</p>
+    <p><b>Reliability tiers.</b> Tier 1 is official statistics from the national statistics office or the central bank. Tier 2 is official administrative data from a ministry or agency. Tier 3 is data whose publisher is a company, an international body or an independent project (for example ElectionData.MY, which compiles Election Commission results). It may still come from official sources, but it is not published by the agency, so it needs review. A record takes the weakest tier among its listed source agencies. These tiers are a provisional definition by the prototype builder, not an official rating.</p>
     <p>The index holds metadata only. It does not copy or read the values inside any dataset, and it cannot show live numbers. Fitness scores and answerability are estimates made by this tool from that metadata.</p>
     <p>Some datasets list no geography even though their columns show a state or district breakdown. Those are marked inferred. Download and portal links follow each portal's catalogue address pattern. Always confirm on the official page before you cite a dataset. This is an independent prototype, not an official service of any agency.</p>
   </section>
@@ -255,11 +255,12 @@ const GLOSSARY = [
  G('floods',['flood','floods','banjir','water level','paras air','river level','tahap air sungai'],'flood warning water level rainfall impact floods'),
  G('bus and train timetables',['timetable','timetables','jadual','jadual bas','jadual keretapi','bus route','bus routes','laluan bas','gtfs','bus stop','perhentian bas','live bus','bas langsung','where is my bus','arrival time'],'gtfs timetable routes stops schedules live realtime'),
  G('official reports',['report','reports','laporan','publication','publications','penerbitan','pdf','excel file','technical notes','nota teknikal','methodology','metodologi','yearbook','buku tahunan','bulletin','buletin'],'publication report release technical notes methodology bulletin yearbook'),
+ G('elections',['election','elections','pilihan raya','pru','prn','pru15','ge15','undi','voter','voters','pengundi','turnout','calon','candidate','candidates','keputusan pilihan raya','election results','who won','menang','seat','kerusi'],'election ballots statistics candidate party seat voter results delimitation'),
  G('classification codes',['classification','klasifikasi','lookup','code list','dictionary','msic','sitc','bec','mcoicop'],'lookup classification msic sitc bec mcoicop')
 ];
 const KIND_LABEL = {dataset:'Dataset', publication:'Report series', dashboard:'Dashboard', live_api:'Live feed'};
 const KIND_WORDS = {publication:'publication report laporan penerbitan release pdf excel edition', dashboard:'dashboard explorer chart visual papan pemuka', live_api:'live realtime real-time api feed current langsung semasa', dataset:''};
-const TIER_LABEL = {1:'Official statistics', 2:'Official administrative', 3:'Official portal, review pending'};
+const TIER_LABEL = {1:'Official statistics', 2:'Official administrative', 3:'Third-party or unverified, review pending'};
 const MATCH_META = /lookup|classification|klasifikasi|dictionary|code list|msic|sitc|bec|mcoicop|kamus/;
 const stem = t => (t.length>3 && t.endsWith('s') && !t.endsWith('ss')) ? t.slice(0,-1) : t;
 const tok = s => s.toLowerCase().replace(/[^a-z0-9\u00c0-\u024f]+/g,' ').split(' ').filter(w=>w.length>1).map(stem);
@@ -448,6 +449,14 @@ const GOLDEN = [
 ["GDP by state report",['pub:gross_domestic_product_by_state']],
 ["hospital bed utilisation dashboard",['dash:bed_util']],
 ["jobless claims dashboard",['dash:perkeso']],
+["overnight policy rate OPR",['bnm:overnight_policy_rate_opr','bnm:overnight_policy_rate']],
+["reserve money",['bnm:1_1_reserve_money']],
+["government bond yield",['bnm:government_security_yield']],
+["daily covid-19 cases by state",['moh:covid19-public:cases_state']],
+["icu bed capacity during covid",['moh:covid19-public:icu','moh:covid19-public:hospital']],
+["blood donations by hospital",['moh:data-darah-public:donations_facility']],
+["who won the 2022 general election",['electiondata:headline-ballots-federal','electiondata:headline-ballots']],
+["voter turnout by seat",['electiondata:headline-stats-federal','electiondata:headline-stats']],
 ["is rent getting more expensive?",['cpi_headline_inflation','cpi_headline','cpi_state']],
 ["road accidents by state",[]],
 ["house prices",[]]
@@ -511,7 +520,7 @@ function card(r, i, strongOnly){
      (d.fields.length?'<h4>Columns'+(d.keys.length?' (join keys: '+esc(d.keys.join(', '))+')':'')+'</h4>'+
      '<table><tbody>'+d.fields.map(f=>'<tr><th scope="row">'+esc(f.n)+'</th><td>'+esc(f.d.replace(/^\[[^\]]*\]\s*/,''))+'</td></tr>').join('')+'</tbody></table>':'')+
      (d.rl&&d.rl.length?'<h4>Often used with</h4><p>'+d.rl.map(esc).join('; ')+'</p>':'')+
-     '<p class="dim">'+(d.lu?'Last updated '+esc(fmtDate(d.lu))+'. ':'')+'Licence: '+esc(d.lic||'not stated in the metadata')+'. Reliability tier '+d.tier+': '+esc(d.tw)+'. Link checked '+esc(d.vc||'not yet')+'. Record id: '+esc(d.id)+'.</p>'+
+     '<p class="dim">'+(d.lu?'Last updated '+esc(fmtDate(d.lu))+'. ':'')+(d.pub?'Published by: '+esc(d.pub)+'. ':'')+'Licence: '+esc(d.lic||'not stated in the metadata')+'. Reliability tier '+d.tier+': '+esc(d.tw)+'. Link checked '+esc(d.vc||'not yet')+'. Record id: '+esc(d.id)+'.</p>'+
    '</div></details>'+
    '<div class="card-foot"><div class="links">'+links+dl+'</div><label class="cmp"><input type="checkbox" data-sel="'+esc(d.id)+'"'+(sel?' checked':'')+'> Compare</label></div>'+
   '</article>';
@@ -596,7 +605,7 @@ function renderKinds(){
 }
 renderKinds();
 $('#stat').textContent = CAT.length+' official records indexed: '+(KCOUNT.dataset||0)+' datasets, '+(KCOUNT.publication||0)+' report series, '+(KCOUNT.dashboard||0)+' dashboards, '+(KCOUNT.live_api||0)+' live feeds.';
-$('#aboutsrc').textContent = 'The index is built from the public metadata behind data.gov.my, OpenDOSM, KKMNOW and data.bnm.gov.my (the datagovmy-meta repository, commit '+META.commit+', harvested '+META.harvested+') plus the live data.gov.my APIs. Every record\'s portal page and file link was checked on '+META.checked+'. '+META.withheld+' record(s) were withheld because the official page no longer resolves.';
+$('#aboutsrc').textContent = 'The index is built from the public metadata behind data.gov.my, OpenDOSM, KKMNOW and data.bnm.gov.my (the datagovmy-meta repository, commit '+META.commit+', harvested '+META.harvested+') plus the live data.gov.my APIs. Every record\'s portal page and file link was checked on '+META.checked+'. '+META.withheld+' record(s) were withheld because the official page no longer resolves, or because the agency lists the table but its endpoint returns no records.';
 run(EXAMPLES[0]);
 
 </script>
