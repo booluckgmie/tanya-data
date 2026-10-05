@@ -17,7 +17,8 @@ DEAD = (404, 410)
 PORTAL_NAME = {'datagovmy': 'data.gov.my', 'opendosm': 'OpenDOSM', 'kkmnow': 'KKMNOW', 'databnm': 'data.bnm.gov.my',
                'bnmapi': 'BNM Open API', 'mohgithub': 'MOH on GitHub', 'electiondata': 'ElectionData.MY',
                'sharecode': 'GitHub archive', 'doeapims': 'DOE APIMS', 'gso': 'GSO', 'sabahjobs': 'Sabah job portal',
-               'napic': 'NAPIC', 'mpob': 'MPOB', 'bursa': 'Bursa Malaysia'}
+               'napic': 'NAPIC', 'mpob': 'MPOB', 'bursa': 'Bursa Malaysia',
+               'llm': 'LLM', 'datagovarchive': 'old data.gov.my portal'}
 TYPE_LABEL = {'csv': 'CSV', 'parquet': 'Parquet', 'api': 'API', 'pdf': 'PDF', 'excel': 'Excel'}
 GEO_RANK = ['DISTRICT', 'DUN', 'PARLIMEN', 'STATE', 'NATIONAL']
 
@@ -112,6 +113,7 @@ def build(reg):
             'lu': r['last_updated'] if r['last_updated'] and len(r['last_updated']) == 10 else None,
             'nu': r['next_update'] if r['next_update'] and len(r['next_update']) == 10 else None,
             'da': r['data_as_of'], 'tier': r['tier'], 'tw': r['tier_basis'],
+            'vs': v.get('state'),
             'lic': (r['licence'] or {}).get('name'),
             'pub': (r.get('publisher') or {}).get('name'), 'vc': (v.get('checked_at') or '')[:10] or None,
             'lk': lk,

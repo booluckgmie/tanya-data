@@ -12,7 +12,7 @@ Standard library only.
 """
 import argparse, glob, json, os, re, subprocess, sys, urllib.request
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import bnm, devdocs, electiondata, moh, napic, sharecode
+import bnm, devdocs, electiondata, moh, napic, sharecode, tolls
 from collections import defaultdict
 from datetime import datetime, timezone
 
@@ -27,6 +27,8 @@ PORTALS = {
     'mohgithub': ('MOH on GitHub', 'https://github.com/MoH-Malaysia'),
     'electiondata': ('ElectionData.MY', 'https://electiondata.my'),
     'devdocs': ('data.gov.my API docs', 'https://developer.data.gov.my'),
+    'llm': ('LLM', 'https://www.llm.gov.my'),
+    'datagovarchive': ('old data.gov.my portal', 'https://www.data.gov.my/data'),
 }
 # Portal that owns a dashboard/publication when the metadata names no agency.
 PORTAL_AGENCY = {'opendosm': 'dosm', 'kkmnow': 'moh', 'databnm': 'bnm'}
@@ -99,6 +101,7 @@ class Agencies:
         self.abbr = {k.lower(): v['abbr'] for k, v in names.items()}
         self.names.setdefault('dosm', 'Department of Statistics Malaysia')
         self.policy = load(os.path.join(ROOT, 'registry', 'tiers.json'))
+        self.names.update(self.policy.get('extra_agencies', {}))  # agencies the meta repo does not list
         self.unknown = set()
 
     def tier(self, code):
@@ -340,12 +343,14 @@ def main():
     ap.add_argument('--no-probe', action='store_true', help='skip live API probes')
     ap.add_argument('--moh-dir', default=os.path.join(ROOT, '.cache', 'moh'), help='where the MoH-Malaysia repositories are cloned')
     ap.add_argument('--sharecode-dir', default=os.path.join(ROOT, '.cache', 'sharecode'), help='where booluckgmie/sharecode is cloned (into a sharecode/ subfolder)')
-    ap.add_argument('--skip', nargs='*', default=[], choices=['bnm', 'moh', 'electiondata', 'sharecode', 'napic', 'devdocs'], help='leave a source out')
+    ap.add_argument('--skip', nargs='*', default=[], choices=['bnm', 'moh', 'electiondata', 'sharecode', 'napic', 'devdocs', 'tolls'], help='leave a source out')
     ap.add_argument('--out', default=os.path.join(ROOT, 'registry', 'registry.json'))
     a = ap.parse_args()
     meta = ensure_meta(a.meta)
     ag = Agencies(meta)
     recs = build_datasets(meta, ag) + build_publications(meta, ag) + build_dashboards(meta, ag)
+    if 'tolls' not in a.skip:
+        recs += tolls.build_tolls(ag, log)
     if 'devdocs' not in a.skip:
         recs += devdocs.build_devdocs(ag, infer_keys, os.path.join(ROOT, '.cache', 'devdocs'), log, not a.no_probe)
     if 'bnm' not in a.skip:

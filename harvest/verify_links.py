@@ -119,7 +119,7 @@ def main():
             state = 'page_missing'
         elif file_gone and len(file_gone) == len(files):
             state = 'file_missing'
-        elif not page_ok and pages and all(c['status'] == 0 or c['status'] >= 500 for c in pages):
+        elif not page_ok and pages and not any(200 <= c['status'] < 400 for c in files):  # nothing live and nothing definitely gone: blocked, timed out or erroring
             state = 'unreachable'
         else:
             state = 'ok'

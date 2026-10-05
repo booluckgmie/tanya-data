@@ -260,6 +260,7 @@ const GLOSSARY = [
  G('palm oil prices',['cpo','crude palm oil','harga sawit','harga minyak sawit','palm oil price','harga cpo'],'cpo crude palm oil price mpob'),
  G('listed companies',['pn17','gn3','bursa','listed company','listed companies','syarikat tersenarai','distressed company','stock exchange','saham'],'pn17 gn3 bursa listed companies'),
  G('API access',['api','open api','openapi','programmatic','programmatically','developer','endpoint','rest api','json','postman','curl'],'api programmatic access endpoint query developer'),
+ G('tolls and highways',['toll','tolls','tol','kadar tol','toll rate','toll rates','toll fee','toll fees','plaza tol','toll plaza','highway','highways','expressway','lebuhraya','lebuh raya','plus highway','touch n go','concession','konsesi','konsesi lebuhraya'],'toll highway expressway concession plaza rate llm'),
  G('classification codes',['classification','klasifikasi','lookup','code list','dictionary','msic','sitc','bec','mcoicop'],'lookup classification msic sitc bec mcoicop')
 ];
 const KIND_LABEL = {dataset:'Dataset', publication:'Report series', dashboard:'Dashboard', live_api:'Live feed', api:'API'};
@@ -465,6 +466,11 @@ const GOLDEN = [
 ["blood donations by hospital",['moh:data-darah-public:donations_facility']],
 ["who won the 2022 general election",['electiondata:headline-ballots-federal','electiondata:headline-ballots']],
 ["voter turnout by seat",['electiondata:headline-stats-federal','electiondata:headline-stats']],
+["toll rates by highway",['llm:toll_rate_lookup','datagovarchive:toll_rates_current']],
+["kadar tol lebuhraya PLUS",['llm:toll_rate_lookup','datagovarchive:toll_rates_current','llm:highways_operating']],
+["list of highways and concessionaires",['llm:highways_operating']],
+["abolished toll plazas",['datagovarchive:toll_abolished']],
+["highways under construction",['llm:highways_under_construction']],
 ["is rent getting more expensive?",['cpi_headline_inflation','cpi_headline','cpi_state']],
 ["road accidents by state",[]],
 ["house prices",['napic:indeks_harga_rumah_malaysia','napic:harga_kediaman_sukuantahunan_terkini','napic:laporan_pasaran_harta_tahunan']],
@@ -539,7 +545,7 @@ function card(r, i, strongOnly){
      (d.fields.length?'<h4>Columns'+(d.keys.length?' (join keys: '+esc(d.keys.join(', '))+')':'')+'</h4>'+
      '<table><tbody>'+d.fields.map(f=>'<tr><th scope="row">'+esc(f.n)+'</th><td>'+esc(f.d.replace(/^\[[^\]]*\]\s*/,''))+'</td></tr>').join('')+'</tbody></table>':'')+
      (d.rl&&d.rl.length?'<h4>Often used with</h4><p>'+d.rl.map(esc).join('; ')+'</p>':'')+
-     '<p class="dim">'+(d.lu?'Last updated '+esc(fmtDate(d.lu))+'. ':'')+(d.pub?'Published by: '+esc(d.pub)+'. ':'')+'Licence: '+esc(d.lic||'not stated in the metadata')+'. Reliability tier '+d.tier+': '+esc(d.tw)+'. Link checked '+esc(d.vc||'not yet')+'. Record id: '+esc(d.id)+'.</p>'+
+     '<p class="dim">'+(d.lu?'Last updated '+esc(fmtDate(d.lu))+'. ':'')+(d.pub?'Published by: '+esc(d.pub)+'. ':'')+'Licence: '+esc(d.lic||'not stated in the metadata')+'. Reliability tier '+d.tier+': '+esc(d.tw)+'. '+(d.vs==='unreachable'?'The official page could not be reached when last checked ('+esc(d.vc||'')+'), so its contents were not verified':'Link checked '+esc(d.vc||'not yet'))+'. Record id: '+esc(d.id)+'.</p>'+
    '</div></details>'+
    '<div class="card-foot"><div class="links">'+links+dl+'</div><label class="cmp"><input type="checkbox" data-sel="'+esc(d.id)+'"'+(sel?' checked':'')+'> Compare</label></div>'+
   '</article>';

@@ -1,12 +1,12 @@
 # Link check report
 
-Checked 2026-10-05T22:46Z. A record is "ok" when its portal page answers and its file is not gone.
+Checked 2026-10-05T23:16Z. A record is "ok" when its portal page answers and its file is not gone.
 
 | Kind | Records | OK |
 |---|---|---|
 | api | 2 | 2 |
-| dashboard | 57 | 48 |
-| dataset | 883 | 822 |
+| dashboard | 58 | 48 |
+| dataset | 887 | 824 |
 | live_api | 10 | 10 |
 | publication | 108 | 108 |
 
@@ -85,3 +85,9 @@ Checked 2026-10-05T22:46Z. A record is "ok" when its portal page answers and its
 - `bnm:3_6_17a_foreign_direct_investment_in_malaysia_position_by_sector` (dataset): 404 https://api.bnm.gov.my/public/msb/3.6.17a
 - `bnm:3_6_18_international_investment_position_banking_system_and_non_banking_system_labuan_as_resident` (dataset): 404 https://api.bnm.gov.my/public/msb/3.6.18
 - `bnm:3_6_18a_international_investment_position_previous_format` (dataset): 404 https://api.bnm.gov.my/public/msb/3.6.18a
+
+## Could not be checked (network error or 5xx): 3
+
+- `llm:toll_rate_lookup` (dashboard): 503 http://kadartol.llm.gov.my/, 503 http://kadartol.llm.gov.my/
+- `datagovarchive:toll_rates_current` (dataset): 403 https://www.data.gov.my/data/ms_MY/dataset/senarai-kadar-tol-semasa-mengikut-lebuhraya/resource/1b88f96c-e60b-49a5-9c7d-ff3ed94b4313
+- `datagovarchive:toll_abolished` (dataset): 0 https://archive.data.gov.my/data/dataset/senarai-tol-dimansuhkan/resource/52e5586c-8c86-470a-ba26-c13937e8950a

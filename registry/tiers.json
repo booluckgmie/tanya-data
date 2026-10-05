@@ -8,5 +8,6 @@
   },
   "agency_tier": { "dosm": 1, "bnm": 1 },
   "default_tier": 2,
+  "extra_agencies": { "llm": "Lembaga Lebuhraya Malaysia (Malaysian Highway Authority)", "kkr": "Ministry of Works (KKR)" },
   "tier3_non_government": ["unhcr", "paynet", "mynic", "tnb", "sesb", "swk-energy", "ktmb", "prasarana"]
 }

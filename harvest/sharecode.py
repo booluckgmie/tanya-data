@@ -110,9 +110,9 @@ def build_sharecode(infer_keys, base, log):
     out.append(rec('apims_hourly', 'Hourly Air Pollutant Index by station (archive of the DOE APIMS portal)',
         'Hourly Air Pollutant Index (API) readings for monitoring stations across Malaysia, scraped from the Department of Environment public portal, one file per day. The official portal shows current readings; this archive keeps the history.',
         'Environment', [agency('jas', 'Department of Environment (DOE/JAS)', 2)],
-        {'portal': 'doeapims', 'url': 'http://apims.doe.gov.my/'}, tree('data_apims'), access, cols, keys, 'HOURLY',
+        {'portal': 'doeapims', 'url': 'https://eqms.doe.gov.my/'}, tree('data_apims'), access, cols, keys, 'HOURLY',
         2017, int(fs[-1][0][:4]), fs[-1][0], geo,
-        'Daily files run from %s; a Parquet archive covers July 2017 to November 2024 (period taken from its file name).' % fs[0][0],
+        'Daily files run from %s; a Parquet archive covers July 2017 to November 2024 (period taken from its file name). The old APIMS address (apims.doe.gov.my) no longer resolves; the public portal is now at eqms.doe.gov.my.' % fs[0][0],
         related=['air_pollution']))
 
     # --- GSO electricity generation
