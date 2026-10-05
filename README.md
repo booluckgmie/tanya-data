@@ -7,7 +7,7 @@ The platform holds **metadata only**. It never copies, generates or displays dat
 ## Pipeline
 
 ```
-harvest/harvest.py       datagovmy-meta + live API probes  ->  registry/registry.json
+harvest/harvest.py       datagovmy-meta, BNM, MOH, NAPIC, docs, ...  ->  registry/registry.json
 harvest/verify_links.py  checks every page and file URL    ->  registry/registry.json, registry/link_report.md
 harvest/build_app.py     registry + app template           ->  dist/index.html
 ```
@@ -33,7 +33,8 @@ python3 harvest/build_app.py
 | Dashboard | NAPIC open transaction data, an embedded Tableau Public dashboard | 1 |
 | Report series | DOSM publications (`pub-dosm/`), editions grouped into series, with technical notes attached | 94 |
 | Dashboard | portal dashboards and explorers (`dashboards/`, `explorers/`) | 56 |
-| Live feed | data.gov.my live APIs: weather, warnings, flood stations, GTFS static and realtime | 8 |
+| Live feed | data.gov.my realtime APIs read from the developer docs: weather forecast, weather and earthquake warnings, flood warning, GTFS static and realtime for KTMB, Prasarana and BAS.MY (`harvest/devdocs.py`) | 10 |
+| API | data.gov.my static query APIs from the same docs: the Data Catalogue API and the OpenDOSM API | 2 |
 
 Of these, 66 are withheld from the page: 6 dashboards whose portal page is gone, and 60 BNM tables that the agency lists but whose endpoint returns no records.
 
@@ -42,6 +43,7 @@ See `registry/SCHEMA.md` for the record format and `registry/tiers.json` for the
 ## Rules the platform keeps
 
 - Metadata and pointers only. No copied data.
+- Respect each source's limits. `api.data.gov.my` allows 4 requests per minute per API, so the pipeline spaces and caches its calls to it, and checks one endpoint per API record.
 - Every record carries its agency, a reliability tier with the reason, a licence where the portal states one, and a link-check date.
 - A record whose official portal page returns 404/410 is withheld from the app and listed in `registry/link_report.md`. A network error never hides a record.
 - Tiers and fitness scores are estimates made by this tool, not official ratings.
@@ -54,5 +56,6 @@ See `registry/SCHEMA.md` for the record format and `registry/tiers.json` for the
 - BNM tables with only parameterised endpoints (for example `/year/{year}`) cannot be link-checked beyond their portal page.
 - BNM and MOH frequencies are inferred from column names and endpoint paths, and flagged `frequency_inferred`.
 - The MOH repositories are published snapshots; the page shows each file's date span so staleness is visible.
+- The developer-docs adapter compares its endpoint list with the docs on every run and logs `devdocs DRIFT` when they differ. Titles and descriptions are written in the adapter, not taken from the docs.
 - No LLM enrichment yet (example questions, synonyms, caveats). Search is lexical plus a hand-built bilingual glossary.
 - The DOSM investor-portal OpenAPI specs in `data-catalogue/openapi/` carry no titles and mostly duplicate catalogue datasets, so they are not indexed.

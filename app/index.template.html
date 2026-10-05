@@ -220,7 +220,7 @@ const GLOSSARY = [
  G('universities',['university','universiti','lecturer','pensyarah','kolej'],'lecturers university'),
  G('electricity',['electricity','elektrik','power','tenaga elektrik','bil elektrik','tnb'],'electricity consumption supply'),
  G('water',['water','air paip','bekalan air','sungai','river','tap water'],'water access consumption production'),
- G('air quality',['pollution','jerebu','haze','air quality','kualiti udara','pencemaran','api'],'air pollution'),
+ G('air quality',['pollution','jerebu','haze','air quality','kualiti udara','pencemaran','air pollutant index','indeks pencemaran udara','ipu'],'air pollution'),
  G('exchange rate',['exchange rate','kadar pertukaran','ringgit','usd','dollar','forex','matawang','currency','mata wang','myr'],'exchange rates currency'),
  G('interest rate',['interest','kadar faedah','opr','bunga','faedah','overnight policy rate','loan rate'],'interest rates'),
  G('trade',['trade','perdagangan','eksport','import','export','imports','exports','dagangan'],'trade imports exports'),
@@ -252,17 +252,18 @@ const GLOSSARY = [
  G('women',['women','wanita','female','perempuan','gender','jantina'],'female sex representation'),
  G('minerals',['mineral','minerals','mining','perlombongan','tin','bijih'],'mineral extraction'),
  G('postcodes',['postcode','poskod','zip','zip code'],'postcode'),
- G('weather',['weather','cuaca','forecast','ramalan','ramalan cuaca','rain','hujan','rainfall','storm','ribut','angin kencang','strong wind','temperature','suhu','monsoon','monsun'],'weather forecast warning rainfall climate'),
+ G('weather',['earthquake','gempa bumi','weather','cuaca','forecast','ramalan','ramalan cuaca','rain','hujan','rainfall','storm','ribut','angin kencang','strong wind','temperature','suhu','monsoon','monsun'],'weather forecast warning rainfall climate'),
  G('floods',['flood','floods','banjir','water level','paras air','river level','tahap air sungai'],'flood warning water level rainfall impact floods'),
  G('bus and train timetables',['timetable','timetables','jadual','jadual bas','jadual keretapi','bus route','bus routes','laluan bas','gtfs','bus stop','perhentian bas','live bus','bas langsung','where is my bus','arrival time'],'gtfs timetable routes stops schedules live realtime'),
  G('official reports',['report','reports','laporan','publication','publications','penerbitan','pdf','excel file','technical notes','nota teknikal','methodology','metodologi','yearbook','buku tahunan','bulletin','buletin'],'publication report release technical notes methodology bulletin yearbook'),
  G('elections',['election','elections','pilihan raya','pru','prn','pru15','ge15','undi','voter','voters','pengundi','turnout','calon','candidate','candidates','keputusan pilihan raya','election results','who won','menang','seat','kerusi'],'election ballots statistics candidate party seat voter results delimitation'),
  G('palm oil prices',['cpo','crude palm oil','harga sawit','harga minyak sawit','palm oil price','harga cpo'],'cpo crude palm oil price mpob'),
  G('listed companies',['pn17','gn3','bursa','listed company','listed companies','syarikat tersenarai','distressed company','stock exchange','saham'],'pn17 gn3 bursa listed companies'),
+ G('API access',['api','open api','openapi','programmatic','programmatically','developer','endpoint','rest api','json','postman','curl'],'api programmatic access endpoint query developer'),
  G('classification codes',['classification','klasifikasi','lookup','code list','dictionary','msic','sitc','bec','mcoicop'],'lookup classification msic sitc bec mcoicop')
 ];
-const KIND_LABEL = {dataset:'Dataset', publication:'Report series', dashboard:'Dashboard', live_api:'Live feed'};
-const KIND_WORDS = {publication:'publication report laporan penerbitan release pdf excel edition', dashboard:'dashboard explorer chart visual papan pemuka', live_api:'live realtime real-time api feed current langsung semasa', dataset:''};
+const KIND_LABEL = {dataset:'Dataset', publication:'Report series', dashboard:'Dashboard', live_api:'Live feed', api:'API'};
+const KIND_WORDS = {publication:'publication report laporan penerbitan release pdf excel edition', dashboard:'dashboard explorer chart visual papan pemuka', live_api:'live realtime real-time api feed current langsung semasa', api:'api programmatic access endpoint query json developer rest', dataset:''};
 const TIER_LABEL = {1:'Official statistics', 2:'Official administrative', 3:'Third-party or unverified, review pending'};
 const MATCH_META = /lookup|classification|klasifikasi|dictionary|code list|msic|sitc|bec|mcoicop|kamus/;
 const stem = t => (t.length>3 && t.endsWith('s') && !t.endsWith('ss')) ? t.slice(0,-1) : t;
@@ -340,7 +341,7 @@ function search(idx, q, opts){
     }
     if (pq.years && !d.b){
       mult*= d.kind==='live_api'?.4:.75;
-      why.push(d.kind==='live_api'?'live feed, current values only':'coverage years not stated');
+      why.push(d.kind==='live_api'?'live feed, current values only':d.kind==='api'?'coverage depends on the dataset you request':'coverage years not stated');
     } else if (pq.years){
       const [a,b]=pq.years; const e=Math.min(d.e||0,NOW_YEAR), bb=d.b||9999;
       const ov=Math.max(0,Math.min(b,e)-Math.max(a,bb)+1), want=b-a+1, f=ov/want;
@@ -444,7 +445,11 @@ const GOLDEN = [
 ["amaran cuaca angin kencang",['api:weather_warning']],
 ["banjir paras air sungai",['api:flood_warning']],
 ["bus and train timetable data",['api:gtfs_static_prasarana','api:gtfs_static_ktmb','api:gtfs_static_mybas']],
-["live bus positions",['api:gtfs_realtime_prasarana']],
+["live bus positions",['api:gtfs_realtime_prasarana','api:gtfs_realtime_mybas']],
+["amaran gempa bumi",['api:weather_earthquake']],
+["how do I get data.gov.my datasets through an API",['api:data_catalogue_api']],
+["OpenDOSM API for CPI",['api:opendosm_api']],
+["bus timetable data for Ipoh",['api:gtfs_static_mybas']],
 ["monthly consumer price index report pdf",['pub:consumer_price_index']],
 ["labour force survey report",['pub:labour_force']],
 ["technical notes for the consumer price index",['pub:consumer_price_index']],
@@ -522,7 +527,7 @@ function card(r, i, strongOnly){
    '<div class="fitnum" title="Fitness: history, freshness, detail, documentation and release schedule, read from catalogue metadata"><span class="n">'+overall+'</span><span class="l">fitness</span></div></div>'+
    '<p class="why">'+esc(why.charAt(0).toUpperCase()+why.slice(1))+'.</p>'+
    '<div class="tags"><span class="kindtag">'+esc(KIND_LABEL[d.kind])+'</span><span class="tier t'+d.tier+'" title="'+esc(d.tw)+'"><i>T'+d.tier+'</i>'+esc(TIER_LABEL[d.tier])+'</span><span>'+esc(d.src.join(', ')||'agency not stated')+'</span><span>'+esc(FREQ_LABEL[d.freq]||d.freq.toLowerCase())+'</span><span>'+esc(geoTxt)+'</span><span>'+esc(d.cat)+'</span></div>'+
-   (d.b&&d.e ? strip(d, win) : '<p class="dim">'+(d.kind==='live_api'?'Live feed: current values only, no history.':'Coverage years not stated in the metadata.')+'</p>')+
+   (d.b&&d.e ? strip(d, win) : '<p class="dim">'+(d.kind==='live_api'?'Live feed: current values only, no history.':d.kind==='api'?'Programmatic access: coverage depends on the dataset you request.':'Coverage years not stated in the metadata.')+'</p>')+
    '<div class="meters">'+m.map(x=>'<div class="meter"><div class="mk">'+x.k+'</div><div class="mb"><i style="width:'+Math.round(x.v*100)+'%"></i></div><div class="mt">'+esc(x.t)+'</div></div>').join('')+'</div>'+
    '<details'+(isOpen?' open':'')+' data-id="'+esc(d.id)+'"><summary>Details, caveats and columns</summary><div class="det">'+
      '<p>'+esc(desc)+'</p>'+
@@ -614,11 +619,11 @@ $('#ex').innerHTML = EXAMPLES.map(x=>'<button class="chip ex" data-ex="'+esc(x)+
 const META = JSON.parse(document.getElementById('meta').textContent);
 const KCOUNT = {}; CAT.forEach(d=>KCOUNT[d.kind]=(KCOUNT[d.kind]||0)+1);
 function renderKinds(){
-  $('#kindseg').innerHTML = [['all','All'],['dataset','Datasets'],['publication','Reports'],['dashboard','Dashboards'],['live_api','Live feeds']].map(([k,l])=>
+  $('#kindseg').innerHTML = [['all','All'],['dataset','Datasets'],['publication','Reports'],['dashboard','Dashboards'],['live_api','Live feeds'],['api','APIs']].map(([k,l])=>
     '<button data-kind="'+k+'" aria-pressed="'+(state.kind===k)+'">'+l+' <small>'+(k==='all'?CAT.length:(KCOUNT[k]||0))+'</small></button>').join('');
 }
 renderKinds();
-$('#stat').textContent = CAT.length+' official records indexed: '+(KCOUNT.dataset||0)+' datasets, '+(KCOUNT.publication||0)+' report series, '+(KCOUNT.dashboard||0)+' dashboards, '+(KCOUNT.live_api||0)+' live feeds.';
+$('#stat').textContent = CAT.length+' official records indexed: '+(KCOUNT.dataset||0)+' datasets, '+(KCOUNT.publication||0)+' report series, '+(KCOUNT.dashboard||0)+' dashboards, '+(KCOUNT.live_api||0)+' live feeds, '+(KCOUNT.api||0)+' APIs.';
 $('#aboutsrc').textContent = 'The index is built from the public metadata behind data.gov.my, OpenDOSM, KKMNOW and data.bnm.gov.my (the datagovmy-meta repository, commit '+META.commit+', harvested '+META.harvested+') plus the live data.gov.my APIs. Every record\'s portal page and file link was checked on '+META.checked+'. '+META.withheld+' record(s) were withheld because the official page no longer resolves, or because the agency lists the table but its endpoint returns no records.';
 run(EXAMPLES[0]);
 

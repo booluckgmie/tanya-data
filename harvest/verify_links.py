@@ -10,7 +10,7 @@ must never hide a good dataset because of a flaky connection.
 
 Standard library only.
 """
-import argparse, json, os, sys, time, urllib.error, urllib.request
+import argparse, json, os, sys, threading, time, urllib.error, urllib.request
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from net import curl
 from concurrent.futures import ThreadPoolExecutor
@@ -27,7 +27,23 @@ def extra(url):
     return {'Accept': 'application/vnd.BNM.API.v1+json'} if '//api.bnm.gov.my/' in url else {}
 
 
+_api_lock = threading.Lock()
+_api_last = [0.0]
+
+
+def throttle_api(url):
+    """api.data.gov.my allows 4 requests per minute per API, so requests to it are serialised and spaced."""
+    if '//api.data.gov.my/' not in url:
+        return
+    with _api_lock:
+        wait = 16 - (time.time() - _api_last[0])
+        if wait > 0:
+            time.sleep(wait)
+        _api_last[0] = time.time()
+
+
 def probe(url):
+    throttle_api(url)
     """-> (status, note). status is an int HTTP code, or 0 when unreachable."""
     last = (0, 'no response')
     if '//api.bnm.gov.my/' in url:  # urllib cannot complete this host's TLS handshake
@@ -62,8 +78,8 @@ def targets(rec):
     acc = rec['access']
     if rec['kind'] == 'dataset':
         acc = [a for a in acc if a['type'] == 'csv'][:1] or [a for a in acc if a['type'] == 'api' and '{' not in a['url']][:1]
-    elif rec['kind'] == 'dashboard':
-        acc = acc[:1]
+    elif rec['kind'] in ('dashboard', 'live_api', 'api'):
+        acc = acc[:1]  # one endpoint is enough to show the API is up; several per record would breach its rate limit
     t += [('file', a['url']) for a in acc if 'YYYY' not in a['url'] and '{' not in a['url']]  # templated partition URLs cannot be checked
     return t
 

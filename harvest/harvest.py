@@ -12,7 +12,7 @@ Standard library only.
 """
 import argparse, glob, json, os, re, subprocess, sys, urllib.request
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import bnm, electiondata, moh, napic, sharecode
+import bnm, devdocs, electiondata, moh, napic, sharecode
 from collections import defaultdict
 from datetime import datetime, timezone
 
@@ -26,6 +26,7 @@ PORTALS = {
     'bnmapi': ('BNM Open API', 'https://apikijangportal.bnm.gov.my'),
     'mohgithub': ('MOH on GitHub', 'https://github.com/MoH-Malaysia'),
     'electiondata': ('ElectionData.MY', 'https://electiondata.my'),
+    'devdocs': ('data.gov.my API docs', 'https://developer.data.gov.my'),
 }
 # Portal that owns a dashboard/publication when the metadata names no agency.
 PORTAL_AGENCY = {'opendosm': 'dosm', 'kkmnow': 'moh', 'databnm': 'bnm'}
@@ -312,89 +313,6 @@ def build_dashboards(meta, ag):
     return out
 
 
-# Official live APIs published on data.gov.my that are not in the catalogue.
-# Endpoints are probed at harvest time; the probe status is stored on the record.
-LIVE_APIS = [
-    {'id': 'api:weather_forecast', 'agency': ['met'], 'path': 'weather/forecast', 'probe': True, 'frequency': 'DAILY',
-     'en': ('Weather forecast by location (up to 7 days)', 'Daily forecast for towns and districts, issued by the Malaysian Meteorological Department.'),
-     'ms': ('Ramalan cuaca mengikut lokasi (sehingga 7 hari)', 'Ramalan harian bagi bandar dan daerah, dikeluarkan oleh Jabatan Meteorologi Malaysia.'),
-     'geo': ['DISTRICT'], 'topic': 'Environment'},
-    {'id': 'api:weather_warning', 'agency': ['met'], 'path': 'weather/warning', 'probe': True, 'frequency': 'REALTIME',
-     'en': ('Weather warnings', 'Current warnings for strong winds, rough seas, heavy rain and other hazards, as issued by the Malaysian Meteorological Department.'),
-     'ms': ('Amaran cuaca', 'Amaran semasa bagi angin kencang, laut bergelora, hujan lebat dan bahaya lain, dikeluarkan oleh Jabatan Meteorologi Malaysia.'),
-     'geo': [], 'topic': 'Environment'},
-    {'id': 'api:flood_warning', 'agency': ['jps'], 'path': 'flood-warning', 'probe': True, 'frequency': 'REALTIME',
-     'en': ('Flood warning: river and rainfall station readings', 'Near real-time water level and rainfall readings by station, with warning levels, from the Department of Irrigation and Drainage.'),
-     'ms': ('Amaran banjir: bacaan stesen sungai dan hujan', 'Bacaan paras air dan hujan hampir masa nyata mengikut stesen, beserta tahap amaran, daripada Jabatan Pengairan dan Saliran.'),
-     'geo': ['STATE', 'DISTRICT'], 'topic': 'Environment'},
-    {'id': 'api:gtfs_static_prasarana', 'agency': ['prasarana'], 'path': 'gtfs-static/prasarana?category=rapid-rail-kl', 'probe': False, 'frequency': 'UNKNOWN',
-     'en': ('Rapid KL bus and rail timetables and routes (GTFS Static)', 'Routes, stops, trips and schedules for Prasarana services in GTFS format. Categories: rapid-rail-kl, rapid-bus-kl, rapid-bus-penang, rapid-bus-kuantan, rapid-bus-mrtfeeder.'),
-     'ms': ('Jadual dan laluan bas dan rel Rapid KL (GTFS Static)', 'Laluan, perhentian, perjalanan dan jadual perkhidmatan Prasarana dalam format GTFS.'),
-     'geo': [], 'topic': 'Transportation'},
-    {'id': 'api:gtfs_static_ktmb', 'agency': ['ktmb'], 'path': 'gtfs-static/ktmb', 'probe': False, 'frequency': 'UNKNOWN',
-     'en': ('KTMB train timetables and routes (GTFS Static)', 'Routes, stops, trips and schedules for KTM Komuter and ETS in GTFS format.'),
-     'ms': ('Jadual dan laluan keretapi KTMB (GTFS Static)', 'Laluan, stesen, perjalanan dan jadual KTM Komuter dan ETS dalam format GTFS.'),
-     'geo': [], 'topic': 'Transportation'},
-    {'id': 'api:gtfs_static_mybas', 'agency': ['mot'], 'path': 'gtfs-static/mybas-johor', 'probe': False, 'frequency': 'UNKNOWN',
-     'en': ('myBAS stage bus timetables and routes (GTFS Static)', 'Routes, stops and schedules for myBAS stage bus services, published per region (for example mybas-johor).'),
-     'ms': ('Jadual dan laluan bas myBAS (GTFS Static)', 'Laluan, perhentian dan jadual perkhidmatan bas myBAS, diterbitkan mengikut wilayah (contohnya mybas-johor).'),
-     'geo': ['STATE'], 'topic': 'Transportation'},
-    {'id': 'api:gtfs_realtime_prasarana', 'agency': ['prasarana'], 'path': 'gtfs-realtime/vehicle-position/prasarana?category=rapid-bus-kl', 'probe': False, 'frequency': 'REALTIME',
-     'en': ('Rapid KL live bus positions (GTFS Realtime)', 'Live vehicle positions for Prasarana buses, as a GTFS Realtime feed. Useful for arrival tracking, not for historical ridership.'),
-     'ms': ('Kedudukan bas Rapid KL secara langsung (GTFS Realtime)', 'Kedudukan kenderaan bas Prasarana secara langsung dalam suapan GTFS Realtime.'),
-     'geo': [], 'topic': 'Transportation'},
-    {'id': 'api:gtfs_realtime_ktmb', 'agency': ['ktmb'], 'path': 'gtfs-realtime/vehicle-position/ktmb', 'probe': False, 'frequency': 'REALTIME',
-     'en': ('KTMB live train positions (GTFS Realtime)', 'Live vehicle positions for KTMB trains, as a GTFS Realtime feed.'),
-     'ms': ('Kedudukan keretapi KTMB secara langsung (GTFS Realtime)', 'Kedudukan keretapi KTMB secara langsung dalam suapan GTFS Realtime.'),
-     'geo': [], 'topic': 'Transportation'},
-]
-API_BASE = 'https://api.data.gov.my/'
-API_DOCS = 'https://developer.data.gov.my/'
-
-
-def flatten(o, p=''):
-    if isinstance(o, dict):
-        for k, v in o.items():
-            yield from flatten(v, p + k + '.')
-    elif isinstance(o, list):
-        for v in o[:1]:
-            yield from flatten(v, p)
-    else:
-        yield p[:-1]
-
-
-def build_live_apis(ag, probe=True):
-    out = []
-    for a in LIVE_APIS:
-        cols = []
-        if probe and a['probe']:
-            try:
-                req = urllib.request.Request(API_BASE + a['path'] + ('&' if '?' in a['path'] else '?') + 'limit=1', headers={'User-Agent': 'tanya-data-harvester'})
-                with urllib.request.urlopen(req, timeout=30) as r:
-                    cols = [{'name': c, 'title': '', 'description': ''} for c in dict.fromkeys(flatten(json.load(r)))]
-            except Exception as e:  # keep the record, drop the columns
-                log('probe failed %s: %s' % (a['path'], e))
-        keys, geo = infer_keys(cols)
-        if not geo and 'state' in [c['name'] for c in cols]:
-            geo = ['STATE']
-        agencies, tier, basis = ag.resolve(a['agency'])
-        out.append({
-            'kind': 'live_api', 'id': a['id'],
-            'title': {'en': a['en'][0], 'ms': a['ms'][0]}, 'description': {'en': a['en'][1], 'ms': a['ms'][1]},
-            'category': {'en': a['topic'], 'ms': a['topic'], 'sub': 'Live API'},
-            'portals': ['datagovmy'], 'agencies': agencies, 'tier': tier, 'tier_basis': basis,
-            'access': [{'type': 'api', 'url': API_BASE + a['path']}],
-            'pages': [{'portal': 'datagovmy', 'url': API_DOCS}],
-            'licence': None, 'frequency': a['frequency'], 'geography': a['geo'], 'geography_inferred': [],
-            'demography': [], 'coverage': {'begin': None, 'end': None},
-            'data_as_of': None, 'last_updated': None, 'next_update': None,
-            'columns': cols, 'join_keys': keys, 'methodology': '',
-            'caveats': 'Live feed: returns current values only. For history, use a catalogue dataset or a publication.',
-            'related': [], 'see_also': [],
-        })
-    return out
-
-
 def link_graph(records):
     """Add 'see_also' ids that point at other registry records (dataset -> publication/dashboard)."""
     by_pub = defaultdict(list)
@@ -422,12 +340,14 @@ def main():
     ap.add_argument('--no-probe', action='store_true', help='skip live API probes')
     ap.add_argument('--moh-dir', default=os.path.join(ROOT, '.cache', 'moh'), help='where the MoH-Malaysia repositories are cloned')
     ap.add_argument('--sharecode-dir', default=os.path.join(ROOT, '.cache', 'sharecode'), help='where booluckgmie/sharecode is cloned (into a sharecode/ subfolder)')
-    ap.add_argument('--skip', nargs='*', default=[], choices=['bnm', 'moh', 'electiondata', 'sharecode', 'napic'], help='leave a source out')
+    ap.add_argument('--skip', nargs='*', default=[], choices=['bnm', 'moh', 'electiondata', 'sharecode', 'napic', 'devdocs'], help='leave a source out')
     ap.add_argument('--out', default=os.path.join(ROOT, 'registry', 'registry.json'))
     a = ap.parse_args()
     meta = ensure_meta(a.meta)
     ag = Agencies(meta)
-    recs = build_datasets(meta, ag) + build_publications(meta, ag) + build_dashboards(meta, ag) + build_live_apis(ag, not a.no_probe)
+    recs = build_datasets(meta, ag) + build_publications(meta, ag) + build_dashboards(meta, ag)
+    if 'devdocs' not in a.skip:
+        recs += devdocs.build_devdocs(ag, infer_keys, os.path.join(ROOT, '.cache', 'devdocs'), log, not a.no_probe)
     if 'bnm' not in a.skip:
         recs += bnm.build_bnm(ag, infer_keys, os.path.join(ROOT, '.cache', 'bnm'), log)
     if 'electiondata' not in a.skip:
@@ -449,7 +369,7 @@ def main():
     reg = {
         'schema': '0.1', 'harvested_at': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%MZ'),
         'sources': [{'name': 'datagovmy-meta', 'url': META_REPO.replace('.git', ''), 'commit': commit},
-                    {'name': 'api.data.gov.my live endpoints', 'url': API_DOCS},
+                    {'name': 'data.gov.my developer docs (Open API)', 'url': 'https://developer.data.gov.my/'},
                     {'name': 'BNM Open API specification', 'url': 'https://api.bnm.gov.my/api/specification/categories'},
                     {'name': 'MoH-Malaysia GitHub repositories', 'url': 'https://github.com/MoH-Malaysia'},
                     {'name': 'ElectionData.MY data catalogue (independent project)', 'url': 'https://electiondata.my/data-catalogue/'},

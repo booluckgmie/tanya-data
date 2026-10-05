@@ -84,16 +84,16 @@ def build(reg):
         if r['kind'] == 'publication':
             pages = pages[:1]  # newest edition whose page still resolves
         for p in pages:
-            label = 'API documentation' if r['kind'] == 'live_api' else 'Open on %s' % PORTAL_NAME.get(p['portal'], p['portal'])
+            label = 'API documentation' if r['kind'] in ('live_api', 'api') else 'Open on %s' % PORTAL_NAME.get(p['portal'], p['portal'])
             lk.append([label if not (r['kind'] == 'publication' and p['portal'] == 'opendosm') else 'Open latest edition on OpenDOSM', p['url']])
         files = [a for a in r['access'] if a['url'] not in dead and 'YYYY' not in a['url'] and '{' not in a['url']]
-        if r['kind'] in ('dataset', 'live_api') and r['access'] and not files and any(c['role'] == 'file' for c in v.get('checks', [])) and dead:
+        if r['kind'] in ('dataset', 'live_api', 'api') and r['access'] and not files and any(c['role'] == 'file' for c in v.get('checks', [])) and dead:
             withheld.append(r['id'])  # listed by the agency but every file or endpoint is gone or empty
             continue
         if r['kind'] == 'dataset':
             lk += [[a.get('label') or TYPE_LABEL.get(a['type'], a['type'].upper()), a['url']] for a in files[:4]]
-        elif r['kind'] == 'live_api':
-            lk = [['API endpoint', a['url']] for a in files] + lk
+        elif r['kind'] in ('live_api', 'api'):
+            lk = [[a.get('label') or 'API endpoint', a['url']] for a in files[:3]] + lk
         elif r['kind'] == 'dashboard':
             lk += [['Chart data (Parquet)', a['url']] for a in files[:1]]
         raw = r.get('source_agencies_raw') or [a['code'].upper() for a in r['agencies']]
