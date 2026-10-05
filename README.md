@@ -29,6 +29,8 @@ python3 harvest/build_app.py
 | Dataset | Ministry of Health open-data repositories `covid19-public` and `data-darah-public` on GitHub (`harvest/moh.py`) | 36 |
 | Dataset | ElectionData.MY catalogue, an independent project compiling Election Commission results; always Tier 3 (`harvest/electiondata.py`) | 202 |
 | Dataset | Archive copies in `booluckgmie/sharecode` (APIMS air pollutant index, GSO electricity generation, Sabah job portal, NAPIC 2022 property tables, MPOB palm oil prices, Bursa PN17/GN3); allowlisted folders only, always Tier 3 (`harvest/sharecode.py`) | 7 |
+| Report series | NAPIC (JPPH) property publications: 14 series across market, stock, status and price/rental indices, read from napic.jpph.gov.my (`harvest/napic.py`) | 14 |
+| Dashboard | NAPIC open transaction data, an embedded Tableau Public dashboard | 1 |
 | Report series | DOSM publications (`pub-dosm/`), editions grouped into series, with technical notes attached | 94 |
 | Dashboard | portal dashboards and explorers (`dashboards/`, `explorers/`) | 56 |
 | Live feed | data.gov.my live APIs: weather, warnings, flood stations, GTFS static and realtime | 8 |
@@ -47,6 +49,7 @@ See `registry/SCHEMA.md` for the record format and `registry/tiers.json` for the
 ## Known gaps
 
 - The `sharecode` adapter is an allowlist. That repository also holds personal, employer and research files, which are never read. Weather (Open-Meteo, not official), `data_oku` (origin undocumented) and `SARA2025` (third-party platform, business addresses) are left out on purpose.
+- Not harvested because the host refuses this environment: the Ministry of Education EMIS Risalah map (`emisonline.moe.gov.my/risalahmap/`) resets the TLS handshake and `www.moe.gov.my` returns 403. Run the pipeline from another network, or add the host to the environment's allowed domains and retry.
 - Not yet harvested: state portals, and MOH data outside the two GitHub repositories above (other MoH-Malaysia repositories were not checked).
 - BNM tables with only parameterised endpoints (for example `/year/{year}`) cannot be link-checked beyond their portal page.
 - BNM and MOH frequencies are inferred from column names and endpoint paths, and flagged `frequency_inferred`.

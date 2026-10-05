@@ -85,7 +85,7 @@ def build(reg):
             pages = pages[:1]  # newest edition whose page still resolves
         for p in pages:
             label = 'API documentation' if r['kind'] == 'live_api' else 'Open on %s' % PORTAL_NAME.get(p['portal'], p['portal'])
-            lk.append([label if r['kind'] != 'publication' else 'Open latest edition on OpenDOSM', p['url']])
+            lk.append([label if not (r['kind'] == 'publication' and p['portal'] == 'opendosm') else 'Open latest edition on OpenDOSM', p['url']])
         files = [a for a in r['access'] if a['url'] not in dead and 'YYYY' not in a['url'] and '{' not in a['url']]
         if r['kind'] in ('dataset', 'live_api') and r['access'] and not files and any(c['role'] == 'file' for c in v.get('checks', [])) and dead:
             withheld.append(r['id'])  # listed by the agency but every file or endpoint is gone or empty

@@ -155,7 +155,8 @@ def build_sharecode(infer_keys, base, log):
         out.append(rec(rid, title, desc, 'Housing', [agency('napic', 'National Property Information Centre (NAPIC), JPPH', 2)],
             {'portal': 'napic', 'url': 'https://napic.jpph.gov.my/'}, tree('data_napic'),
             [{'type': 'csv', 'label': 'CSV', 'url': raw('data_napic/' + fname)}], cols, [], 'YEARLY', 2021, 2022, None,
-            ['STATE', 'DISTRICT'], extra + ' Values are as extracted; check them against the NAPIC report.'))
+            ['STATE', 'DISTRICT'], extra + ' Values are as extracted; check them against the NAPIC report.',
+            related=['napic:laporan_pasaran_harta_tahunan', 'napic:jadual_data_transaksi_harta_tanah', 'napic:indeks_harga_rumah_malaysia']))
 
     # --- MPOB crude palm oil daily price
     p = os.path.join(d, 'mpob', 'cpo_daily_prices.csv')

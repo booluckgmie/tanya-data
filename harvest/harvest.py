@@ -12,7 +12,7 @@ Standard library only.
 """
 import argparse, glob, json, os, re, subprocess, sys, urllib.request
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import bnm, electiondata, moh, sharecode
+import bnm, electiondata, moh, napic, sharecode
 from collections import defaultdict
 from datetime import datetime, timezone
 
@@ -402,7 +402,7 @@ def link_graph(records):
         if r['kind'] == 'publication':
             for rid, _ in r['releases']:
                 by_pub[rid].append(r['id'])
-    by_route = {r['route']: r['id'] for r in records if r['kind'] == 'dashboard'}
+    by_route = {r['route']: r['id'] for r in records if r['kind'] == 'dashboard' and r.get('route')}
     for r in records:
         ids = []
         for l in r.get('see_also', []):
@@ -422,7 +422,7 @@ def main():
     ap.add_argument('--no-probe', action='store_true', help='skip live API probes')
     ap.add_argument('--moh-dir', default=os.path.join(ROOT, '.cache', 'moh'), help='where the MoH-Malaysia repositories are cloned')
     ap.add_argument('--sharecode-dir', default=os.path.join(ROOT, '.cache', 'sharecode'), help='where booluckgmie/sharecode is cloned (into a sharecode/ subfolder)')
-    ap.add_argument('--skip', nargs='*', default=[], choices=['bnm', 'moh', 'electiondata', 'sharecode'], help='leave a source out')
+    ap.add_argument('--skip', nargs='*', default=[], choices=['bnm', 'moh', 'electiondata', 'sharecode', 'napic'], help='leave a source out')
     ap.add_argument('--out', default=os.path.join(ROOT, 'registry', 'registry.json'))
     a = ap.parse_args()
     meta = ensure_meta(a.meta)
@@ -432,6 +432,8 @@ def main():
         recs += bnm.build_bnm(ag, infer_keys, os.path.join(ROOT, '.cache', 'bnm'), log)
     if 'electiondata' not in a.skip:
         recs += electiondata.build_electiondata(ag, infer_keys, os.path.join(ROOT, '.cache', 'electiondata'), log)
+    if 'napic' not in a.skip:
+        recs += napic.build_napic(ag, infer_keys, log)
     if 'sharecode' not in a.skip:
         recs += sharecode.build_sharecode(infer_keys, a.sharecode_dir, log)
     if 'moh' not in a.skip:
@@ -451,6 +453,7 @@ def main():
                     {'name': 'BNM Open API specification', 'url': 'https://api.bnm.gov.my/api/specification/categories'},
                     {'name': 'MoH-Malaysia GitHub repositories', 'url': 'https://github.com/MoH-Malaysia'},
                     {'name': 'ElectionData.MY data catalogue (independent project)', 'url': 'https://electiondata.my/data-catalogue/'},
+                    {'name': 'NAPIC publications portal (JPPH)', 'url': 'https://napic.jpph.gov.my/ms/archives/pasaran-harta-tanah'},
                     {'name': 'booluckgmie/sharecode archive (allowlisted folders only)', 'url': 'https://github.com/booluckgmie/sharecode'}],
         'counts': dict(counts), 'records': recs,
     }
