@@ -18,7 +18,7 @@ PORTAL_NAME = {'datagovmy': 'data.gov.my', 'opendosm': 'OpenDOSM', 'kkmnow': 'KK
                'bnmapi': 'BNM Open API', 'mohgithub': 'MOH on GitHub', 'electiondata': 'ElectionData.MY',
                'sharecode': 'GitHub archive', 'doeapims': 'DOE APIMS', 'gso': 'GSO', 'sabahjobs': 'Sabah job portal',
                'napic': 'NAPIC', 'mpob': 'MPOB', 'bursa': 'Bursa Malaysia',
-               'llm': 'LLM', 'datagovarchive': 'old data.gov.my portal'}
+               'llm': 'LLM', 'datagovarchive': 'old data.gov.my portal', 'dosm': 'DOSM'}
 TYPE_LABEL = {'csv': 'CSV', 'parquet': 'Parquet', 'api': 'API', 'pdf': 'PDF', 'excel': 'Excel'}
 GEO_RANK = ['DISTRICT', 'DUN', 'PARLIMEN', 'STATE', 'NATIONAL']
 
@@ -126,6 +126,13 @@ def build(reg):
             d['rn'] = len(r['releases'])
             d['md'] = [[m['label'], m['url']] for m in r.get('methodology_docs', [])]
             d['da'] = r['last_updated']
+            if r.get('history'):
+                hs = r['history']
+                d['hist'] = [[h['date'], h['title'], h['url']] for h in hs[:40]]
+                d['hn'] = len(hs)
+                d['hb'] = min(int(y) for h in hs for y in [min([int(x) for x in re.findall(r'\b(?:19|20)\d{2}\b', h['title'])] or [int(h['date'][:4])])])
+                if r.get('archive_url') and r['archive_url'] not in dead:
+                    d['lk'].append(['Release archive (all editions)', r['archive_url']])
         d['fit'] = fit(d, today)
         out.append(d)
     return out, withheld

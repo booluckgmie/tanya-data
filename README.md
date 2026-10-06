@@ -34,7 +34,9 @@ python3 harvest/build_app.py
 | Report series | NAPIC (JPPH) property publications: 14 series across market, stock, status and price/rental indices, read from napic.jpph.gov.my (`harvest/napic.py`) | 14 |
 | Dashboard | NAPIC open transaction data, an embedded Tableau Public dashboard | 1 |
 | Report series | DOSM publications (`pub-dosm/`), editions grouped into series, with technical notes attached | 94 |
+| Report series | DOSM release archive (`harvest/dosm_archive.py`): edition history back to 2014 added to 8 labour and wage series (Salaries & Wages 15 editions, Labour Force 194), plus a new series, Job Vacancies Advertised Online | 1 new |
 | Dashboard | portal dashboards and explorers (`dashboards/`, `explorers/`) | 56 |
+| Live feed | DOE APIMS public API: hourly Air Pollutant Index by station, last 24 hours (`harvest/doe.py`) | 1 |
 | Live feed | data.gov.my realtime APIs read from the developer docs: weather forecast, weather and earthquake warnings, flood warning, GTFS static and realtime for KTMB, Prasarana and BAS.MY (`harvest/devdocs.py`) | 10 |
 | API | data.gov.my static query APIs from the same docs: the Data Catalogue API and the OpenDOSM API | 2 |
 
@@ -51,8 +53,14 @@ See `registry/SCHEMA.md` for the record format and `registry/tiers.json` for the
 - A record whose official portal page returns 404/410 is withheld from the app and listed in `registry/link_report.md`. A network error never hides a record.
 - Tiers and fitness scores are estimates made by this tool, not official ratings.
 
+## Considered and not indexed
+
+- **PAYGAP Asia (paygap.asia):** a crowdsourced salary-sharing platform (users submit payslips to unlock the data). It has no public API, only the internal endpoints its own web app calls, and its Terms of Use forbid copying, reproducing or publicly displaying its content. It is also not official data. Not indexed, and its endpoints are not called. The official labour and wage series are in the registry instead.
+- **Commercial salary and job-market reports** (for example Hays, Robert Walters, Michael Page, Randstad, JobStreet, LinkedIn): not indexed pending a decision on whether third-party commercial sources belong at Tier 3. No LinkedIn Malaysia annual series was found. DOSM's own Job Vacancies Advertised Online series is the official counterpart.
+
 ## Known gaps
 
+- The platform stores edition titles, dates and links for historical series, not the figures inside them. Extracting values into a separate store would be a different design and needs an explicit decision.
 - The `sharecode` adapter is an allowlist. That repository also holds personal, employer and research files, which are never read. Weather (Open-Meteo, not official), `data_oku` (origin undocumented) and `SARA2025` (third-party platform, business addresses) are left out on purpose.
 - Not harvested because the host refuses this environment: the Ministry of Education EMIS Risalah map (`emisonline.moe.gov.my/risalahmap/`) resets the TLS handshake and `www.moe.gov.my` returns 403. Run the pipeline from another network, or add the host to the environment's allowed domains and retry.
 - Toll rates: the official rate lookup (`kadartol.llm.gov.my`) and the old data.gov.my toll datasets could not be read from the harvesting environment (503, connection reset, and a firewall 403). They are indexed as pointers from search results, marked unverified, and no rate values are stored. Rerun from another network to read them.

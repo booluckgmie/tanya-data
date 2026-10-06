@@ -12,7 +12,7 @@ Standard library only.
 """
 import argparse, glob, json, os, re, subprocess, sys, urllib.request
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import bnm, devdocs, electiondata, moh, napic, sharecode, tolls
+import bnm, devdocs, doe, dosm_archive, electiondata, moh, napic, sharecode, tolls
 from collections import defaultdict
 from datetime import datetime, timezone
 
@@ -29,6 +29,7 @@ PORTALS = {
     'devdocs': ('data.gov.my API docs', 'https://developer.data.gov.my'),
     'llm': ('LLM', 'https://www.llm.gov.my'),
     'datagovarchive': ('old data.gov.my portal', 'https://www.data.gov.my/data'),
+    'dosm': ('DOSM release archive', 'https://www.dosm.gov.my'),
 }
 # Portal that owns a dashboard/publication when the metadata names no agency.
 PORTAL_AGENCY = {'opendosm': 'dosm', 'kkmnow': 'moh', 'databnm': 'bnm'}
@@ -343,12 +344,14 @@ def main():
     ap.add_argument('--no-probe', action='store_true', help='skip live API probes')
     ap.add_argument('--moh-dir', default=os.path.join(ROOT, '.cache', 'moh'), help='where the MoH-Malaysia repositories are cloned')
     ap.add_argument('--sharecode-dir', default=os.path.join(ROOT, '.cache', 'sharecode'), help='where booluckgmie/sharecode is cloned (into a sharecode/ subfolder)')
-    ap.add_argument('--skip', nargs='*', default=[], choices=['bnm', 'moh', 'electiondata', 'sharecode', 'napic', 'devdocs', 'tolls'], help='leave a source out')
+    ap.add_argument('--skip', nargs='*', default=[], choices=['bnm', 'moh', 'electiondata', 'sharecode', 'napic', 'devdocs', 'tolls', 'doe', 'dosm_archive'], help='leave a source out')
     ap.add_argument('--out', default=os.path.join(ROOT, 'registry', 'registry.json'))
     a = ap.parse_args()
     meta = ensure_meta(a.meta)
     ag = Agencies(meta)
     recs = build_datasets(meta, ag) + build_publications(meta, ag) + build_dashboards(meta, ag)
+    if 'doe' not in a.skip:
+        recs += doe.build_doe(ag, infer_keys, log)
     if 'tolls' not in a.skip:
         recs += tolls.build_tolls(ag, log)
     if 'devdocs' not in a.skip:
@@ -363,6 +366,8 @@ def main():
         recs += sharecode.build_sharecode(infer_keys, a.sharecode_dir, log)
     if 'moh' not in a.skip:
         recs += moh.build_moh(ag, infer_keys, a.moh_dir, log)
+    if 'dosm_archive' not in a.skip:
+        recs += dosm_archive.enrich(recs, ag, log)  # after every source is built: it enriches earlier records
     link_graph(recs)
     try:
         commit = subprocess.run(['git', '-C', meta, 'rev-parse', 'HEAD'], capture_output=True, text=True).stdout.strip()

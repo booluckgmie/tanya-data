@@ -191,7 +191,8 @@ const GLOSSARY = [
  G('rent (proxy via CPI housing)',['rent','sewa','rental','rumah sewa'],'cpi housing consumer price index',true),
  G('fuel price',['petrol','minyak','diesel','fuel','ron95','ron97','bahan api','minyak petrol'],'fuelprice petroleum diesel price'),
  G('poverty',['poverty','kemiskinan','miskin','poor','b40','hardcore poor'],'poverty income household percentile'),
- G('household income',['income','gaji','pendapatan','salary','wages','upah','earnings','m40','t20','pendapatan isi rumah'],'household income hies percentile'),
+ G('salaries and wages',['salary','salaries','gaji','wage','wages','upah','earnings','average salary','median salary','gaji purata','gaji median','pay gap','paygap'],'salaries wages survey formal sector employee median earnings'),
+ G('household income',['income','pendapatan','m40','t20','pendapatan isi rumah'],'household income hies percentile'),
  G('inequality',['inequality','ketaksamaan','gini','income gap','jurang pendapatan'],'inequality gini income'),
  G('unemployment',['unemployment','unemployed','pengangguran','jobless','menganggur'],'unemployment labour force'),
  G('youth',['youth','belia','anak muda','graduate','graduan'],'youth'),
@@ -261,6 +262,7 @@ const GLOSSARY = [
  G('listed companies',['pn17','gn3','bursa','listed company','listed companies','syarikat tersenarai','distressed company','stock exchange','saham'],'pn17 gn3 bursa listed companies'),
  G('API access',['api','open api','openapi','programmatic','programmatically','developer','endpoint','rest api','json','postman','curl'],'api programmatic access endpoint query developer'),
  G('tolls and highways',['toll','tolls','tol','kadar tol','toll rate','toll rates','toll fee','toll fees','plaza tol','toll plaza','highway','highways','expressway','lebuhraya','lebuh raya','plus highway','touch n go','concession','konsesi','konsesi lebuhraya'],'toll highway expressway concession plaza rate llm'),
+ G('job vacancies',['job vacancy','job vacancies','vacancies','kekosongan jawatan','kekosongan pekerjaan','job market','online job','job ads','job advertisements','iklan kerja','job offerings','linkedin','jobstreet','hiring'],'job vacancies advertised online job market insights'),
  G('classification codes',['classification','klasifikasi','lookup','code list','dictionary','msic','sitc','bec','mcoicop'],'lookup classification msic sitc bec mcoicop')
 ];
 const KIND_LABEL = {dataset:'Dataset', publication:'Report series', dashboard:'Dashboard', live_api:'Live feed', api:'API'};
@@ -441,13 +443,14 @@ const GOLDEN = [
 ["how many cars registered",['registration_transactions_car','registration_transactions_all','registrations_type_fuel']],
 ["tourists arriving in Malaysia",['arrivals','arrivals_soe']],
 ["organ donors",['organ_pledges','organ_pledges_state','organ_pledge_demog']],
-["gaji purata pekerja",['hh_income','hies_malaysia_percentile']],
+["gaji purata pekerja",['hh_income','hies_malaysia_percentile','pub:salaries_wages','pub:formal_sector_wages']],
 ["weather forecast for tomorrow",['api:weather_forecast']],
 ["amaran cuaca angin kencang",['api:weather_warning']],
 ["banjir paras air sungai",['api:flood_warning']],
 ["bus and train timetable data",['api:gtfs_static_prasarana','api:gtfs_static_ktmb','api:gtfs_static_mybas']],
 ["live bus positions",['api:gtfs_realtime_prasarana','api:gtfs_realtime_mybas']],
 ["amaran gempa bumi",['api:weather_earthquake']],
+["air pollutant index right now by station",['api:apims_hourly']],
 ["how do I get data.gov.my datasets through an API",['api:data_catalogue_api']],
 ["OpenDOSM API for CPI",['api:opendosm_api']],
 ["bus timetable data for Ipoh",['api:gtfs_static_mybas']],
@@ -471,6 +474,10 @@ const GOLDEN = [
 ["list of highways and concessionaires",['llm:highways_operating']],
 ["abolished toll plazas",['datagovarchive:toll_abolished']],
 ["highways under construction",['llm:highways_under_construction']],
+["job vacancies advertised online",['dosm:job_market_insights']],
+["salaries and wages survey report",['pub:salaries_wages']],
+["labour force survey annual report",['pub:labour_force']],
+["salary by occupation",['pub:salaries_wages','pub:formal_sector_wages']],
 ["is rent getting more expensive?",['cpi_headline_inflation','cpi_headline','cpi_state']],
 ["road accidents by state",[]],
 ["house prices",['napic:indeks_harga_rumah_malaysia','napic:harga_kediaman_sukuantahunan_terkini','napic:laporan_pasaran_harta_tahunan']],
@@ -539,6 +546,7 @@ function card(r, i, strongOnly){
      '<p>'+esc(desc)+'</p>'+
      (d.res&&d.res.length?'<h4>Files in the latest edition</h4><ul class="files">'+d.res.map(r=>'<li><a href="'+esc(r[2])+'" target="_blank" rel="noopener">'+esc(r[1])+'</a> <span class="dim">('+esc(r[0])+')</span></li>').join('')+'</ul>':'')+
      (d.rn>1?'<p class="dim">'+d.rn+' editions in this series, the earliest covering '+d.b+'.</p>':'')+
+     (d.hist&&d.hist.length?'<h4>Edition history: '+d.hn+' editions since '+d.hb+'</h4><ul class="files">'+d.hist.slice(0,12).map(h=>'<li><span class="dim">'+esc(fmtDate(h[0]))+'</span> <a href="'+esc(h[2])+'" target="_blank" rel="noopener">'+esc(h[1])+'</a></li>').join('')+'</ul>'+(d.hn>12?'<p class="dim">And '+(d.hn-12)+' earlier editions in the release archive.</p>':''):'')+
      (d.md&&d.md.length?'<h4>Methodology</h4><ul class="files">'+d.md.map(r=>'<li><a href="'+esc(r[1])+'" target="_blank" rel="noopener">'+esc(r[0])+'</a></li>').join('')+'</ul>':'')+
      (d.meth?'<h4>How it is produced</h4><p>'+esc(d.meth)+'</p>':'')+
      (d.cav?'<h4>Read before using</h4><p>'+esc(d.cav)+(d.cav.length>=419?'…':'')+'</p>':'')+

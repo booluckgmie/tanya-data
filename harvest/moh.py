@@ -97,6 +97,8 @@ def title_from(desc, fname):
         return BLOOD_TITLES[fname]
     t = re.sub(r'\s*\([^)]*\)', '', desc)  # drop parentheticals, keep the scope words after them
     t = re.split(r'\s*[:,]|\.\s|\.$', t)[0].strip(' .')
+    if not re.match(r'[A-Za-z]', t):  # a README bullet such as "- `idxs`" is not a title
+        t = fname.rsplit('.', 1)[0].replace('_', ' ').capitalize() + ' (static data in the MOH covid19-public repository)'
     if len(t) > 90:
         t = t[:90].rsplit(' ', 1)[0]
     return t[0].upper() + t[1:] if t else fname
