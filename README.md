@@ -72,6 +72,14 @@ See `registry/SCHEMA.md` for the record format and `registry/tiers.json` for the
 
 Daily is the finest granularity published. Only the last three years answer (2024 to 2026 when checked); earlier years return an empty file. `price.mpob.gov.my` and the export duties page need a login and are not touched.
 
+## Preserved copies (`archive/`)
+
+The registry holds metadata only. `archive/` is a separate, deliberate exception: preserved copies of source files that an official site stops serving, so the history survives. The registry still sends users to the official page first.
+
+- `archive/mpob/cpo_daily_YYYY.csv`: MPOB's daily crude palm oil price, one tidy file per year, columns `date, price_rm_per_tonne, status` where status is `price`, `public_holiday`, `no_trade` or `pending`. MPOB serves only the last three years, so each year is saved while it is still available and never deleted afterwards. 2023 was imported from an earlier scrape of the MPOB price pages; 2024 to 2026 come straight from MPOB's Excel export. The parser was checked against that independent scrape (0 differences over 628 days). Future public holidays and weekends in the current year are listed by MPOB in advance and appear with their status and no price.
+- `harvest/archive_mpob.py` does the download and parsing. It rewrites a file only when the parsed content changes (the Excel files embed a new timestamp on every download).
+- `.github/workflows/archive-mpob.yml` runs it every Monday and can be started by hand. It has not yet run on GitHub: the first run needs the Actions tab, and GitHub runs scheduled workflows from the default branch only.
+
 ## Known gaps
 
 - The platform stores edition titles, dates and links for historical series, not the figures inside them. Extracting values into a separate store would be a different design and needs an explicit decision.

@@ -1,0 +1,34 @@
+{
+ "2023": {
+  "rows": 365,
+  "priced_days": 235,
+  "first_priced": "2023-01-03",
+  "last_priced": "2023-12-27",
+  "source": "imported from an earlier scrape of the MPOB price pages",
+  "sha256": "85a60802ab4c4670"
+ },
+ "2024": {
+  "rows": 366,
+  "priced_days": 240,
+  "first_priced": "2024-01-02",
+  "last_priced": "2024-12-30",
+  "source": "MPOB Excel export",
+  "sha256": "866ed259eda51435"
+ },
+ "2025": {
+  "rows": 365,
+  "priced_days": 242,
+  "first_priced": "2025-01-02",
+  "last_priced": "2025-12-31",
+  "source": "MPOB Excel export",
+  "sha256": "83cdfcf99839220d"
+ },
+ "2026": {
+  "rows": 302,
+  "priced_days": 181,
+  "first_priced": "2026-01-02",
+  "last_priced": "2026-10-05",
+  "source": "MPOB Excel export",
+  "sha256": "b10ba5a0c1fb57f6"
+ }
+}
