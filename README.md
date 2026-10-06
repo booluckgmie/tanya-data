@@ -33,6 +33,7 @@ python3 harvest/build_app.py
 | Dashboard / Dataset | Toll rate lookup (kadartol.llm.gov.my) and two old data.gov.my toll datasets: **identified through web search only, not read**, flagged unreachable | 3 |
 | Report series | NAPIC (JPPH) property publications: 14 series across market, stock, status and price/rental indices, read from napic.jpph.gov.my (`harvest/napic.py`) | 14 |
 | Dashboard | NAPIC open transaction data, an embedded Tableau Public dashboard | 1 |
+| Dataset / Report series | MPOB public pages (`harvest/mpob.py`): daily CPO price (rolling 3 years, Excel per year), the latest monthly industry performance report and year summary, and the annual Overview of the Malaysian Oil Palm Industry (10 PDFs, 2016 to 2025) | 4 |
 | Report series | DOSM publications (`pub-dosm/`), editions grouped into series, with technical notes attached | 94 |
 | Report series | DOSM release archive (`harvest/dosm_archive.py`): edition history back to 2014 added to 8 labour and wage series (Salaries & Wages 15 editions, Labour Force 194), plus a new series, Job Vacancies Advertised Online | 1 new |
 | Dashboard | portal dashboards and explorers (`dashboards/`, `explorers/`) | 56 |
@@ -56,7 +57,20 @@ See `registry/SCHEMA.md` for the record format and `registry/tiers.json` for the
 ## Considered and not indexed
 
 - **PAYGAP Asia (paygap.asia):** a crowdsourced salary-sharing platform (users submit payslips to unlock the data). It has no public API, only the internal endpoints its own web app calls, and its Terms of Use forbid copying, reproducing or publicly displaying its content. It is also not official data. Not indexed, and its endpoints are not called. The official labour and wage series are in the registry instead.
+- **JobStreet's internal search API** (`/api/chalice-search/...`): not called. JobStreet's terms say "You may not use data mining, robots, screen scraping, or similar automated data gathering, extraction or publication tools on our websites and apps", and its robots.txt disallows its job search API paths. The endpoint is undocumented and the pasted URL carried personal user and session ids, which are deliberately not stored here. DOSM's Job Vacancies Advertised Online (built from job ads on major private recruitment platforms) is the official source.
 - **Commercial salary and job-market reports** (for example Hays, Robert Walters, Michael Page, Randstad, JobStreet, LinkedIn): not indexed pending a decision on whether third-party commercial sources belong at Tier 3. No LinkedIn Malaysia annual series was found. DOSM's own Job Vacancies Advertised Online series is the official counterpart.
+
+## MPOB URL patterns (bepi.mpob.gov.my)
+
+| What | Pattern |
+|---|---|
+| Daily CPO price, table | `/admin2/price_local_daily_view_cpo_msia.php?more=Y&jenis={1W,1M,3M,6M,1Y}[&tahun=YYYY]` |
+| Daily CPO price, chart | `/admin2/chart_cpomsia.php?jenis={1W,1M,3M,6M,1Y}&tahun=YYYY` |
+| Daily CPO price, Excel | `/admin2/price_local_daily_view_cpo_msia_excel.php?val=YYYY&excel=Y` |
+| Monthly performance report | `/stat/web_report1.php?val=<id>&val1=<MM>`: latest month only; `<id>` cannot be derived for other months |
+| Annual overview | `/images/overview/Overview_of_Industry_YYYY.pdf` (2016 to 2020), `Overview{YYYY}.pdf` (2021 on) |
+
+Daily is the finest granularity published. Only the last three years answer (2024 to 2026 when checked); earlier years return an empty file. `price.mpob.gov.my` and the export duties page need a login and are not touched.
 
 ## Known gaps
 

@@ -164,10 +164,11 @@ def build_sharecode(infer_keys, base, log):
     out.append(rec('mpob_cpo_daily', 'Crude palm oil (CPO) local daily price (archive of MPOB data)',
         'Daily local crude palm oil price, scraped from the Malaysian Palm Oil Board price pages. Public holidays and non-trading days are marked rather than priced.',
         'Agriculture', [agency('mpob', 'Malaysian Palm Oil Board (MPOB)', 2)],
-        {'portal': 'mpob', 'url': 'https://bepi.mpob.gov.my/'}, tree('mpob'),
+        {'portal': 'mpob', 'url': 'https://bepi.mpob.gov.my/admin2/price_local_daily_view_cpo_msia.php?more=Y&jenis=1W'}, tree('mpob'),
         [{'type': 'csv', 'label': 'CSV', 'url': raw('mpob/cpo_daily_prices.csv')}, {'type': 'web', 'label': 'Yearly files (GitHub folder)', 'url': tree('mpob/data')}],
         header(p), ['date'], 'DAILY', int(lo[:4]), int(hi[:4]), hi, [],
-        'Priced days run from %s to %s. The price column holds PH (public holiday) or NT (no trade) on other days, and the file lists dates beyond the last priced day.' % (lo, hi)))
+        'Priced days run from %s to %s. The price column holds PH (public holiday) or NT (no trade) on other days, and the file lists dates beyond the last priced day. MPOB now serves only the last three years, so the 2023 prices in this archive are no longer available from MPOB.' % (lo, hi),
+        related=['mpob:cpo_daily_price']))
 
     # --- Bursa PN17 / GN3
     p = os.path.join(d, 'bursaMY', 'pn17_gn3_companies.csv')

@@ -490,7 +490,10 @@ const GOLDEN = [
 ["hourly air pollutant index by station",['sharecode:apims_hourly']],
 ["electricity generation by fuel type",['sharecode:gso_generation']],
 ["sabah job vacancies",['sharecode:sabah_jobs']],
-["crude palm oil price",['sharecode:mpob_cpo_daily']],
+["crude palm oil price",['sharecode:mpob_cpo_daily','mpob:cpo_daily_price']],
+["harga harian minyak sawit mentah",['mpob:cpo_daily_price']],
+["monthly palm oil production and stocks",['mpob:monthly_performance']],
+["overview of the Malaysian oil palm industry annual report",['mpob:overview_of_industry']],
 ["PN17 companies on Bursa",['sharecode:bursa_pn17_gn3']]
 ];
 const state = {lang:'en', q:'', kind:'all', ignore:new Set(), sel:[], res:null, open:new Set()};
@@ -546,7 +549,7 @@ function card(r, i, strongOnly){
      '<p>'+esc(desc)+'</p>'+
      (d.res&&d.res.length?'<h4>Files in the latest edition</h4><ul class="files">'+d.res.map(r=>'<li><a href="'+esc(r[2])+'" target="_blank" rel="noopener">'+esc(r[1])+'</a> <span class="dim">('+esc(r[0])+')</span></li>').join('')+'</ul>':'')+
      (d.rn>1?'<p class="dim">'+d.rn+' editions in this series, the earliest covering '+d.b+'.</p>':'')+
-     (d.hist&&d.hist.length?'<h4>Edition history: '+d.hn+' editions since '+d.hb+'</h4><ul class="files">'+d.hist.slice(0,12).map(h=>'<li><span class="dim">'+esc(fmtDate(h[0]))+'</span> <a href="'+esc(h[2])+'" target="_blank" rel="noopener">'+esc(h[1])+'</a></li>').join('')+'</ul>'+(d.hn>12?'<p class="dim">And '+(d.hn-12)+' earlier editions in the release archive.</p>':''):'')+
+     (d.hist&&d.hist.length?'<h4>Edition history: '+d.hn+' editions since '+d.hb+'</h4><ul class="files">'+d.hist.slice(0,12).map(h=>'<li>'+(h[0]?'<span class="dim">'+esc(fmtDate(h[0]))+'</span> ':'')+'<a href="'+esc(h[2])+'" target="_blank" rel="noopener">'+esc(h[1])+'</a></li>').join('')+'</ul>'+(d.hn>12?'<p class="dim">And '+(d.hn-12)+' earlier editions in the release archive.</p>':''):'')+
      (d.md&&d.md.length?'<h4>Methodology</h4><ul class="files">'+d.md.map(r=>'<li><a href="'+esc(r[1])+'" target="_blank" rel="noopener">'+esc(r[0])+'</a></li>').join('')+'</ul>':'')+
      (d.meth?'<h4>How it is produced</h4><p>'+esc(d.meth)+'</p>':'')+
      (d.cav?'<h4>Read before using</h4><p>'+esc(d.cav)+(d.cav.length>=419?'…':'')+'</p>':'')+

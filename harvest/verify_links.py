@@ -77,7 +77,7 @@ def targets(rec):
     t = [('page', p['url']) for p in rec['pages'] if p['portal'] != 'datagovmy' or rec['kind'] != 'live_api']
     acc = rec['access']
     if rec['kind'] == 'dataset':
-        acc = [a for a in acc if a['type'] == 'csv'][:1] or [a for a in acc if a['type'] == 'api' and '{' not in a['url']][:1]
+        acc = [a for a in acc if a['type'] in ('csv', 'excel', 'parquet')][:1] or [a for a in acc if a['type'] == 'api' and '{' not in a['url']][:1]
     elif rec['kind'] in ('dashboard', 'live_api', 'api'):
         acc = acc[:1]  # one endpoint is enough to show the API is up; several per record would breach its rate limit
     t += [('file', a['url']) for a in acc if 'YYYY' not in a['url'] and '{' not in a['url']]  # templated partition URLs cannot be checked
