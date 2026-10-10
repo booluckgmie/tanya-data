@@ -1,6 +1,6 @@
 # Link check report
 
-Checked 2026-10-06T01:03Z. A record is "ok" when its portal page answers and its file is not gone.
+Checked 2026-10-10T07:44Z. A record is "ok" when its portal page answers and its file is not gone.
 
 | Kind | Records | OK |
 |---|---|---|
@@ -8,7 +8,7 @@ Checked 2026-10-06T01:03Z. A record is "ok" when its portal page answers and its
 | dashboard | 58 | 48 |
 | dataset | 890 | 827 |
 | live_api | 11 | 11 |
-| publication | 110 | 110 |
+| publication | 169 | 169 |
 
 ## Portal page not found (404/410): 6
 
