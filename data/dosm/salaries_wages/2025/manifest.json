@@ -1,0 +1,742 @@
+{
+ "source_url": "https://storage.dosm.gov.my/labour/salaries_wages_2025.xlsx",
+ "edition": "2025",
+ "file_sha256_16": "cf50d5a11ab5a8e4",
+ "method": "xlsx cell read (exact, no OCR)",
+ "values_rows": 14448,
+ "tables": [
+  {
+   "table": "A1",
+   "sheet": "JADUAL A1 Umur Jumlah",
+   "title": "A1: Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut kumpulan umur, Malaysia, 2010–2025 | A1: Number of recipients, median and mean m",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 528,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A2",
+   "sheet": "JADUAL A2 Umur Lelaki",
+   "title": "A2: Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut kumpulan umur dan jantina, Malaysia , 2010–2025 | Table A2: Number of recipients",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 528,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A2",
+   "sheet": "JADUAL A2 Umur Perempuan",
+   "title": "A2: Bilangan penerima, Penengah dan purata gaji & upah bulanan pekerja mengikut kumpulan umur dan jantina, Malaysia, 2010–2025 (samb.) | A2: Number of recipient",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 528,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A3",
+   "sheet": "JADUAL A3 TP Jum",
+   "title": "A3: Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut pencapaian pendidikan, Malaysia, 2010–2025 | A3: Number of recipients, median an",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 240,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A4",
+   "sheet": "JADUAL A4 TP Lelaki",
+   "title": "A4: Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut pencapaian pendidikan dan jantina, Malaysia, 2010–2025 | A4: Number of recipient",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 240,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A4",
+   "sheet": "JADUAL A4 TP Perempuan",
+   "title": "A4: Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut pencapaian pendidikan dan jantina, Malaysia, 2010–2025 (samb.) | A4: Number of r",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 240,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A5",
+   "sheet": "JADUAL A5 Sijil Jumlah",
+   "title": "A5: Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut sijil tertinggi diperoleh, Malaysia, 2010–2025 | A5: Number of recipients, media",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 288,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A6",
+   "sheet": "JADUAL A6 Sijil Lelaki",
+   "title": "A6: Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut sijil tertinggi diperoleh dan jantina, Malaysia, 2010–2025 | A6: Number of recip",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 288,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A6",
+   "sheet": "JADUAL A6 Sijil Perempuan",
+   "title": "A6: Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut sijil tertinggi diperoleh dan jantina, Malaysia, 2010–2025 (samb.) | A6: Number ",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 288,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A7",
+   "sheet": "JADUAL A7 Strata",
+   "title": "A7: Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut strata dan jantina, Malaysia, 2010–2025 | A7: Number of recipients, median and m",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 432,
+   "blank_cells": 0,
+   "sum_checks": 48,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A8",
+   "sheet": "JADUAL A8 Negeri Jum. Penerima",
+   "title": "A8 : Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut negeri, Malaysia, 2010–2025 | A8: Number of recipients, median and mean monthly",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 272,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A8",
+   "sheet": "JADUAL A8 Negeri Jum. Penengah",
+   "title": "A8 : Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut negeri, Malaysia, 2010–2025 (samb.) | A8: Number of recipients, median and mean",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 272,
+   "blank_cells": 0,
+   "sum_checks": 0,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A8",
+   "sheet": "JADUAL A8 Negeri Jum. Purata",
+   "title": "A8 : Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut negeri, Malaysia, 2010–2025 (samb.) | A8: Number of recipients, median and mean",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 272,
+   "blank_cells": 0,
+   "sum_checks": 0,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A9",
+   "sheet": "JADUAL A9Negeri Lelaki Penerima",
+   "title": "A9 : Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut negeri dan jantina, Malaysia, 2010–2025 | A9: Number of recipients, median and ",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 272,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A9",
+   "sheet": "JADUAL A9Negeri Lelaki Penengah",
+   "title": "A9 : Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut negeri dan jantina, Malaysia, 2010–2025 (samb.) | A9: Number of recipients, med",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 272,
+   "blank_cells": 0,
+   "sum_checks": 0,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A9",
+   "sheet": "JADUAL A9 Negeri Lelaki Purata",
+   "title": "A9 : Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut negeri dan jantina, Malaysia, 2010–2025 (samb.) | A9: Number of recipients, med",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 272,
+   "blank_cells": 0,
+   "sum_checks": 0,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A9",
+   "sheet": "JADUAL A9 NG. Prmpuan. Penerima",
+   "title": "A9 : Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut negeri dan jantina, Malaysia, 2010–2025 (samb.) | A9: Number of recipeints, med",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 272,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A9",
+   "sheet": "JADUAL A9 NG. Prmpuan. Penengah",
+   "title": "A9 : Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut negeri dan jantina, Malaysia, 2010–2025 (samb.) | A9: Number of recipeints, med",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 272,
+   "blank_cells": 0,
+   "sum_checks": 0,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A9",
+   "sheet": "JADUAL A9 NG. Prmpuan. Purata",
+   "title": "A9 : Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut negeri dan jantina, Malaysia, 2010–2025 (samb.) | A9: Number of recipeints, med",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 272,
+   "blank_cells": 0,
+   "sum_checks": 0,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A10",
+   "sheet": "JADUAL A10 Pekerjaan Jumlah",
+   "title": "A10 : Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut pekerjaan, Malaysia, 2010–2025 | A10: Number of recipients, median and mean mo",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 480,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A11",
+   "sheet": "JADUAL A11 Pekerjaan Lelaki",
+   "title": "A11 : Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut pekerjaan dan jantina, Malaysia, 2010–2025 | A11: Number of recipients, median",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 480,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A11",
+   "sheet": "JADUAL A11 Pekerjaan Perempuan",
+   "title": "A11 : Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut pekerjaan dan jantina, Malaysia, 2010–2025 (samb.) | A11: Number of recipients",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 480,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A12",
+   "sheet": "JADUAL A12 Kategori mahir",
+   "title": "A12 : Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut kategori kemahiran dan jantina, Malaysia, 2010–2025 | A12: Number of recipient",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 576,
+   "blank_cells": 0,
+   "sum_checks": 48,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A13",
+   "sheet": "JADUAL A13 Ind Jum Penerima",
+   "title": "A13: Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut industri, Malaysia, 2010–2025 | A13: Number of recipients, median and mean mont",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 320,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A13",
+   "sheet": "JADUAL A13 Ind Jum Penengah",
+   "title": "A13: Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut industri, Malaysia, 2010–2025 (samb.) | A13: Number of recipients, median and m",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 320,
+   "blank_cells": 0,
+   "sum_checks": 0,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A13",
+   "sheet": "JADUAL A13 Ind Jum Purata",
+   "title": "A13 : Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut industri, Malaysia, 2010–2025 (samb.) | A13: Number of recipients, median and ",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 320,
+   "blank_cells": 0,
+   "sum_checks": 0,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A14",
+   "sheet": "JADUAL A14 Ind Lelaki Penerima",
+   "title": "A14: Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut industri dan jantina, Malaysia, 2010–2025 | A14: Number of recipients, median a",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 320,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A14",
+   "sheet": "JADUAL A14 Ind Lelaki Penengah",
+   "title": "A14: Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut industri dan jantina, Malaysia, 2010–2025 (samb.) | A14: Number of recipients, ",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 320,
+   "blank_cells": 0,
+   "sum_checks": 0,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A14",
+   "sheet": "JADUAL A14 Ind Lelaki Purata",
+   "title": "A14 : Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut industri dan jantina, Malaysia, 2010–2025 (samb.) | A14: Number of recipients,",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 320,
+   "blank_cells": 0,
+   "sum_checks": 0,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A14",
+   "sheet": "JADUAL A14 Ind Perem Penerima",
+   "title": "A14: Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut industri dan jantina, Malaysia, 2010–2025 (samb.) | A14: Number of recipients, ",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 320,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A14",
+   "sheet": "JADUAL A14 Ind Perem Penengah",
+   "title": "A14: Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut industri dan jantina, Malaysia, 2010–2025 (samb.) | A14: Number of recipients, ",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 320,
+   "blank_cells": 0,
+   "sum_checks": 0,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A14",
+   "sheet": "JADUAL A14 Ind Perem Purata",
+   "title": "A14 : Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut industri dan jantina, Malaysia, 2010–2025 (samb.) | A14: Number of recipients,",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 320,
+   "blank_cells": 0,
+   "sum_checks": 0,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A15",
+   "sheet": "JADUAL A15 Sektor Jumlah",
+   "title": "A15 : Bilangan penerima, median dan purata gaji & upah bulanan pekerja mengikut sektor, Malaysia, 2010–2025 | A15: Number of recipients, median and mean monthly",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 288,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A16",
+   "sheet": "JADUAL A16 Sektor Lelaki",
+   "title": "A16 : Bilangan penerima, median dan purata gaji & upah bulanan pekerja mengikut sektor dan jantina, Malaysia, 2010–2025 | A16:  Number of recipients, median and",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 288,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "A16",
+   "sheet": "JADUAL A16 Sektor Perempuan",
+   "title": "A16 : Bilangan penerima, median dan purata gaji & upah bulanan pekerja mengikut sektor dan jantina, Malaysia, 2010–2025 (samb.) | A16:  Number of recipients, me",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 288,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "B1",
+   "sheet": "JADUAL B1 etnik",
+   "title": "B1 : Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut etnik, Malaysia, 2010–2025 | B1 : Number of recipients, median and mean monthly",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 336,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [
+    [
+     "('', '2010')",
+     "8414.6",
+     "15563.8"
+    ],
+    [
+     "('', '2011')",
+     "8983.4",
+     "16617.4"
+    ],
+    [
+     "('', '2012')",
+     "9166.2",
+     "16949.1"
+    ],
+    [
+     "('', '2013')",
+     "9540.6",
+     "17443.7"
+    ],
+    [
+     "('', '2014')",
+     "10146.6",
+     "18539.0"
+    ]
+   ],
+   "issues": []
+  },
+  {
+   "table": "B2",
+   "sheet": "JADUAL B2 Etnik Lelaki",
+   "title": "B2 : Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut etnik dan jantina,  Malaysia, 2010–2025 (samb.) | B2 : Number of recipients, me",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 336,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [
+    [
+     "('', '2010')",
+     "5440.8",
+     "9873.4"
+    ],
+    [
+     "('', '2011')",
+     "5774.2",
+     "10454.2"
+    ],
+    [
+     "('', '2012')",
+     "5874.4",
+     "10619.4"
+    ],
+    [
+     "('', '2013')",
+     "6113.4",
+     "10897.6"
+    ],
+    [
+     "('', '2014')",
+     "6420.8",
+     "11491.5"
+    ]
+   ],
+   "issues": []
+  },
+  {
+   "table": "B2",
+   "sheet": "JADUAL B2 Etnik Perempuan",
+   "title": "B2 : Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja mengikut etnik dan jantina,  Malaysia, 2010–2025 (samb.) | B2 : Number of recipients, me",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 336,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [
+    [
+     "('', '2010')",
+     "2973.7999999999997",
+     "5690.5"
+    ],
+    [
+     "('', '2011')",
+     "3209.2000000000003",
+     "6163.2"
+    ],
+    [
+     "('', '2012')",
+     "3291.8",
+     "6329.7"
+    ],
+    [
+     "('', '2013')",
+     "3427.2",
+     "6546.2"
+    ],
+    [
+     "('', '2014')",
+     "3725.8",
+     "7047.8"
+    ]
+   ],
+   "issues": []
+  },
+  {
+   "table": "C1",
+   "sheet": "JAD C1 C2 bukan warganegara",
+   "title": "C1: Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja bukan warganegara mengikut jantina, Malaysia, 2010–2025 | C1: Number of recipients, media",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 304,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "C3",
+   "sheet": "JAD C3 bukan warganegara",
+   "title": "C3: Bilangan penerima, penengah dan purata gaji & upah bulanan pekerja bukan warganegara mengikut pencapaian pendidikan, Malaysia, 2010–2025 | C3: Number of rec",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 240,
+   "blank_cells": 0,
+   "sum_checks": 16,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "JADUAL D1",
+   "sheet": "JADUAL D1",
+   "title": "D1 : Penengah dan purata gaji & upah benar bulanan mengikut negeri, Malaysia, 2010 - 2025 | D1: Real median and mean monthly salaries & wages by state, Malaysia",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 272,
+   "blank_cells": 0,
+   "sum_checks": 0,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "JADUAL D1 (Samb.)",
+   "sheet": "JADUAL D1 (Samb.)",
+   "title": "D1 : Penengah dan purata gaji & upah benar bulanan mengikut negeri, Malaysia, 2010 - 2025 (samb.) | D1: Real median and mean monthly salaries & wages by state, ",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 272,
+   "blank_cells": 0,
+   "sum_checks": 0,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "JADUAL D2",
+   "sheet": "JADUAL D2",
+   "title": "D2 : Penengah dan purata gaji & upah benar bulanan warganegara Malaysia mengikut negeri, Malaysia, 2010-2025 | D2: Real median and mean monthly salaries & wages",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 272,
+   "blank_cells": 0,
+   "sum_checks": 0,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "JADUAL D2 (Samb.)",
+   "sheet": "JADUAL D2 (Samb.)",
+   "title": "D2 : Penengah dan purata gaji & upah benar bulanan warganegara Malaysia mengikut \nnegeri, Malaysia, 2010-2025 (samb.) | D2: Real median and mean monthly salarie",
+   "years": [
+    "2010",
+    "2025"
+   ],
+   "rows": 272,
+   "blank_cells": 0,
+   "sum_checks": 0,
+   "sum_failures": [],
+   "issues": []
+  },
+  {
+   "table": "Jadual E1 Negeri",
+   "sheet": "Jadual E1 Negeri",
+   "title": "E1: Ralat piawai relatif bagi purata gaji & upah bulanan pekerja mengikut negeri, Malaysia, 2025 | E1: Relative standard error for mean monthly salaries & wages",
+   "years": null,
+   "rows": 0,
+   "blank_cells": 0,
+   "sum_checks": 0,
+   "sum_failures": [],
+   "issues": [
+    "no year header"
+   ]
+  },
+  {
+   "table": "JADUAL E2  RSE PEKERJAAN",
+   "sheet": "JADUAL E2  RSE PEKERJAAN",
+   "title": "E2:  Ralat piawai relatif bagi purata gaji & upah bulanan pekerja mengikut pekerjaan, Malaysia, 2025 | E2: Relative standard error for mean monthly salaries & w",
+   "years": null,
+   "rows": 0,
+   "blank_cells": 0,
+   "sum_checks": 0,
+   "sum_failures": [],
+   "issues": [
+    "no year header"
+   ]
+  },
+  {
+   "table": "JADUAL E3  RSE INDUSTRI",
+   "sheet": "JADUAL E3  RSE INDUSTRI",
+   "title": "E3:  Ralat piawai relatif bagi purata gaji & upah bulanan pekerja mengikut industri, Malaysia, 2025 | E3: Relative standard error for mean monthly salaries & wa",
+   "years": null,
+   "rows": 0,
+   "blank_cells": 0,
+   "sum_checks": 0,
+   "sum_failures": [],
+   "issues": [
+    "no year header"
+   ]
+  }
+ ]
+}
