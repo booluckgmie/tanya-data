@@ -1,0 +1,36 @@
+series,year,median_rm_central,low_80,high_80,trend_growth_pct_per_year,last5y_cagr_pct,last_actual_year,last_actual_rm,fit_years
+Occupation: Professionals (MASCO 2),2026,6599,6260,6956,4.5,4.8,2025,6124,2010-2025
+Occupation: Professionals (MASCO 2),2027,6899,6545,7272,4.5,4.8,2025,6124,2010-2025
+Occupation: Professionals (MASCO 2),2028,7212,6842,7603,4.5,4.8,2025,6124,2010-2025
+Occupation: Professionals (MASCO 2),2029,7540,7153,7948,4.5,4.8,2025,6124,2010-2025
+Occupation: Professionals (MASCO 2),2030,7882,7478,8309,4.5,4.8,2025,6124,2010-2025
+Occupation: Managers (MASCO 1),2026,6839,5906,7919,3.2,2.7,2025,6186,2010-2025
+Occupation: Managers (MASCO 1),2027,7056,6094,8171,3.2,2.7,2025,6186,2010-2025
+Occupation: Managers (MASCO 1),2028,7281,6288,8431,3.2,2.7,2025,6186,2010-2025
+Occupation: Managers (MASCO 1),2029,7512,6488,8699,3.2,2.7,2025,6186,2010-2025
+Occupation: Managers (MASCO 1),2030,7752,6694,8976,3.2,2.7,2025,6186,2010-2025
+Occupation: Technicians and associate professionals (MASCO 3),2026,3932,3775,4096,3.7,5.0,2025,3852,2010-2025
+Occupation: Technicians and associate professionals (MASCO 3),2027,4076,3913,4246,3.7,5.0,2025,3852,2010-2025
+Occupation: Technicians and associate professionals (MASCO 3),2028,4226,4057,4402,3.7,5.0,2025,3852,2010-2025
+Occupation: Technicians and associate professionals (MASCO 3),2029,4381,4205,4564,3.7,5.0,2025,3852,2010-2025
+Occupation: Technicians and associate professionals (MASCO 3),2030,4541,4359,4731,3.7,5.0,2025,3852,2010-2025
+Industry: Information and communication,2026,4748,4452,5063,4.1,6.2,2025,4723,2010-2025
+Industry: Information and communication,2027,4940,4633,5268,4.1,6.2,2025,4723,2010-2025
+Industry: Information and communication,2028,5141,4821,5482,4.1,6.2,2025,4723,2010-2025
+Industry: Information and communication,2029,5349,5016,5704,4.1,6.2,2025,4723,2010-2025
+Industry: Information and communication,2030,5566,5220,5935,4.1,6.2,2025,4723,2010-2025
+"Industry: Professional, scientific and technical",2026,4122,3726,4560,4.6,5.2,2025,3873,2010-2025
+"Industry: Professional, scientific and technical",2027,4313,3899,4772,4.6,5.2,2025,3873,2010-2025
+"Industry: Professional, scientific and technical",2028,4514,4080,4993,4.6,5.2,2025,3873,2010-2025
+"Industry: Professional, scientific and technical",2029,4723,4269,5225,4.6,5.2,2025,3873,2010-2025
+"Industry: Professional, scientific and technical",2030,4943,4468,5468,4.6,5.2,2025,3873,2010-2025
+Education: Tertiary (all sectors),2026,4602,4383,4832,3.6,5.6,2025,4571,2010-2025
+Education: Tertiary (all sectors),2027,4769,4542,5007,3.6,5.6,2025,4571,2010-2025
+Education: Tertiary (all sectors),2028,4941,4706,5188,3.6,5.6,2025,4571,2010-2025
+Education: Tertiary (all sectors),2029,5120,4877,5376,3.6,5.6,2025,4571,2010-2025
+Education: Tertiary (all sectors),2030,5306,5053,5571,3.6,5.6,2025,4571,2010-2025
+All employees,2026,3011,2800,3239,4.4,7.2,2025,2940,2010-2025
+All employees,2027,3145,2924,3383,4.4,7.2,2025,2940,2010-2025
+All employees,2028,3285,3054,3533,4.4,7.2,2025,2940,2010-2025
+All employees,2029,3431,3189,3690,4.4,7.2,2025,2940,2010-2025
+All employees,2030,3583,3331,3854,4.4,7.2,2025,2940,2010-2025

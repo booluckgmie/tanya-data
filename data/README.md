@@ -10,3 +10,13 @@ Rules:
 - MOHE statistics are restricted to individual and registered educational use. Their extractor may be run locally; the tables are not republished here.
 
 Pilot: `dosm/salaries_wages/2025` from `salaries_wages_2025.xlsx` (extractor `extract/dosm_xlsx.py`, needs openpyxl).
+
+## Derived files (computed by this project, not official statistics)
+
+- `dosm/salaries_wages/2025/derived_gender_gap.csv`: `gap_pct = (male - female) / male * 100` on DOSM's monthly median and mean, by age, strata, state, occupation, industry, sector, skill and ethnic group, 2010 to 2025. Unadjusted: no control for occupation, hours or experience. Each row names the source rows. Built by `extract/derive_gender_gap.py`.
+- `dosm/salaries_wages/2025/illustrative_trend.csv`: log-linear trend of median pay to 2030 with an approximate 80% band, from `extract/project_trend.py`. An extrapolation of 2010 to 2025, not a forecast. The band covers trend uncertainty only, not the spread of individual salaries.
+
+Scope notes:
+- The 2025 workbook already holds 2010 to 2025 in every table, so older editions are not needed for the series. They would add restatements only.
+- DOSM publishes no data-scientist salary. Its occupation tables stop at the nine MASCO major groups, and its industry tables at MSIC sections. The nearest rows are Professionals and Information and communication.
+- The quarterly formal-sector wage workbook uses a different layout (month columns, two-line headers). It is not parsed yet.
