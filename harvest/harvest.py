@@ -12,7 +12,7 @@ Standard library only.
 """
 import argparse, glob, json, os, re, subprocess, sys, urllib.request
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import bnm, devdocs, doe, dosm_archive, electiondata, moh, mpob, napic, sharecode, tolls
+import bnm, devdocs, doe, dosm_archive, electiondata, moh, mohe, mpob, napic, sharecode, tolls
 from collections import defaultdict
 from datetime import datetime, timezone
 
@@ -30,6 +30,7 @@ PORTALS = {
     'llm': ('LLM', 'https://www.llm.gov.my'),
     'datagovarchive': ('old data.gov.my portal', 'https://www.data.gov.my/data'),
     'dosm': ('DOSM release archive', 'https://www.dosm.gov.my'),
+    'mohe': ('MOHE repository', 'https://repositori.mohe.gov.my'),
 }
 # Portal that owns a dashboard/publication when the metadata names no agency.
 PORTAL_AGENCY = {'opendosm': 'dosm', 'kkmnow': 'moh', 'databnm': 'bnm'}
@@ -344,12 +345,14 @@ def main():
     ap.add_argument('--no-probe', action='store_true', help='skip live API probes')
     ap.add_argument('--moh-dir', default=os.path.join(ROOT, '.cache', 'moh'), help='where the MoH-Malaysia repositories are cloned')
     ap.add_argument('--sharecode-dir', default=os.path.join(ROOT, '.cache', 'sharecode'), help='where booluckgmie/sharecode is cloned (into a sharecode/ subfolder)')
-    ap.add_argument('--skip', nargs='*', default=[], choices=['bnm', 'moh', 'electiondata', 'sharecode', 'napic', 'devdocs', 'tolls', 'doe', 'dosm_archive', 'mpob'], help='leave a source out')
+    ap.add_argument('--skip', nargs='*', default=[], choices=['bnm', 'moh', 'electiondata', 'sharecode', 'napic', 'devdocs', 'tolls', 'doe', 'dosm_archive', 'mpob', 'mohe'], help='leave a source out')
     ap.add_argument('--out', default=os.path.join(ROOT, 'registry', 'registry.json'))
     a = ap.parse_args()
     meta = ensure_meta(a.meta)
     ag = Agencies(meta)
     recs = build_datasets(meta, ag) + build_publications(meta, ag) + build_dashboards(meta, ag)
+    if 'mohe' not in a.skip:
+        recs += mohe.build_mohe(ag, log)
     if 'mpob' not in a.skip:
         recs += mpob.build_mpob(ag, log)
     if 'doe' not in a.skip:

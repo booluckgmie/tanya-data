@@ -18,7 +18,7 @@ PORTAL_NAME = {'datagovmy': 'data.gov.my', 'opendosm': 'OpenDOSM', 'kkmnow': 'KK
                'bnmapi': 'BNM Open API', 'mohgithub': 'MOH on GitHub', 'electiondata': 'ElectionData.MY',
                'sharecode': 'GitHub archive', 'doeapims': 'DOE APIMS', 'gso': 'GSO', 'sabahjobs': 'Sabah job portal',
                'napic': 'NAPIC', 'mpob': 'MPOB', 'bursa': 'Bursa Malaysia',
-               'llm': 'LLM', 'datagovarchive': 'old data.gov.my portal', 'dosm': 'DOSM'}
+               'llm': 'LLM', 'datagovarchive': 'old data.gov.my portal', 'dosm': 'DOSM', 'mohe': 'MOHE repository'}
 TYPE_LABEL = {'csv': 'CSV', 'parquet': 'Parquet', 'api': 'API', 'pdf': 'PDF', 'excel': 'Excel'}
 GEO_RANK = ['DISTRICT', 'DUN', 'PARLIMEN', 'STATE', 'NATIONAL']
 
