@@ -1,0 +1,266 @@
+{
+ "source_url": "https://storage.dosm.gov.my/labour/formal_wages_2026-q1.xlsx",
+ "edition": "2026-Q1",
+ "file_sha256_16": "7c65672e70b90f9d",
+ "method": "xlsx cell read (exact, no OCR)",
+ "scope": "Malaysian citizens in formal-sector employment (EPF/SOCSO/LHDN-based administrative data, per DOSM)",
+ "months": [
+  "2024-10",
+  "2026-03"
+ ],
+ "values_rows": 6432,
+ "tables": [
+  {
+   "table": "1.1a",
+   "title": "Number of formal employees by sex, ethnic and age group, January 2025 - March 2026",
+   "rows": 324,
+   "sum_failures": [],
+   "sum_checks": 54,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "1.1b",
+   "title": "Percentage share of formal employees by sex, ethnic and age group, January 2025 - March 2026",
+   "rows": 324,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "1.1c",
+   "title": "Month-on-month percentage change of formal employees by sex, ethnic and age group, January 2025 - March 2026",
+   "rows": 324,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "1.1d",
+   "title": "Year-on-year percentage change of formal employees by sex, ethnic and age group, January 2025 - March 2026",
+   "rows": 324,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "1.2a",
+   "title": "Number of formal employees by economic activity, January 2025 - March 2026",
+   "rows": 126,
+   "sum_failures": [],
+   "sum_checks": 18,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "1.2b",
+   "title": "Percentage share of number of wages recipient by economic activity, January 2025 - March 2026",
+   "rows": 126,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "1.2c",
+   "title": "Month-on-month percentage change of formal employees by economic activity, January 2025 - March 2026",
+   "rows": 126,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "1.2d",
+   "title": "Year-on-year percentage change of formal employees by economic activity, January 2025 - March 2026",
+   "rows": 126,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "1.3a",
+   "title": "Number of formal employees by state, January 2025 - March 2026",
+   "rows": 306,
+   "sum_failures": [],
+   "sum_checks": 18,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "1.3b",
+   "title": "Percentage share of formal employees by state, January 2025 - March 2026",
+   "rows": 306,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "1.3c",
+   "title": "Month-on-month percentage change of formal employees by state, January 2025 - March 2026",
+   "rows": 306,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "1.3d",
+   "title": "Year-on-year percentage change of formal employees by state, January 2025 - March 2026",
+   "rows": 306,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "2.1a",
+   "title": "Median monthly wages by sex, ethnic and age group, January 2025 - March 2026",
+   "rows": 324,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "2.1b",
+   "title": "Month-on-month percentage change of median monthly wages by sex, ethnic and age group, January 2025 - March 2026",
+   "rows": 324,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "2.1c",
+   "title": "Year-on-year percentage change of median monthly wages by sex, ethnic and age group, January 2025 - March 2026",
+   "rows": 324,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "2.2a",
+   "title": "Median monthly wages by economic activity, January 2025 - March 2026",
+   "rows": 108,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "2.2b",
+   "title": "Month-on-month percentage change of median monthly wages by economic activity, January 2025 - March 2026",
+   "rows": 108,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "2.2c",
+   "title": "Year-on-year percentage change of median monthly wages by economic activity, January 2025 - March 2026",
+   "rows": 90,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "2.3a",
+   "title": "Median monthly wages by state, January 2025 - March 2026",
+   "rows": 255,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "2.3b",
+   "title": "Month-on-month percentage change of median monthly wages by state, January 2025 - March 2026",
+   "rows": 306,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "2.3c",
+   "title": "Year-on-year percentage change of median monthly wages by state, January 2025 - March 2026",
+   "rows": 306,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "3.1a",
+   "title": "Number of formal employees distribution by wages scale, Januari 2025 - Mac 2026",
+   "rows": 270,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "3.1b",
+   "title": "Percentage share of formal employees distribution by wages scale, January 2025 - March 2026",
+   "rows": 270,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "3.2",
+   "title": "Formal employee's monthly wages by percentile, January 2025 - March 2026",
+   "rows": 162,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "3.3a",
+   "title": "Number of formal employees by age group and economic activity, January 2026",
+   "rows": 132,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "3.3b",
+   "title": "Number of formal employees by age group and economic activity, February 2026",
+   "rows": 132,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "3.3c",
+   "title": "Number of formal employees by age group and economic activity, March 2026",
+   "rows": 132,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  },
+  {
+   "table": "3.4",
+   "title": "Median monthly wages by age group and economic activity, January 2026 - March 2026",
+   "rows": 165,
+   "sum_failures": [],
+   "sum_checks": 0,
+   "n_sum_failures": 0,
+   "issues": []
+  }
+ ]
+}

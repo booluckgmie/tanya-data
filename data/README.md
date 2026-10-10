@@ -19,4 +19,13 @@ Pilot: `dosm/salaries_wages/2025` from `salaries_wages_2025.xlsx` (extractor `ex
 Scope notes:
 - The 2025 workbook already holds 2010 to 2025 in every table, so older editions are not needed for the series. They would add restatements only.
 - DOSM publishes no data-scientist salary. Its occupation tables stop at the nine MASCO major groups, and its industry tables at MSIC sections. The nearest rows are Professionals and Information and communication.
-- The quarterly formal-sector wage workbook uses a different layout (month columns, two-line headers). It is not parsed yet.
+
+## Formal-sector wages (`dosm/formal_wages/2026-Q1`)
+
+Parsed by `extract/dosm_formal_wages.py` from DOSM's quarterly Employee Wages Statistics (Formal Sector) workbook: 6,432 rows from 28 tables, monthly, October 2024 to March 2026.
+- Scope: Malaysian citizens in formal-sector employment only, so it excludes non-citizens and informal work. Do not mix it with the all-employee Salaries & Wages survey figures.
+- Tables: headcount, share, month-on-month and year-on-year change, and median wage, by sex, ethnic group, age, economic activity and state; wage-scale distribution; wage percentiles (10th to 90th); age by broad sector (headcount, share and median wage).
+- Window: each release carries about 18 months. Longer history needs the earlier quarterly workbooks, which are not collected yet.
+- Checks: group headcounts add to the total in 90 of 90 comparisons (sex, ethnic and age; activity; state).
+- `derived_gender_gap_monthly.csv`: median-wage gap between men and women each month. It runs about 1% to 4% in this series, against 7.5% in the 2025 all-employee survey. The two cover different populations, so neither contradicts the other.
+- Industry detail is broad (agriculture, mining, manufacturing, construction, services), so it does not isolate ICT.
