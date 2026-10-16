@@ -118,6 +118,14 @@ summary{cursor:pointer;font-weight:600;font-size:14.5px}
 .big{font:800 36px/1 var(--display)}.scores span:last-child{font-size:13.5px;color:var(--muted);max-width:22ch}
 .runb{margin-top:6px;padding:11px 20px;border:2px solid var(--ink);background:none;border-radius:10px;font-weight:600}
 .runb:hover{background:var(--ink);color:var(--paper)}
+.usage{border-top:1px solid var(--line);padding:30px 0 10px}
+.usage p{max-width:72ch;color:var(--muted);font-size:14.5px}
+.ugrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px;margin-top:18px}
+.ulist{list-style:none;margin:6px 0 0;padding:0;font-size:14.5px}
+.ulist li{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-top:1px solid var(--line)}
+.ulist span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.spark{display:flex;align-items:flex-end;gap:2px;height:64px;margin-top:10px}
+.spark i{flex:1;min-width:3px;background:var(--bar);border-radius:2px 2px 0 0}
 .about{border-top:1px solid var(--line);padding:30px 0 70px;color:var(--muted);font-size:14.5px}
 .about p{max-width:78ch}
 @media (max-width:900px){
@@ -129,6 +137,8 @@ summary{cursor:pointer;font-weight:600;font-size:14.5px}
   .go,.chip{transition:background .15s,border-color .15s}
 }
 </style>
+<script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)}</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -155,6 +165,10 @@ summary{cursor:pointer;font-weight:600;font-size:14.5px}
     <button class="runb" id="bench">Run the test questions</button>
     <div id="benchout"></div>
   </section>
+  <section class="usage" aria-labelledby="ut">
+    <h2 class="sh" id="ut">Site usage</h2>
+    <div id="usageout"></div>
+  </section>
   <section class="about">
     <h2 class="sh">About this prototype</h2>
     <p id="aboutsrc"></p>
@@ -166,6 +180,7 @@ summary{cursor:pointer;font-weight:600;font-size:14.5px}
 <div id="bundle" hidden></div>
 <script type="application/json" id="cat">__CATALOGUE_JSON__</script>
 <script type="application/json" id="meta">__META_JSON__</script>
+<script type="application/json" id="usage">__USAGE_JSON__</script>
 <script>
 /* Official-data discovery engine: bilingual glossary + weighted lexical match + fit scoring. Pure functions. */
 const NOW_YEAR = 2026;
@@ -656,6 +671,25 @@ $('#stat').textContent = CAT.length+' official records indexed: '+(KCOUNT.datase
 $('#aboutsrc').textContent = 'The index is built from the public metadata behind data.gov.my, OpenDOSM, KKMNOW and data.bnm.gov.my (the datagovmy-meta repository, commit '+META.commit+', harvested '+META.harvested+') plus the live data.gov.my APIs. Every record\'s portal page and file link was checked on '+META.checked+'. '+META.withheld+' record(s) were withheld because the official page no longer resolves, or because the agency lists the table but its endpoint returns no records.';
 run(EXAMPLES[0]);
 
+</script>
+<script>
+/* Site usage: aggregate counts from Vercel Web Analytics, snapshotted at build time (tools/fetch_analytics.py). No visitor-level data. */
+(function(){
+  var el=document.getElementById('usageout'); if(!el) return;
+  var u; try{u=JSON.parse(document.getElementById('usage').textContent)}catch(e){u=null}
+  var esc=function(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+  var n=function(x){return Number(x||0).toLocaleString('en-MY')};
+  if(!u||!u.total||!(u.total.pageviews>0)){
+    el.innerHTML='<p>'+(u&&u.as_of?'No visits recorded in the 30 days to '+esc(u.as_of)+'.':'Usage figures have not been collected yet.')+' Counts come from Vercel Web Analytics, which is cookie-free and records no search text. The figures here are a snapshot taken when this page was built, not a live feed.</p>';return;
+  }
+  var list=function(title,arr,fmt){arr=(arr||[]).slice(0,6);if(!arr.length)return '';return '<div><h3 class="sh" style="font-size:15px">'+title+'</h3><ul class="ulist">'+arr.map(function(r){return '<li><span>'+esc(fmt?fmt(r.key):(r.key||'Direct / none'))+'</span><span>'+n(r.views)+'</span></li>'}).join('')+'</ul></div>'};
+  var d=(u.daily||[]).slice().sort(function(a,b){return a.key<b.key?-1:1}),mx=Math.max.apply(null,d.map(function(r){return r.views}).concat([1]));
+  var spark=d.length?'<div class="spark" role="img" aria-label="Daily pageviews, '+esc(u.since)+' to '+esc(u.as_of)+'">'+d.map(function(r){return '<i title="'+esc(r.key)+': '+n(r.views)+'" style="height:'+Math.max(4,Math.round(r.views/mx*100))+'%"></i>'}).join('')+'</div>':'';
+  var cn=window.Intl&&Intl.DisplayNames?new Intl.DisplayNames(['en'],{type:'region'}):null;
+  el.innerHTML='<div class="scores"><div><span class="big">'+n(u.total.visitors)+'</span><span>visitors, last '+u.days+' days</span></div><div><span class="big">'+n(u.total.pageviews)+'</span><span>pageviews</span></div></div>'+spark
+   +'<div class="ugrid">'+list('Top pages',u.pages)+list('Countries',u.countries,function(k){try{return cn?cn.of(k):k}catch(e){return k}})+list('Devices',u.devices)+list('Referrers',u.referrers)+'</div>'
+   +'<p>Snapshot to '+esc(u.as_of)+' from Vercel Web Analytics: cookie-free, aggregate counts only, no search text recorded.</p>';
+})();
 </script>
 </body>
 </html>

@@ -93,3 +93,7 @@ The registry holds metadata only. `archive/` is a separate, deliberate exception
 - The developer-docs adapter compares its endpoint list with the docs on every run and logs `devdocs DRIFT` when they differ. Titles and descriptions are written in the adapter, not taken from the docs.
 - No LLM enrichment yet (example questions, synonyms, caveats). Search is lexical plus a hand-built bilingual glossary.
 - The DOSM investor-portal OpenAPI specs in `data-catalogue/openapi/` carry no titles and mostly duplicate catalogue datasets, so they are not indexed.
+
+## Site usage (Vercel Web Analytics)
+
+The page loads Vercel's cookie-free analytics script (`/_vercel/insights/script.js`, served only on Vercel once Web Analytics is enabled for the project). It sends no search text and no custom events. The "Site usage" section shows aggregate visitors, pageviews, daily trend, top pages, countries, devices and referrers from `app/analytics.json`, a snapshot taken at build time. Refresh it with `VERCEL_TOKEN=... python3 tools/fetch_analytics.py`, rebuild, and commit. Hobby plans keep 31 days of data.

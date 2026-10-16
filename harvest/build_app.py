@@ -145,11 +145,15 @@ def main():
     checked = max((r.get('verified', {}).get('checked_at', '') for r in reg['records']), default='')[:10] or 'not yet'
     commit = reg['sources'][0].get('commit', '')[:8]
     meta = {'commit': commit, 'harvested': reg['harvested_at'][:10], 'checked': checked, 'withheld': len(withheld)}
+    try:
+        usage = json.load(open(os.path.join(ROOT, 'app', 'analytics.json'), encoding='utf-8'))
+    except Exception:
+        usage = None  # no snapshot yet: the page says usage has not been collected
     golden = re.search(r'const GOLDEN = \[(.*?)\n\];', tpl, re.S).group(1)
     n_all = len(re.findall(r'^\[".*?",\[', golden, re.M))
     n_gap = len(re.findall(r'^\[".*?",\[\]\]', golden, re.M))
     safe = lambda o: json.dumps(o, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
-    html = (tpl.replace('__CATALOGUE_JSON__', safe(cat)).replace('__META_JSON__', safe(meta))
+    html = (tpl.replace('__CATALOGUE_JSON__', safe(cat)).replace('__META_JSON__', safe(meta)).replace('__USAGE_JSON__', safe(usage))
                .replace('__NBENCH__', str(n_all - n_gap)).replace('__NGAP__', str(n_gap)))
     os.makedirs(os.path.join(ROOT, 'dist'), exist_ok=True)
     out = os.path.join(ROOT, 'dist', 'index.html')
