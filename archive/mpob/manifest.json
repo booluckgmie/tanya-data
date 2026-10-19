@@ -24,11 +24,11 @@
   "sha256": "83cdfcf99839220d"
  },
  "2026": {
-  "rows": 306,
-  "priced_days": 185,
+  "rows": 311,
+  "priced_days": 190,
   "first_priced": "2026-01-02",
-  "last_priced": "2026-10-09",
+  "last_priced": "2026-10-16",
   "source": "MPOB Excel export",
-  "sha256": "77c0f38849841f94"
+  "sha256": "ee72f22fc9abd61f"
  }
 }
