@@ -29,3 +29,11 @@ Parsed by `extract/dosm_formal_wages.py` from DOSM's quarterly Employee Wages St
 - Checks: group headcounts add to the total in 90 of 90 comparisons (sex, ethnic and age; activity; state).
 - `derived_gender_gap_monthly.csv`: median-wage gap between men and women each month. It runs about 1% to 4% in this series, against 7.5% in the 2025 all-employee survey. The two cover different populations, so neither contradicts the other.
 - Industry detail is broad (agriculture, mining, manufacturing, construction, services), so it does not isolate ICT.
+
+## Public-sector pay scales (`mof/sspa_pay_scales/2026`)
+
+Minimum and maximum monthly basic pay for 70 public-service grades, from Belanjawan 2026 Lampiran A (Ministry of Finance), extracted by `extract/mof_sspa.py` with pdfplumber from the PDF's text layer. Every row carries its page and line.
+- Scope: civil-service posts under SSPA only, by grade, not by job title. Private-sector pay is not covered. Grade 1 starts at RM1,500; the federal management and professional series (Grades 9 to 15) run from RM2,250 to RM16,350 at the extremes.
+- Columns: `min_rm`, `max_rm`, annual increment (RM, or a percentage for the top grades such as VU and VK) and the increment at the maximum.
+- Checks: 70 rows read by the parser and 70 found by an independent line count; every minimum is below its maximum; maximum pay falls with grade in each numbered federal series. Grades 13P, 11 and similar series start at different points, so minimums are not expected to rise in order.
+- Licence: the document states none. The figures are facts from a public official document, credited to the Ministry of Finance. Check with the Ministry before relying on it for anything beyond reference.

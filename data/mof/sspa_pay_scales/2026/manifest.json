@@ -1,0 +1,15 @@
+{
+ "source_url": "https://belanjawan.mof.gov.my/pdf/belanjawan2026/sp/LAMPIRAN-A.pdf",
+ "edition": "2026",
+ "file_sha256_16": "8db511e04ea66b59",
+ "method": "pdfplumber text extraction, one regex per row, text layer (no OCR)",
+ "publisher": "Ministry of Finance Malaysia (Belanjawan 2026, Lampiran A)",
+ "scope": "Public-service posts only, by grade under SSPA. Monthly basic pay, RM. Not job titles.",
+ "licence": "Not stated on the document. Factual pay figures from an official public document; credit the Ministry of Finance.",
+ "rows": 70,
+ "unmatched_lines": [],
+ "checks": {
+  "min_below_max_failures": [],
+  "order_failures": []
+ }
+}
