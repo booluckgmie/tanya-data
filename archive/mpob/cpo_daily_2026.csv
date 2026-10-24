@@ -283,6 +283,11 @@ date,price_rm_per_tonne,status
 2026-10-09,4456.50,price
 2026-10-10,,no_trade
 2026-10-11,,public_holiday
+2026-10-12,4403.00,price
+2026-10-13,4398.50,price
+2026-10-14,4456.50,price
+2026-10-15,4423.00,price
+2026-10-16,4434.50,price
 2026-10-17,,no_trade
 2026-10-18,,public_holiday
 2026-10-24,,no_trade
