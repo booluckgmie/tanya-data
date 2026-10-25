@@ -18,6 +18,7 @@ f = lambda s: float(s.replace(',', ''))
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument('--cross-check', help="JPA SSPA circular Lampiran D PDF; compares grades 1 to 15 with JPA's own table")
     ap.add_argument('pdf'); ap.add_argument('--source-url', required=True); ap.add_argument('--edition', required=True); ap.add_argument('--out', required=True)
     a = ap.parse_args()
     rows, unmatched, group = [], [], ''
@@ -43,12 +44,23 @@ def main():
             for hi, lo in zip(seq, seq[1:]):
                 if lo['max_rm'] > hi['max_rm']:
                     checks['order_failures'].append('%s > %s (maximum pay)' % (lo['code'], hi['code']))
+    cross = None
+    if a.cross_check:
+        jpa = {}
+        with pdfplumber.open(a.cross_check) as d:
+            for pg in d.pages[:4]:
+                for line in (pg.extract_text() or '').split('\n'):
+                    m = re.match(r'^\s*(\d{1,2}P?)\s+(\d{1,3}(?:,\d{3})*\.\d{2})\s+(\d{1,3}(?:,\d{3})*\.\d{2})\s+(\d{1,3}(?:,\d{3})*\.\d{2})\s+(\d{1,3}(?:,\d{3})*\.\d{2})\s*$', line)
+                    if m:
+                        jpa[m[1]] = tuple(f(x) for x in m.groups()[1:])
+        fed = {r['code']: (r['min_rm'], r['max_rm'], r['annual_increment'], r['increment_at_max_rm']) for r in rows if r['service_group'] == 'PERKHIDMATAN AWAM PERSEKUTUAN'}
+        cross = {'source': os.path.basename(a.cross_check), 'grades_compared': len(jpa), 'differences': [k for k in jpa if fed.get(k) != jpa[k]], 'missing_in_extract': [k for k in jpa if k not in fed]}
     os.makedirs(a.out, exist_ok=True)
     with open(os.path.join(a.out, 'values.csv'), 'w', newline='', encoding='utf-8') as fh:
         w = csv.DictWriter(fh, list(rows[0])); w.writeheader(); w.writerows(rows)
     json.dump({'source_url': a.source_url, 'edition': a.edition, 'file_sha256_16': hashlib.sha256(open(a.pdf, 'rb').read()).hexdigest()[:16], 'method': 'pdfplumber text extraction, one regex per row, text layer (no OCR)',
                'publisher': 'Ministry of Finance Malaysia (Belanjawan 2026, Lampiran A)', 'scope': 'Public-service posts only, by grade under SSPA. Monthly basic pay, RM. Not job titles.',
-               'licence': 'Not stated on the document. Factual pay figures from an official public document; credit the Ministry of Finance.', 'rows': len(rows), 'unmatched_lines': unmatched, 'checks': checks},
+               'licence': 'Not stated on the document. Factual pay figures from an official public document; credit the Ministry of Finance.', 'rows': len(rows), 'unmatched_lines': unmatched, 'checks': checks, 'cross_check_jpa': cross},
               open(os.path.join(a.out, 'manifest.json'), 'w'), indent=1, ensure_ascii=False)
     print('%d rows; %d unmatched; checks %s' % (len(rows), len(unmatched), checks), file=sys.stderr)
 

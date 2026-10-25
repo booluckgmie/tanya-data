@@ -11,5 +11,11 @@
  "checks": {
   "min_below_max_failures": [],
   "order_failures": []
+ },
+ "cross_check_jpa": {
+  "source": "jpa_D.pdf",
+  "grades_compared": 16,
+  "differences": [],
+  "missing_in_extract": []
  }
 }
