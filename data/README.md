@@ -39,3 +39,7 @@ Minimum and maximum monthly basic pay for 70 public-service grades, from Belanja
 - Cross-check: all 16 federal grades (1 to 15 and 13P) match JPA's own table, Lampiran D1 of the SSPA circular (`docs.jpa.gov.my/docs/sspa/SSPA_LAMPIRAN_D.pdf`), on minimum, maximum, annual increment and increment at maximum. Run with `--cross-check` to repeat it.
 - Not found: which SSPA grade each scheme grade maps to (for example the IT officer scheme, grades F41 to F54 under the old pay system). The JPA annexes that were readable do not give it, and the scheme and SPA hosts refuse this environment. No grade is assigned to any job title here.
 - Licence: the document states none. The figures are facts from a public official document, credited to the Ministry of Finance. Check with the Ministry before relying on it for anything beyond reference.
+
+## Local-only extractions (`data_local/`, not committed)
+
+`extract/randstad_tech.py` reads the technology salary table on Randstad Malaysia's public 2026 page (6 roles, including data scientist, as basic monthly pay ranges in RM). The page states no reuse licence, so the output goes to `data_local/randstad/2026/` (ignored by git) with a manifest of source URL, dates, page hash and the page's own footnote. Re-run it on your own machine to rebuild. The Robert Walters, Hays and Michael Page Malaysia guides were not found as downloadable files; only second-hand quotations of them turned up, and those were not copied.
