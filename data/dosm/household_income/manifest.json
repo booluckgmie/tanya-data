@@ -1,0 +1,13 @@
+{
+ "source_url": "https://api.data.gov.my/data-catalogue?id=hh_income&limit=400",
+ "dataset": "hh_income (OpenDOSM / data.gov.my data catalogue)",
+ "publisher": "Department of Statistics Malaysia",
+ "licence": "CC BY 4.0",
+ "rows": 22,
+ "years": [
+  "1970",
+  "2024"
+ ],
+ "response_sha256_16": "f586d78dd004f700",
+ "note": "Survey years only (not every year). Household income, not individual wages. Nominal ringgit."
+}

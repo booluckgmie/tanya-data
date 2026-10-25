@@ -51,3 +51,7 @@ Writes `data_local/salary_comparison.csv` (not committed): DOSM 2025 median and 
 ## MarkItDown MCP
 
 `.mcp.json` registers Microsoft's `markitdown-mcp` (run with `uvx markitdown-mcp`) so a Claude Code session in this repo can convert PDFs, Office files and web pages to Markdown. It reads text layers only. Text embedded as unmapped glyphs, as on the cover page of Belanjawan Lampiran A, comes out as `(cid:NN)` codes. It is a reading aid; the extractors above remain the source of the committed data.
+
+## Household income, 1970 to 2024 (`dosm/household_income`)
+
+`extract/fetch_household_income.py` downloads OpenDOSM's national household income series (mean and median monthly household income, RM, 22 survey years from 1970 to 2024; CC BY 4.0). It is household income, not individual pay, and survey years are not annual, so it is a long-run proxy for the period before the Salaries & Wages Survey begins in 2010. DOSM's wage releases found online start at 2010 (the Salaries & Wages Survey tables run 2010 onward); no earlier individual wage survey report was found.
