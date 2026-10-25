@@ -25,6 +25,9 @@ for r in rd('data/mof/sspa_pay_scales/2026/values.csv'):
 for r in rd('data_local/randstad/2026/values.csv'):
     if r['role'] in ('data scientist', 'data engineer', 'ML engineer', 'AI engineer', 'software engineer'):
         add('Randstad Malaysia 2026 (local only)', r['role'], 2026, r['min_rm_per_month'], '', r['max_rm_per_month'], "recruiter's basic monthly range, excludes bonus and equity", 'Roles Randstad recruits for, private sector', 'Not stated; kept local')
+for r in rd('data/dosm/salaries_wages/2025/illustrative_trend.csv'):
+    if r['series'].startswith(('Occupation: Professionals', 'Industry: Information')) and r['year'] in ('2026', '2028', '2030'):
+        add('Projection from DOSM 2010-2025 trend', r['series'], int(r['year']), r['low_80'], r['median_rm_central'], r['high_80'], 'log-linear trend of the median, central value in mid_rm, approximate 80% band of the trend (not of individual pay); extrapolation, not a forecast', 'Same as the DOSM series it extends (%s%% a year)' % r['trend_growth_pct_per_year'], 'Derived by this project')
 os.makedirs(os.path.join(ROOT, 'data_local'), exist_ok=True)
 p = os.path.join(ROOT, 'data_local', 'salary_comparison.csv')
 w = csv.DictWriter(open(p, 'w', newline='', encoding='utf-8'), list(out[0])); w.writeheader(); w.writerows(out)
