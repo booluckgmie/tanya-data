@@ -43,3 +43,11 @@ Minimum and maximum monthly basic pay for 70 public-service grades, from Belanja
 ## Local-only extractions (`data_local/`, not committed)
 
 `extract/randstad_tech.py` reads the technology salary table on Randstad Malaysia's public 2026 page (6 roles, including data scientist, as basic monthly pay ranges in RM). The page states no reuse licence, so the output goes to `data_local/randstad/2026/` (ignored by git) with a manifest of source URL, dates, page hash and the page's own footnote. Re-run it on your own machine to rebuild. The Robert Walters, Hays and Michael Page Malaysia guides were not found as downloadable files; only second-hand quotations of them turned up, and those were not copied.
+
+## Comparing sources (`extract/compare_salary_sources.py`)
+
+Writes `data_local/salary_comparison.csv` (not committed): DOSM 2025 median and mean for Professionals, Information and communication and tertiary-educated; civil-service grades 9 and 12 to 15; and the local Randstad roles. Each row states its basis and population. The DOSM rows put the median in `mid_rm` and the mean in `high_rm`; the other rows are minimum to maximum, so do not read the `high_rm` column across sources as the same thing.
+
+## MarkItDown MCP
+
+`.mcp.json` registers Microsoft's `markitdown-mcp` (run with `uvx markitdown-mcp`) so a Claude Code session in this repo can convert PDFs, Office files and web pages to Markdown. It reads text layers only. Text embedded as unmapped glyphs, as on the cover page of Belanjawan Lampiran A, comes out as `(cid:NN)` codes. It is a reading aid; the extractors above remain the source of the committed data.
